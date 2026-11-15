@@ -1,0 +1,325 @@
+{
+  "format": "ashina-robot-studio",
+  "name": "Yeni takım robotu",
+  "season": "2025",
+  "quality": "high",
+  "version": 2,
+  "team": 10576,
+  "drive": {
+    "type": "swerve",
+    "maxSpeed": 4.5,
+    "acceleration": 6.0,
+    "turnRate": 3.5,
+    "fieldRelative": true,
+    "dimensions": [
+      0.9,
+      0.8,
+      0.4
+    ]
+  },
+  "parts": [
+    {
+      "id": "chassis",
+      "name": "Ana şase",
+      "parent": null,
+      "kind": "box",
+      "color": "#a4b6c5",
+      "asset": null,
+      "size": [
+        0.8,
+        0.7,
+        0.15
+      ],
+      "pivot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "assetCenter": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "meshIndex": null,
+      "position": [
+        0.0,
+        0.0,
+        0.20000000298023224
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "a7303e70c29d4632aa7146bd8d595be0",
+      "name": "Şase parçası",
+      "parent": "chassis",
+      "kind": "asset",
+      "color": "#a4b6c5",
+      "asset": "7eb3b9b2439b4e7d97c46f8d989e7cf5",
+      "size": [
+        0.3,
+        0.2,
+        0.1
+      ],
+      "pivot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "assetCenter": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "meshIndex": null,
+      "position": [
+        0.0,
+        0.0,
+        0.15000000596046448
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "c1291cce81c6442a9718912cacd13f69",
+      "name": "İntake gövdesi",
+      "parent": "a7303e70c29d4632aa7146bd8d595be0",
+      "kind": "asset",
+      "color": "#a4b6c5",
+      "asset": "8063c31328da45cab650ecde49017b2c",
+      "size": [
+        0.3,
+        0.2,
+        0.1
+      ],
+      "pivot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "assetCenter": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "meshIndex": null,
+      "position": [
+        0.0,
+        0.0,
+        0.15000000596046448
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "144a953e34c54b4bb3416b7d6d084230",
+      "name": "Kol montajı",
+      "parent": "c1291cce81c6442a9718912cacd13f69",
+      "kind": "group",
+      "color": "#a4b6c5",
+      "asset": "e10a543863cc4e4e815b1ac417f04b55",
+      "size": [
+        0.3,
+        0.2,
+        0.1
+      ],
+      "pivot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "assetCenter": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "meshIndex": null,
+      "position": [
+        0.0,
+        0.0,
+        0.15000000596046448
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "a04822534718415291c858cc2e013a8e",
+      "name": "Taban",
+      "parent": "144a953e34c54b4bb3416b7d6d084230",
+      "kind": "asset",
+      "color": "#a4b6c5",
+      "asset": "e10a543863cc4e4e815b1ac417f04b55",
+      "size": [
+        0.3,
+        0.2,
+        0.1
+      ],
+      "pivot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "assetCenter": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "meshIndex": 0,
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "dc8feac3b07642178588bb57643e9907",
+      "name": "Hareketli parça",
+      "parent": "144a953e34c54b4bb3416b7d6d084230",
+      "kind": "asset",
+      "color": "#a4b6c5",
+      "asset": "e10a543863cc4e4e815b1ac417f04b55",
+      "size": [
+        0.3,
+        0.2,
+        0.1
+      ],
+      "pivot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "assetCenter": [
+        0.31999999284744263,
+        0.0,
+        0.18000000715255737
+      ],
+      "scale": 1.0,
+      "meshIndex": 1,
+      "position": [
+        0.31999999284744263,
+        0.0,
+        0.18000000715255737
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "3022f7c69e3c4125b8d86a52990aa76d",
+      "name": "Hareketli parça hareketi",
+      "partId": "dc8feac3b07642178588bb57643e9907",
+      "type": "move",
+      "key": "KeyR",
+      "reverseKey": "",
+      "button": "",
+      "mode": "press",
+      "topic": "",
+      "piece": "coral",
+      "controller": 0,
+      "duration": 1.0,
+      "speed": 5.0,
+      "pitch": 25.0,
+      "yaw": 0.0,
+      "interval": 0.4,
+      "captureRadius": 0.6,
+      "from": {
+        "position": [
+          0.31999999284744263,
+          0.0,
+          0.18000000715255737
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "to": {
+        "position": [
+          0.32,
+          0.0,
+          0.85
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "spawn": [
+        0.3,
+        0.0,
+        0.1
+      ],
+      "loop": false,
+      "consume": false,
+      "invert": false,
+      "inheritVelocity": true
+    }
+  ],
+  "cameras": [],
+  "assets": {
+    "7eb3b9b2439b4e7d97c46f8d989e7cf5": {
+      "name": "Şase parçası.stl",
+      "type": "stl",
+      "data": "QXNoaW5hIG5hdGl2ZSBtb2RlbCBkaWFsb2cgcmVncmVzc2lvbiBmaXh0dXJlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAACAvo/C9b3NzEy9AACAPo/C9T3NzEy9AACAPo/C9b3NzEy9AAAAAAAAAAAAAAAAAAAAAIC+j8L1vc3MTL0AAIC+j8L1Pc3MTL0AAIA+j8L1Pc3MTL0AAAAAAAAAAAAAAAAAAAAAgL6PwvW9zcxMPQAAgD6PwvW9zcxMPQAAgD6PwvU9zcxMPQAAAAAAAAAAAAAAAAAAAACAvo/C9b3NzEw9AACAPo/C9T3NzEw9AACAvo/C9T3NzEw9AAAAAAAAAAAAAAAAAAAAAIC+j8L1vc3MTL0AAIA+j8L1vc3MTL0AAIA+j8L1vc3MTD0AAAAAAAAAAAAAAAAAAAAAgL6PwvW9zcxMvQAAgD6PwvW9zcxMPQAAgL6PwvW9zcxMPQAAAAAAAAAAAAAAAAAAAACAPo/C9b3NzEy9AACAPo/C9T3NzEy9AACAPo/C9T3NzEw9AAAAAAAAAAAAAAAAAAAAAIA+j8L1vc3MTL0AAIA+j8L1Pc3MTD0AAIA+j8L1vc3MTD0AAAAAAAAAAAAAAAAAAAAAgD6PwvU9zcxMvQAAgL6PwvU9zcxMvQAAgL6PwvU9zcxMPQAAAAAAAAAAAAAAAAAAAACAPo/C9T3NzEy9AACAvo/C9T3NzEw9AACAPo/C9T3NzEw9AAAAAAAAAAAAAAAAAAAAAIC+j8L1Pc3MTL0AAIC+j8L1vc3MTL0AAIC+j8L1vc3MTD0AAAAAAAAAAAAAAAAAAAAAgL6PwvU9zcxMvQAAgL6PwvW9zcxMPQAAgL6PwvU9zcxMPQAA"
+    },
+    "8063c31328da45cab650ecde49017b2c": {
+      "name": "İntake gövdesi.obj",
+      "type": "obj",
+      "data": "diAtMC4yNSAtMC4xMiAtMC4wNQp2IDAuMjUgLTAuMTIgLTAuMDUKdiAwLjI1IDAuMTIgLTAuMDUKdiAtMC4yNSAwLjEyIC0wLjA1CnYgLTAuMjUgLTAuMTIgMC4wNQp2IDAuMjUgLTAuMTIgMC4wNQp2IDAuMjUgMC4xMiAwLjA1CnYgLTAuMjUgMC4xMiAwLjA1CmYgMSA0IDMgMgpmIDUgNiA3IDgKZiAxIDIgNiA1CmYgMiAzIDcgNgpmIDMgNCA4IDcKZiAtNSAtOCAtNCAtMSAjIG5lZ2F0aXZlLWluZGV4IGZhY2UK"
+    },
+    "e10a543863cc4e4e815b1ac417f04b55": {
+      "name": "Kol montajı.glb",
+      "type": "glb",
+      "data": "Z2xURgIAAADAAwAA/AIAAEpTT057ImFzc2V0Ijp7InZlcnNpb24iOiIyLjAiLCJnZW5lcmF0b3IiOiJBc2hpbmEgVUkgcmVncmVzc2lvbiJ9LCJzY2VuZSI6MCwic2NlbmVzIjpbeyJub2RlcyI6WzAsMV19XSwibm9kZXMiOlt7Im5hbWUiOiJUYWJhbiIsIm1lc2giOjB9LHsibmFtZSI6IkhhcmVrZXRsaSBwYXLDp2EiLCJtZXNoIjowLCJ0cmFuc2xhdGlvbiI6WzAuMzIsMCwwLjE4XX1dLCJtZXNoZXMiOlt7InByaW1pdGl2ZXMiOlt7ImF0dHJpYnV0ZXMiOnsiUE9TSVRJT04iOjB9LCJpbmRpY2VzIjoxLCJtYXRlcmlhbCI6MH1dfV0sIm1hdGVyaWFscyI6W3sicGJyTWV0YWxsaWNSb3VnaG5lc3MiOnsiYmFzZUNvbG9yRmFjdG9yIjpbMC44NSwwLjU2LDAuMTgsMV0sIm1ldGFsbGljRmFjdG9yIjowLjA1LCJyb3VnaG5lc3NGYWN0b3IiOjAuN319XSwiYnVmZmVycyI6W3siYnl0ZUxlbmd0aCI6MTY4fV0sImJ1ZmZlclZpZXdzIjpbeyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjAsImJ5dGVMZW5ndGgiOjk2LCJ0YXJnZXQiOjM0OTYyfSx7ImJ1ZmZlciI6MCwiYnl0ZU9mZnNldCI6OTYsImJ5dGVMZW5ndGgiOjcyLCJ0YXJnZXQiOjM0OTYzfV0sImFjY2Vzc29ycyI6W3siYnVmZmVyVmlldyI6MCwiY29tcG9uZW50VHlwZSI6NTEyNiwiY291bnQiOjgsInR5cGUiOiJWRUMzIiwibWluIjpbLTAuMjUsLTAuMTIsLTAuMDVdLCJtYXgiOlswLjI1LDAuMTIsMC4wNV19LHsiYnVmZmVyVmlldyI6MSwiY29tcG9uZW50VHlwZSI6NTEyMywiY291bnQiOjM2LCJ0eXBlIjoiU0NBTEFSIn1dfSAgIKgAAABCSU4AAACAvo/C9b3NzEy9AACAPo/C9b3NzEy9AACAPo/C9T3NzEy9AACAvo/C9T3NzEy9AACAvo/C9b3NzEw9AACAPo/C9b3NzEw9AACAPo/C9T3NzEw9AACAvo/C9T3NzEw9AAACAAEAAAADAAIABAAFAAYABAAGAAcAAAABAAUAAAAFAAQAAQACAAYAAQAGAAUAAgADAAcAAgAHAAYAAwAAAAQAAwAEAAcA"
+    }
+  },
+  "initialPose": [
+    2.0,
+    4.0,
+    0.0
+  ],
+  "inventory": {
+    "ball": 3,
+    "coral": 3,
+    "note": 3,
+    "algae": 3,
+    "fuel": 10
+  },
+  "network": {
+    "host": "127.0.0.1",
+    "mode": "observe",
+    "poseTopic": "/FRCStudio/Drive/Pose",
+    "requestTopic": "/AshinaRobot/Drive/request",
+    "port": 5810,
+    "vision": false
+  },
+  "blocklyProject": null
+}

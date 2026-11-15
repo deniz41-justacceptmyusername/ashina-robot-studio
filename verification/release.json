@@ -1,0 +1,12 @@
+{
+  "version": "0.4.4",
+  "unity": "6000.1.13f1",
+  "platform": "Windows x64",
+  "generalChecks": 125,
+  "robotIntegrationChecks": 13,
+  "totalChecks": 138,
+  "buildErrors": 0,
+  "buildWarnings": 0,
+  "robotFixtureIncluded": false,
+  "verifiedLocally": true
+}

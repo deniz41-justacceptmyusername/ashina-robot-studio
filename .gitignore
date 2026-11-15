@@ -1,0 +1,35 @@
+# Unity-generated state
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+**/*_BurstDebugInformation_DoNotShip/
+**/*_BackUpThisFolder_ButDontShipItWithYourGame/
+
+# Build outputs and local robot work
+/build/
+/Windows/
+/SavedRobots/
+/Models/
+*.zip
+*.log
+*.tmp
+*.pdb
+*.csproj
+*.sln
+*.user
+*.suo
+.vs/
+.idea/
+.vscode/
+node_modules/
+__pycache__/
+.env
+.env.*
+!.env.example
+unity-build-result.json
+Thumbs.db
+.DS_Store

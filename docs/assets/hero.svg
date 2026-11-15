@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="470" viewBox="0 0 1400 470" role="img" aria-labelledby="title desc">
+<title id="title">Ashina Robot Studio</title><desc id="desc">Native Unity FRC training, illustrated with an isometric robot and practice field.</desc>
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#07101e"/><stop offset="1" stop-color="#112238"/></linearGradient>
+ <linearGradient id="cyan"><stop stop-color="#53e7ed"/><stop offset="1" stop-color="#81b9ff"/></linearGradient>
+ <linearGradient id="steel" x2="0.8" y2="1"><stop stop-color="#a9c6dc"/><stop offset="1" stop-color="#43627e"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#1ca4bd" stop-opacity=".22"/><stop offset="1" stop-color="#1ca4bd" stop-opacity="0"/></radialGradient>
+ <pattern id="grid" width="38" height="38" patternUnits="userSpaceOnUse"><path d="M38 0H0V38" fill="none" stroke="#5b8fac" stroke-opacity=".1"/></pattern>
+ <filter id="light"><feGaussianBlur stdDeviation="4"/></filter>
+</defs>
+<rect width="1400" height="470" rx="20" fill="url(#bg)"/>
+<rect width="1400" height="470" rx="20" fill="url(#grid)"/>
+<ellipse cx="1090" cy="225" rx="410" ry="300" fill="url(#glow)"/>
+<path d="M0 428H1400" stroke="#274156"/>
+<path d="M54 57h30v30H54zM64 67h10v10H64z" fill="none" stroke="#6fe8ed" stroke-width="3"/>
+<text x="102" y="78" fill="#99b5ce" font-family="Segoe UI,Arial,sans-serif" font-size="17" letter-spacing="4">ASHINA ROBOTICS</text>
+<text x="54" y="173" fill="#f0f6ff" font-family="Segoe UI,Arial,sans-serif" font-size="66" font-weight="750" letter-spacing="-2">ROBOT STUDIO</text>
+<rect x="56" y="199" width="76" height="5" rx="2" fill="url(#cyan)"/>
+<text x="54" y="260" fill="#6fe8ed" font-family="Segoe UI,Arial,sans-serif" font-size="35" font-weight="600">Build. Drive. Repeat.</text>
+<text x="56" y="305" fill="#afc2d7" font-family="Segoe UI,Arial,sans-serif" font-size="20">Your robot. Your practice field. Your next run.</text>
+<g font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="600" letter-spacing="1.5">
+ <rect x="56" y="345" width="134" height="31" rx="6" fill="#123443" stroke="#276173"/><text x="73" y="366" fill="#8be8ee">NATIVE UNITY</text>
+ <rect x="202" y="345" width="170" height="31" rx="6" fill="#172b43" stroke="#345171"/><text x="219" y="366" fill="#b8d3fb">NETWORKTABLES 4</text>
+ <rect x="384" y="345" width="163" height="31" rx="6" fill="#35291f" stroke="#674a31"/><text x="401" y="366" fill="#ffc08c">FRC TRAINING</text>
+</g>
+<g transform="translate(825 78)">
+ <path d="M-25 228 234 78 499 228 240 378Z" fill="#0a1525" stroke="#38637a" stroke-width="2"/>
+ <path d="m18 228 217-125 221 125-217 127Z" fill="#142b3a" stroke="#2d9ca8" stroke-width="2"/>
+ <path d="m127 165 223 128M18 228l221 127m-113-63 220-127M235 103v252" stroke="#568096" stroke-opacity=".3"/>
+ <path d="M18 228 235 103 456 228" fill="none" stroke="#60e8ee" stroke-width="2"/>
+ <path d="m85 198 145 84 146-84-146-83Z" fill="#17293b" stroke="#70a3bf" stroke-width="2"/>
+ <path d="m85 198 145 84v48L85 246Z" fill="#1c91a2"/><path d="m230 282 146-84v48l-146 84Z" fill="#125c7b"/>
+ <path d="m85 198 145 84 146-84" fill="none" stroke="#7ee8eb" stroke-width="6"/>
+ <g fill="#070d16" stroke="#577a91" stroke-width="2"><ellipse cx="120" cy="262" rx="20" ry="29" transform="rotate(-30 120 262)"/><ellipse cx="204" cy="310" rx="20" ry="29" transform="rotate(-30 204 310)"/><ellipse cx="278" cy="310" rx="20" ry="29" transform="rotate(30 278 310)"/><ellipse cx="355" cy="264" rx="20" ry="29" transform="rotate(30 355 264)"/></g>
+ <path d="m167 174 63 37 58-34-64-37Z" fill="url(#steel)" stroke="#d2e8f8" stroke-width="2"/>
+ <path d="M169 174V62l56-32v110m62 37V65l-62-35" fill="none" stroke="url(#steel)" stroke-width="10" stroke-linejoin="round"/>
+ <path d="m178 90 45 26 54-31m-99 50 45 26 54-31" fill="none" stroke="#72a5c0" stroke-width="4"/>
+ <path d="m226 116 73-43 36 21-73 43Z" fill="#ffa25d" stroke="#ffd4ae" stroke-width="2"/>
+ <path d="m262 137 73-43v23l-73 43Z" fill="#ba643b"/>
+ <path d="m337 92 66-38 50 28" fill="none" stroke="#ffb270" stroke-width="2" stroke-dasharray="6 7"/>
+ <g fill="#e8bb4f" stroke="#ffe49c"><circle cx="66" cy="278" r="9"/><circle cx="47" cy="292" r="9"/><circle cx="86" cy="294" r="9"/></g>
+ <g transform="translate(393 169)"><path d="m0 0 32-19 33 19-33 19Z" fill="#d7e1e9"/><path d="M0 0v48l32 19V19Z" fill="#496c85"/><path d="m32 19 33-19v48L32 67Z" fill="#8da5b9"/><rect x="24" y="32" width="14" height="14" fill="#08101b" transform="skewY(-28)"/></g>
+</g>
+<text x="56" y="454" fill="#6f91aa" font-family="Segoe UI,Arial,sans-serif" font-size="13" letter-spacing="2">REBUILT / REEFSCAPE / CRESCENDO</text>
+<text x="1328" y="454" text-anchor="end" fill="#8ea9bf" font-family="Segoe UI,Arial,sans-serif" font-size="13">DESKTOP PRACTICE · v0.4.4</text>
+</svg>

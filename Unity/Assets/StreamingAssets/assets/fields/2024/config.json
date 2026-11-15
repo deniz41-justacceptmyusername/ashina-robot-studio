@@ -1,0 +1,136 @@
+{
+  "name": "2024 Field",
+  "locales": {
+    "en-US": "2024 Field",
+    "es-419": "Campo 2024",
+    "fr": "Terrain 2024",
+    "nl": "Veld 2024",
+    "pt-BR": "Campo 2024",
+    "ro": "Teren 2024",
+    "tr": "2024 Sahası",
+    "ru": "Поле 2024",
+    "kk": "2024 алаңы",
+    "he": "מגרש 2024",
+    "ar": "ملعب 2024",
+    "hi": "2024 फील्ड",
+    "zh-CN": "2024 场地",
+    "zh-TW": "2024 場地"
+  },
+  "isFTC": false,
+  "coordinateSystem": "wall-blue",
+  "rotations": [
+    {
+      "axis": "x",
+      "degrees": 90
+    }
+  ],
+  "position": [
+    0,
+    0,
+    0
+  ],
+  "widthInches": 651.25,
+  "heightInches": 323.25,
+  "driverStations": [
+    [
+      8.27,
+      -3.144
+    ],
+    [
+      8.27,
+      0.26
+    ],
+    [
+      8.27,
+      2.088
+    ],
+    [
+      -8.27,
+      2.088
+    ],
+    [
+      -8.27,
+      0.26
+    ],
+    [
+      -8.27,
+      -3.144
+    ]
+  ],
+  "gamePieces": [
+    {
+      "name": "Note",
+      "locales": {
+        "en-US": "Note",
+        "es-419": "Note",
+        "fr": "Note",
+        "nl": "Note",
+        "pt-BR": "Note",
+        "ro": "Note",
+        "tr": "Note",
+        "ru": "Note",
+        "kk": "Note",
+        "he": "Note",
+        "ar": "Note",
+        "hi": "Note",
+        "zh-CN": "Note",
+        "zh-TW": "Note"
+      },
+      "rotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "stagedObjects": [
+        "Note",
+        "Note_1",
+        "Note_2",
+        "Note_3",
+        "Note_4",
+        "Note_5",
+        "Note_6",
+        "Note_7",
+        "Note_8",
+        "Note_9",
+        "Note_10"
+      ]
+    },
+    {
+      "name": "High Note",
+      "locales": {
+        "en-US": "High Note",
+        "es-419": "High Note",
+        "fr": "High Note",
+        "nl": "High Note",
+        "pt-BR": "High Note",
+        "ro": "High Note",
+        "tr": "High Note",
+        "ru": "High Note",
+        "kk": "High Note",
+        "he": "High Note",
+        "ar": "High Note",
+        "hi": "High Note",
+        "zh-CN": "High Note",
+        "zh-TW": "High Note"
+      },
+      "rotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "stagedObjects": []
+    }
+  ]
+}

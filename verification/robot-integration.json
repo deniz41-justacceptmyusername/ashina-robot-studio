@@ -1,0 +1,28 @@
+{
+  "success": true,
+  "count": 13,
+  "passed": [
+    "Harun gerçek CAD modeli Windows player'a yükleniyor",
+    "Robot koduyla aynı 2026 AndyMark AprilTag yerleşimi",
+    "Uygulama gerçek YAGSL projesini derleyip başlatıyor ve NT'ye bağlanıyor",
+    "Unity gamepad verisi gerçek robot köprüsüne ulaşıyor",
+    "Aynı Xbox sürüş kodu YAGSL fiziğini sürüyor ve Unity robotu takip ediyor",
+    "Gerçek intake komutları NT telemetrisine ulaşıyor",
+    "Robot kodu intake'i çalıştırınca fiziksel temas eden FUEL stoklanıyor",
+    "Uygulamadan reset isteği YAGSL odometri / fizik konumunu sıfırlıyor",
+    "Shooter hız geri bildirimi gerçek atış kodundaki hazır koşulunu sağlıyor",
+    "Robot kodundaki atış hızı fiziksel FUEL çıkış hızını belirliyor",
+    "Gerçek robot atış koduyla çıkan FUEL fizik kurallarıyla HUB'a giriyor",
+    "Unity AprilTag sonucu mevcut PhotonVision poz kestirim kodunda işleniyor",
+    "Gerçek odometri sonucu ayrıca izlenebiliyor"
+  ],
+  "pose": [
+    2,
+    4.021353244781494,
+    0
+  ],
+  "shots": 5,
+  "goals": 1,
+  "collected": 7,
+  "topics": 737
+}

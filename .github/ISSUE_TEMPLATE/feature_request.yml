@@ -1,0 +1,18 @@
+name: Training feature
+description: Propose a focused driver-training improvement
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: usecase
+    attributes:
+      label: What practice problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Describe the desired workflow
+      description: A concrete robot or driver-training example helps.
+    validations:
+      required: true

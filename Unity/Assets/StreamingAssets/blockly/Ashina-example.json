@@ -1,0 +1,317 @@
+{
+  "schemaVersion": 3,
+  "integrations": {
+    "cameras": [],
+    "field": "k2026RebuiltWelded",
+    "vision": {
+      "maxAge": 0.5,
+      "maxAmbiguity": 0.2,
+      "maxDistance": 6,
+      "maxZ": 0.4,
+      "maxJump": 3,
+      "stdXY": 0.7,
+      "stdHeading": 999999,
+      "maxYawRate": 540
+    },
+    "pathplanner": {
+      "enabled": false,
+      "translationP": 5,
+      "rotationP": 4,
+      "massKg": 50,
+      "moi": 6,
+      "friction": 1.1,
+      "motor": "krakenx60",
+      "motorsPerModule": 1,
+      "events": []
+    },
+    "choreo": {
+      "enabled": false,
+      "translationP": 5,
+      "rotationP": 4
+    },
+    "telemetry": {
+      "enabled": true,
+      "dataLog": true,
+      "elastic": true,
+      "robotModel": "",
+      "publishPeriod": 0.05
+    },
+    "sysid": {
+      "enabled": false,
+      "subsystem": "",
+      "motor": "",
+      "ramp": 1,
+      "step": 4,
+      "timeout": 5
+    },
+    "operator": {
+      "enabled": false,
+      "port": 1
+    },
+    "motion": {
+      "wheelDiameterM": 0.1016,
+      "gearRatio": 6.75,
+      "trackWidthM": 0.6,
+      "wheelBaseM": 0.6,
+      "maxSpeed": 4.5,
+      "maxAngular": 8,
+      "encoders": {},
+      "kP": 1,
+      "kI": 0,
+      "kD": 0,
+      "kS": 0.2,
+      "kV": 2.3
+    },
+    "assets": [],
+    "autonomousMode": "blocks",
+    "selectedAuto": "",
+    "customSources": [],
+    "customVendors": []
+  },
+  "team": 10576,
+  "name": "AshinaRobot",
+  "controllerPort": 0,
+  "subsystems": [
+    {
+      "name": "SwerveSubsystem",
+      "components": [],
+      "methods": [
+        {
+          "name": "ilerle",
+          "role": "manual",
+          "blocks": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"frc_method_start\" x=\"45\" y=\"45\"><field name=\"SSN\">SwerveSubsystem</field><field name=\"MN\">ilerle</field><next><block type=\"frc_drive\"><value name=\"X\"><shadow type=\"math_number\"><field name=\"NUM\">0.15</field></shadow></value><value name=\"Y\"><shadow type=\"math_number\"><field name=\"NUM\">0</field></shadow></value><value name=\"ROT\"><shadow type=\"math_number\"><field name=\"NUM\">0</field></shadow></value></block></next></block></xml>"
+        },
+        {
+          "name": "dur",
+          "role": "manual",
+          "blocks": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"frc_method_start\" x=\"45\" y=\"45\"><field name=\"SSN\">SwerveSubsystem</field><field name=\"MN\">dur</field><next><block type=\"frc_drive\"><value name=\"X\"><shadow type=\"math_number\"><field name=\"NUM\">0</field></shadow></value><value name=\"Y\"><shadow type=\"math_number\"><field name=\"NUM\">0</field></shadow></value><value name=\"ROT\"><shadow type=\"math_number\"><field name=\"NUM\">0</field></shadow></value></block></next></block></xml>"
+        }
+      ]
+    },
+    {
+      "name": "IntakeSubsystem",
+      "components": [
+        {
+          "type": "motor",
+          "name": "intakeMotor",
+          "motorType": "TalonFX_KrakenX60",
+          "connection": "CAN",
+          "canId": 20,
+          "canbus": "rio",
+          "pwmChannel": 0,
+          "inverted": false,
+          "brake": true,
+          "currentLimit": 35,
+          "maxRps": 100,
+          "p": 0,
+          "i": 0,
+          "d": 0,
+          "ff": 0,
+          "closedLoopConfigured": false,
+          "focLicensed": false,
+          "motion": {
+            "configured": false,
+            "cruise": 20,
+            "acceleration": 40,
+            "jerk": 0,
+            "tolerance": 0.05
+          }
+        },
+        {
+          "type": "encoder",
+          "name": "intakeEncoder",
+          "encType": "builtin",
+          "parentMotor": "intakeMotor",
+          "inverted": false
+        },
+        {
+          "type": "limitswitch",
+          "name": "limit",
+          "dioChannel": 0,
+          "normallyOpen": true
+        }
+      ],
+      "methods": [
+        {
+          "name": "calistir",
+          "role": "manual",
+          "blocks": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"frc_method_start\" x=\"45\" y=\"45\"><field name=\"SSN\">IntakeSubsystem</field><field name=\"MN\">calistir</field><next><block type=\"frc_if_else\"><value name=\"COND\"><block type=\"frc_not\"><value name=\"V\"><block type=\"frc_limitswitch\"><field name=\"SWITCH\">IntakeSubsystem.limit</field></block></value></block></value><statement name=\"DO\"><block type=\"frc_drive_motor\"><field name=\"MOTOR\">IntakeSubsystem.intakeMotor</field><value name=\"SPEED\"><shadow type=\"math_number\"><field name=\"NUM\">0.2</field></shadow></value></block></statement><statement name=\"ELSE\"><block type=\"frc_stop_motor\"><field name=\"MOTOR\">IntakeSubsystem.intakeMotor</field></block></statement></block></next></block></xml>"
+        },
+        {
+          "name": "durdur",
+          "role": "manual",
+          "blocks": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"frc_method_start\" x=\"45\" y=\"45\"><field name=\"SSN\">IntakeSubsystem</field><field name=\"MN\">durdur</field><next><block type=\"frc_stop_motor\"><field name=\"MOTOR\">IntakeSubsystem.intakeMotor</field></block></next></block></xml>"
+        },
+        {
+          "name": "izle",
+          "role": "periodic",
+          "blocks": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"frc_method_start\" x=\"45\" y=\"45\"><field name=\"SSN\">IntakeSubsystem</field><field name=\"MN\">izle</field><next><block type=\"frc_telemetry\"><field name=\"KEY\">RPM</field><value name=\"VALUE\"><block type=\"frc_enc_vel\"><field name=\"ENCODER\">IntakeSubsystem.intakeEncoder</field></block></value></block></next></block></xml>"
+        }
+      ]
+    }
+  ],
+  "controllerBindings": [
+    {
+      "button": "a",
+      "type": "method",
+      "methodPath": "IntakeSubsystem.calistir",
+      "trigger": "whileTrue",
+      "stopMethod": "IntakeSubsystem.durdur"
+    },
+    {
+      "button": "back",
+      "type": "zeroGyro"
+    }
+  ],
+  "swerveConfig": {
+    "gyro": {
+      "type": "adis16470",
+      "id": 0,
+      "canbus": "rio",
+      "inverted": false
+    },
+    "physical": {
+      "driveGearRatio": 6.75,
+      "wheelDiameter": 4,
+      "angleGearRatio": 12.8,
+      "driveCurrentLimit": 40,
+      "angleCurrentLimit": 20
+    },
+    "pid": {
+      "driveP": 0.1,
+      "driveI": 0,
+      "driveD": 0,
+      "angleP": 0.01,
+      "angleI": 0,
+      "angleD": 0
+    },
+    "controller": {
+      "angleDeadband": 0.05,
+      "headingP": 0.4,
+      "headingI": 0,
+      "headingD": 0.01
+    },
+    "modules": {
+      "frontleft": {
+        "location": {
+          "front": 10,
+          "left": 10
+        },
+        "drive": {
+          "type": "krakenx60",
+          "id": 1,
+          "canbus": "rio",
+          "inverted": false
+        },
+        "angle": {
+          "type": "krakenx60",
+          "id": 2,
+          "canbus": "rio",
+          "inverted": false
+        },
+        "encoder": {
+          "type": "cancoder",
+          "id": 3,
+          "canbus": "rio",
+          "offset": 0,
+          "inverted": false
+        }
+      },
+      "frontright": {
+        "location": {
+          "front": 10,
+          "left": -10
+        },
+        "drive": {
+          "type": "krakenx60",
+          "id": 4,
+          "canbus": "rio",
+          "inverted": false
+        },
+        "angle": {
+          "type": "krakenx60",
+          "id": 5,
+          "canbus": "rio",
+          "inverted": false
+        },
+        "encoder": {
+          "type": "cancoder",
+          "id": 6,
+          "canbus": "rio",
+          "offset": 0,
+          "inverted": false
+        }
+      },
+      "backleft": {
+        "location": {
+          "front": -10,
+          "left": 10
+        },
+        "drive": {
+          "type": "krakenx60",
+          "id": 7,
+          "canbus": "rio",
+          "inverted": false
+        },
+        "angle": {
+          "type": "krakenx60",
+          "id": 8,
+          "canbus": "rio",
+          "inverted": false
+        },
+        "encoder": {
+          "type": "cancoder",
+          "id": 9,
+          "canbus": "rio",
+          "offset": 0,
+          "inverted": false
+        }
+      },
+      "backright": {
+        "location": {
+          "front": -10,
+          "left": -10
+        },
+        "drive": {
+          "type": "krakenx60",
+          "id": 10,
+          "canbus": "rio",
+          "inverted": false
+        },
+        "angle": {
+          "type": "krakenx60",
+          "id": 11,
+          "canbus": "rio",
+          "inverted": false
+        },
+        "encoder": {
+          "type": "cancoder",
+          "id": 12,
+          "canbus": "rio",
+          "offset": 0,
+          "inverted": false
+        }
+      }
+    },
+    "maxSpeed": 4.5,
+    "deadband": 0.05
+  },
+  "drive": {
+    "type": "swerve",
+    "subsystem": "SwerveSubsystem",
+    "scale": 0.35,
+    "fieldRelative": true,
+    "motors": {}
+  },
+  "autonomous": [
+    {
+      "type": "wait",
+      "duration": 0.2
+    },
+    {
+      "type": "method",
+      "methodPath": "SwerveSubsystem.ilerle",
+      "duration": 1
+    }
+  ]
+}

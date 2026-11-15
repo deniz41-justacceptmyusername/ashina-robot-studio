@@ -1,0 +1,18 @@
+* text=auto
+*.cs text eol=lf
+*.java text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.py text eol=lf
+*.svg text eol=lf
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.glb binary
+*.bin binary
+*.png binary
+*.meta linguist-generated=true
+Unity/Assets/StreamingAssets/blockly/** linguist-vendored=true
+Unity/Assets/StreamingAssets/shared/** linguist-vendored=true
+Unity/Assets/StreamingAssets/assets/** linguist-generated=true
+verification/** linguist-generated=true

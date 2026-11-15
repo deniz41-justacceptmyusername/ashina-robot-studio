@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340" role="img" aria-labelledby="title desc">
+<title id="title">Attitude and trajectory are independent</title><desc id="desc">An inclined coral is emitted on a separate upward flight path. Angular speed is a third independent setting.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="m0 0 6 3-6 3" fill="none" stroke="#71e6e6" stroke-width="1.6"/></marker></defs>
+<rect width="1200" height="340" rx="14" fill="#0c1728"/>
+<path d="M36 284h1128" stroke="#28465c"/><path d="M58 80v204m48-204v204m48-204v204m48-204v204m48-204v204m48-204v204m48-204v204m48-204v204m48-204v204" stroke="#1b3044"/>
+<text x="36" y="42" fill="#a5bad0" font-family="Segoe UI,Arial,sans-serif" font-size="14" letter-spacing="3">ONE RELEASE. THREE CONTROLS.</text>
+<path d="M100 270v-75h95l28 75Z" fill="#24506b" stroke="#6b9cb8" stroke-width="2"/>
+<circle cx="126" cy="273" r="15" fill="#0a101a" stroke="#69849b"/><circle cx="197" cy="273" r="15" fill="#0a101a" stroke="#69849b"/>
+<g transform="translate(212 180) rotate(-55)"><rect x="-47" y="-12" width="94" height="24" rx="10" fill="#e9edf0" stroke="#a9bdce" stroke-width="2"/><ellipse cx="42" cy="0" rx="5" ry="8" fill="#263c50"/></g>
+<path d="M216 180q149-90 315-32" fill="none" stroke="#71e6e6" stroke-width="3" stroke-dasharray="9 8" marker-end="url(#arrow)"/>
+<path d="M212 180h110" stroke="#526a81" stroke-dasharray="3 5"/>
+<path d="M250 180a38 38 0 0 0-16-31" fill="none" stroke="#ffac70" stroke-width="2"/>
+<text x="248" y="161" fill="#ffbd8e" font-family="Segoe UI,Arial,sans-serif" font-size="17">55° attitude</text>
+<text x="364" y="111" fill="#86eded" font-family="Segoe UI,Arial,sans-serif" font-size="17">25° trajectory</text>
+<path d="M590 78v194" stroke="#294257"/>
+<g font-family="Segoe UI,Arial,sans-serif">
+ <text x="630" y="113" fill="#f0f6ff" font-size="25" font-weight="600">Point it. Send it. Spin it.</text>
+ <circle cx="640" cy="151" r="4" fill="#ffad73"/><text x="658" y="158" fill="#b6c9dc" font-size="18">Attitude: where the piece points</text>
+ <circle cx="640" cy="190" r="4" fill="#6ce3e7"/><text x="658" y="197" fill="#b6c9dc" font-size="18">Trajectory: where its velocity points</text>
+ <circle cx="640" cy="229" r="4" fill="#9faeff"/><text x="658" y="236" fill="#b6c9dc" font-size="18">Angular speed: how it starts rotating</text>
+ <text x="36" y="317" fill="#7896ae" font-size="13">Example values · pose is relative to the selected part · collisions remain physical</text>
+</g>
+</svg>
