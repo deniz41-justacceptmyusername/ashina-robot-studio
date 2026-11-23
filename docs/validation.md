@@ -1,41 +1,36 @@
-# Validation record · v0.4.4
+# Validation record · v0.4.5
 
-The delivered application was built locally with Unity **6000.1.13f1** on Windows. The final build reported **0 errors and 0 warnings**.
+Built locally with Unity **6000.1.13f1** on Windows: **0 errors, 0 warnings**.
 
 | Suite | Passed | Scope |
 | --- | ---: | --- |
-| General native player | 125 | CAD import, graph/motion, project persistence, three fields, game-piece physics, inventory, release attitude, NT4 and real Blockly integration |
-| Configured team robot | 13 | Actual Java/YAGSL launch, Xbox input, intake, shooter, HUB entry, odometry, and PhotonVision pose processing |
-| **Total rerun for 0.4.4** | **138** | Local native checks |
+| General native player | 131 | CAD import, recorded motion, persistence, fields, inventory, release attitude, real NT4 server and Blockly UI |
+| Configured team robot | 13 | Java/YAGSL launch, Xbox input, intake, shooter, HUB goal, odometry and PhotonVision pose processing |
+| Chassis and cage physics | 13 | Dynamic mass, settling, FUEL collisions, airborne traction, real REBUILT ramp and six suspended REEFSCAPE cages |
+| **Total** | **157** | Rerun locally on the delivered 0.4.5 build |
 
-Machine-readable records are in [verification](../verification/). The configured robot scenario recorded 7 pickups, 5 shots, and 1 physical HUB goal. Its private team model/code fixture is not distributed in this public repository. The generic examples demonstrate the workflow and are not claimed to be that fixture.
+Machine-readable records are in [verification](../verification/). The robot scenario recorded **7 pickups, 5 shots, 1 HUB goal**. The private robot CAD/code fixture is not distributed.
 
-## Independent initial attitude
+## Physical behavior
 
-The player suite verified:
+The dedicated scenario measured a maximum chassis tilt of approximately **12.4°** while traversing the official REBUILT ramp. The chassis settled after leaving it. Seven loose FUEL pieces were placed in its path; bumper contacts displaced at least four by more than 0.3 m, without turning the balls into a support platform. The airborne test verified gravity and loss of drive/yaw traction.
 
-- A rotated mount with a 12° trajectory and a separate 55° / 35° body attitude.
-- Changing trajectory without changing custom body pose.
-- Changing body pose without changing linear speed/direction.
-- Axial rotation independent of the coral's long-axis direction.
-- A horizontal coral launched upward and a vertical coral launched horizontally.
-- The same custom pose settings applied to the Note game piece.
-- Save/reload of pose settings and compatibility with older files missing those settings.
+All six REEFSCAPE cages have dynamic bodies, four narrow uprights and two plate colliders. An impulse moved a deep cage while its suspension point remained attached. The static collision bake excludes the cages, preventing duplicate immovable geometry.
 
-It also verified free coral rotation and side-on settling after a real ground contact. Default angular speed is zero for new actions; explicitly saved values are retained.
+The legacy terrain test now drives through the same running mode as a user. Editor-only CAD picking colliders are disabled before chassis inertia is recalculated. Physics tests run with a headless renderer; screenshots and UI review were performed separately in the rendered Windows player.
 
-## Inventory and terrain
+## UI review
 
-Tests cover stock-limited emission, optional unlimited mode, capacity 50/1, one intake probability attempt per contact entry, and refilling space after a shot. The actual controller traversed the restored REBUILT ramp and settled on the carpet. The fallback floor is hidden and lowered to avoid overlapping visible carpet surfaces.
+Native screenshots of the final player verify the restored button styling, a single main robot, and the two primary model/add-part controls. Earlier interactive inspection covered the intake action and driving dashboard. The final single-main-model workflow has six automated checks covering replacement, optional mechanisms, invalid-input rollback and project persistence. The logo was verified in the executable Windows icon resource.
 
-## Integration evidence
+## Retained coverage
 
-The general suite used a real WPILib NT4 server and real Blockly UI. It exercised primitive/array types, nested struct schemas, topic removal, reconnect, and data-driven mechanism mapping. The robot suite exercised existing team command and pose-estimation paths.
+The general suite still checks limited stock, optional unlimited shots, season capacities, one intake probability attempt per contact entry, independent projectile trajectory/body attitude, free coral motion after release, nested NT structs, reconnect and real Blockly integration. The robot suite exercises existing command and pose-estimation paths.
 
-Twelve Java bridge checks from the earlier 0.4.2 validation remain applicable to unchanged helper code; they are not added to the 138-check 0.4.4 total.
+GitHub Actions checks repository integrity and public-package hygiene. It does not run the licensed Unity Editor or the private robot scenario.
 
 ## Practical limits
 
-No exhaustive physical gamepad-brand validation or additional manual UI acceptance is claimed for 0.4.4. Geometric vision does not simulate image formation/calibration noise. Chassis and object contacts are training approximations; full FMS/refereeing, detailed electrical systems, and universal vendor-device emulation are not implemented.
+The chassis uses a fixed 55 kg training model, four simplified spring/damper contacts and bounded traction. Cages use an estimated 12 kg mass and a constrained pendulum joint. Individual chain links and automatic robot-climb attachment are not simulated. In NT **observe** mode, robot code owns XY/yaw and Unity fits visual height/tilt to the terrain; use NT **physics** mode when Unity should resolve chassis collisions.
 
-GitHub Actions runs the separate repository verification script. A green repository workflow is not a claim that GitHub ran the native 138-check suite.
+Vision is geometric rather than pixel-based. Universal controller coverage, full FMS/refereeing and detailed electrical/motor dynamics remain outside this release.

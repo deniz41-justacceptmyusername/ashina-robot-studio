@@ -12,7 +12,7 @@
 <rect width="1400" height="470" rx="20" fill="url(#grid)"/>
 <ellipse cx="1090" cy="225" rx="410" ry="300" fill="url(#glow)"/>
 <path d="M0 428H1400" stroke="#274156"/>
-<path d="M54 57h30v30H54zM64 67h10v10H64z" fill="none" stroke="#6fe8ed" stroke-width="3"/>
+<g transform="translate(48 45) scale(.18)"><title>Ashina Robot Studio</title><desc>A top-view robot receives a ball along a motion trace.</desc><rect width="256" height="256" rx="58" fill="#101c29"/><path d="M62 80C62 48 101 38 134 48" fill="none" stroke="#4bd9ce" stroke-width="12" stroke-linecap="round"/><path d="m122 34 20 17-25 9" fill="none" stroke="#4bd9ce" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="178" cy="64" r="20" fill="#ffac57"/><path d="M178 98v12" stroke="#ffac57" stroke-width="8" stroke-linecap="round"/><path d="M96 111H82a12 12 0 0 0-12 12v74a12 12 0 0 0 12 12h102a12 12 0 0 0 12-12v-74a12 12 0 0 0-12-12h-14" fill="none" stroke="#edf8ff" stroke-width="12" stroke-linecap="round"/><path d="M97 112v20h62v-20" fill="none" stroke="#4bd9ce" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M52 133v21m0 25v21m162-67v21m0 25v21" stroke="#4bd9ce" stroke-width="12" stroke-linecap="round"/><path d="m114 175 14-15 14 15" fill="none" stroke="#edf8ff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></g>
 <text x="102" y="78" fill="#99b5ce" font-family="Segoe UI,Arial,sans-serif" font-size="17" letter-spacing="4">ASHINA ROBOTICS</text>
 <text x="54" y="173" fill="#f0f6ff" font-family="Segoe UI,Arial,sans-serif" font-size="66" font-weight="750" letter-spacing="-2">ROBOT STUDIO</text>
 <rect x="56" y="199" width="76" height="5" rx="2" fill="url(#cyan)"/>

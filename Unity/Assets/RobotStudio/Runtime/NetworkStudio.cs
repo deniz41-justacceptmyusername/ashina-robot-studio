@@ -27,7 +27,7 @@ namespace AshinaStudio {
     velocity=Vector3.zero;omega=0;
     string topic=PoseSource();
     if(Nt.Connected&&NtData.Pose(Nt.Get(topic),topic??"",Project.network.poseFormat,out var pose)) {
-     hull.enabled=false;var position=Frc.Position(new[]{pose[0],pose[1],0});position.y=Field.GroundHeight(position);Robot.position=position;heading=(float)pose[2];Robot.rotation=Frc.Rotation(new[]{0.0,0,pose[2]*180/Math.PI});
+     var position=Frc.Position(new[]{pose[0],pose[1],0});position.y=Field.GroundHeight(position);heading=(float)pose[2];hull.ObservePose(position,heading);
     }
    } else if(Nt.Connected) {
     var input=Nt.Get(Project.network.requestTopic);

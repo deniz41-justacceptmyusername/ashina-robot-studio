@@ -20,7 +20,9 @@ flowchart LR
 
 ## Training and physics
 
-`TrainingWorld.cs` implements inventory, one-attempt-per-contact intake probability, HUB-entry counters, and optional return. `GamePieces.cs` provides rigid bodies and approximate shapes. `FieldWorld.cs` loads seasonal geometry, collision surfaces, and AprilTag layouts. Chassis motion follows terrain in the simple Unity drive mode.
+`TrainingWorld.cs` implements inventory, one-attempt-per-contact intake probability, HUB-entry counters, and optional return. `GamePieces.cs` provides rigid bodies and approximate shapes. `FieldWorld.cs` loads seasonal geometry, collision surfaces, and AprilTag layouts. `RobotChassis.cs` implements a 55 kg dynamic chassis with four spring/damper contacts against field surfaces, bounded ground traction, and actual rigid-body bumper response. Game pieces do not provide wheel-ray support. In NT observe mode, WPILib owns XY/yaw and Unity fits visual height/tilt to four terrain samples; that mode intentionally does not override the robot code with collision displacement. Use NT chassis-request physics mode for collision-driven motion.
+
+`FieldDynamics.cs` replaces all six static REEFSCAPE cage meshes with hollow compound colliders and constrained pendulum bodies. A joint approximates the chain; mass/damping are training estimates. Individual chain-link dynamics and an automatic robot-climb attachment are not modeled. The static seasonal collision bake excludes the dynamic cages to avoid duplicate immovable contacts.
 
 `ReleasePose.cs` computes initial body attitude separately from velocity. Pose is applied once at release; gravity, contacts, and optional angular speed handle the rest. For coral, the tube's long axis follows the configured custom heading/inclination.
 

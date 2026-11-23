@@ -29,3 +29,7 @@ For coral, custom inclination 0° is horizontal and 90° is vertical relative to
 ## Bring in robot code
 
 For a desktop WPILib simulation, follow [the NetworkTables guide](networktables.md). Use a single drive-physics owner, match the camera configuration, and publish the telemetry you want to map.
+
+## Main robot and optional mechanisms
+
+Start with **Ana robot**. **Robot modelini yükle** replaces its model. Use **Parça ekle** only for a mechanism you want to edit or move separately. GLB assemblies stay together unless you explicitly split them. Main-model replacement retains your added mechanisms and actions. A failed import leaves the existing project intact.

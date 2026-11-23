@@ -6,6 +6,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 errors = []
+IGNORED_DIRS = {".git", "library", "temp", "logs", "usersettings", "obj", "build", "__pycache__"}
+
+
+def public_file(file):
+    return file.name != "unity-build-result.json" and not any(part.lower() in IGNORED_DIRS for part in file.relative_to(ROOT).parts)
 
 def check(ok, message):
     if not ok:
@@ -24,7 +29,7 @@ for item in required:
     check((ROOT / item).is_file(), f"Missing file: {item}")
 
 for file in ROOT.rglob("*.json"):
-    if ".git" in file.parts:
+    if not public_file(file):
         continue
     try:
         read_json(file)
@@ -36,6 +41,7 @@ for file in (ROOT / "examples").glob("*.ashina.json"):
     check(project.get("format") == "ashina-robot-studio" and project.get("version") == 2,
           f"Invalid example format: {file.name}")
     parts = {part["id"]: part for part in project["parts"]}
+    check(len(parts) == 1, f"Public example should have one main robot: {file.name}")
     check("chassis" in parts, f"Missing chassis: {file.name}")
     check(len(parts) == len(project["parts"]), f"Duplicate part ID: {file.name}")
     for part in parts.values():
@@ -64,17 +70,19 @@ for file in (ROOT / "examples").glob("*.ashina.json"):
 release = read_json(ROOT / "verification/release.json")
 general = read_json(ROOT / "verification/player-checks.json")
 robot = read_json(ROOT / "verification/robot-integration.json")
-check(general["success"] and len(general["passed"]) == general["count"] == 125,
-      "General validation receipt does not match 0.4.4")
+check(general["success"] and len(general["passed"]) == general["count"] == 131,
+      "General validation receipt does not match release")
 check(robot["success"] and len(robot["passed"]) == robot["count"] == 13,
       "Robot validation receipt does not match 0.4.4")
-check(release["totalChecks"] == general["count"] + robot["count"] == 138,
+physics = read_json(ROOT / "verification/physics-polish.json")
+check(physics["success"] and len(physics["passed"]) == physics["count"] == 13, "Physics validation receipt mismatch")
+check(release["totalChecks"] == general["count"] + robot["count"] + physics["count"] == 157,
       "Validation total mismatch")
-check('bundleVersion="0.4.4"' in (ROOT / "Unity/Assets/RobotStudio/Editor/BatchBuild.cs").read_text(),
+check(('bundleVersion="'+release['version']+'"') in (ROOT / "Unity/Assets/RobotStudio/Editor/BatchBuild.cs").read_text(),
       "Source version does not match release")
 
 for file in ROOT.rglob("*.md"):
-    if ".git" in file.parts:
+    if not public_file(file):
         continue
     for target in re.findall(r"!?\[[^\]]*\]\(([^)\s]+)\)", file.read_text(encoding="utf-8-sig")):
         if target.startswith(("http://", "https://", "#", "mailto:")):
@@ -90,7 +98,7 @@ for target in re.findall(r'(?:src|href)="([^"]+)"', html.read_text(encoding="utf
 
 private = re.compile(r"Users[\\/]+nsyls|harun-obj|github_pat_[A-Za-z0-9_]+|gh[pousr]_[A-Za-z0-9]{20,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----", re.I)
 for file in ROOT.rglob("*"):
-    if not file.is_file() or ".git" in file.parts:
+    if not file.is_file() or not public_file(file):
         continue
     relative = file.relative_to(ROOT)
     check(file.stat().st_size < 95_000_000, f"Oversized Git file: {relative}")
@@ -105,4 +113,4 @@ check((ROOT / "Unity/Assets/StreamingAssets/licenses/AdvantageScopeAssets.txt").
 
 if errors:
     raise SystemExit("\n".join(f"FAIL: {error}" for error in errors))
-print("PASS: source layout, 2 robot examples, runtime assets, docs, 138-check receipts, and public-package hygiene")
+print("PASS: source layout, 2 robot examples, runtime assets, docs, 157-check receipts, and public-package hygiene")

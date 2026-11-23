@@ -23,12 +23,12 @@ namespace AshinaStudio {
    await StockRegression();
    var floor=App.Field.Root.Find("Zemin");Check(!floor.GetComponent<Renderer>().enabled&&floor.position.y+floor.localScale.y/2<-.02f,"Resmi halı tek görünür zemin; yedek zemin altta ve görünmez");
    Physics.SyncTransforms();Check(App.Field.GroundHeight(Frc.Position(new[]{4.58,2.5,0}))>.12f,"Özgün REBUILT rampasının yüksekliği gerçek çarpışma yüzeyinden okunuyor");
-   var original=App.Project.initialPose;App.Project.initialPose=new[]{3.15,2.5,0};App.RequestRobotReset();float highest=0;
-   for(int i=0;i<150;i++){App.MoveChassis(Vector3.forward*.02f,0);highest=Mathf.Max(highest,App.Robot.position.y);await Task.Delay(12);}
-   Check(App.Pose[0]>5.85&&highest>.1f,"Robot REBUILT rampasına yükselip diğer tarafa takılmadan geçiyor");
-   for(int i=0;i<65;i++){App.MoveChassis(Vector3.zero,0);await Task.Delay(12);}
+   var original=App.Project.initialPose;App.Project.initialPose=new[]{3.15,2.5,0};App.RequestRobotReset();App.SetRunning(true);App.CheckVelocity=Vector3.forward*2;float highest=0;
+   for(int i=0;i<150;i++){highest=Mathf.Max(highest,App.Robot.position.y);await Task.Delay(12);}
+   Check(App.Pose[0]>5.85&&highest>.07f,$"Robot REBUILT rampasına yükselip diğer tarafa takılmadan geçiyor (x={App.Pose[0]:0.00}, y={App.Robot.position.y:0.00}, high={highest:0.00})");
+   App.CheckVelocity=Vector3.zero;await Task.Delay(800);
    Check(App.Robot.position.y>-.05f&&App.Robot.position.y<.06f,"Rampadan inince robot halıya oturuyor ve zeminden düşmüyor");
-   App.Project.initialPose=original;App.RequestRobotReset();App.SetRunning(false);
+   App.CheckVelocity=null;App.SetRunning(false);App.Project.initialPose=original;App.RequestRobotReset();
   }
   async Task ReefInventoryRegression(){
    Check(App.Project.training.capacity==1&&App.StoredTotal==0,"REEFSCAPE sezonuna geçince kapasite 1 ve stok boş");

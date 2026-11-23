@@ -1,0 +1,22 @@
+{
+  "success": true,
+  "count": 13,
+  "passed": [
+    "Robot has dynamic mass and collider response",
+    "Four contacts settle level on carpet",
+    "Bumper physically displaces loose FUEL",
+    "Loose FUEL does not act as a flat support platform",
+    "Airborne chassis falls under gravity",
+    "No ground traction or yaw steering in midair",
+    "Official REBUILT ramp tilts and lifts the chassis (tilt=12,4, high=0,094, x=9,62)",
+    "Robot traverses the real ramp collision geometry",
+    "Suspension settles after leaving the ramp",
+    "All six REEFSCAPE cages are dynamic",
+    "Cage colliders preserve four uprights and two plates",
+    "Deep cage swings after a physical impulse",
+    "Cage remains attached at its suspension point"
+  ],
+  "rampMaximumTilt": 12.3692808,
+  "rampMaximumHeight": 0.09393214,
+  "ballMaximumRideHeight": 0.00074452284
+}

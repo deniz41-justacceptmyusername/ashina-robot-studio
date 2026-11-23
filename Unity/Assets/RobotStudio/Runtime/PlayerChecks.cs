@@ -28,7 +28,7 @@ namespace AshinaStudio {
    await Wait(()=>App.Nt.Get("/Fixture/poseReceived")?.Value is bool p&&p,"WPILib sunucusu Unity robot konumunu gerçekten alıyor");await Wait(()=>App.Nt.Get("/Fixture/visionReceived")?.Value is bool v&&v,"WPILib sunucusu Limelight konum ve görünürlük verisini gerçekten alıyor");await NetworkRegression();App.Nt.Dispose();App.Nt=null;App.Project.actions[0].topic="IntakeSubsystem.intakeMotor";App.SetRunning(true);File.WriteAllText(Path.Combine(root,"bridge.json"),JsonConvert.SerializeObject(new{token=App.Bridge.Token,port=App.Bridge.Port,blockly=Path.Combine(Application.streamingAssetsPath,"blockly/index.html")}));await Wait(()=>File.Exists(Path.Combine(root,"blockly-done")),"Gerçek Blockly arayüzü Unity'ye bağlanıyor",60000);Check(App.Project.blocklyProject!=null,"Canlı Blockly proje JSON'u alınıyor");Check(App.Bridge.Connected,"Blockly eşlenmiş bağlantı açık");await Task.Delay(500);Check(App.Bridge.Fresh,"Blockly 20 ms döngüsü güncel");Check(App.Nodes["test-arm"].transform.localPosition.y>.85,"Gerçek Blockly motor bloğu özel parça hareketini tetikliyor");
    var reload=ProjectIO.Parse(ProjectIO.Write(App.Project));reload.blocklyProject["name"]="UnityReloadCheck";int updates=App.BlocklyProjectUpdates;
    Check(await App.LoadProject(reload),"Bağlı Blockly projesi içeren robot tekrar açılıyor");
-   await Wait(()=>App.BlocklyProjectUpdates>updates&&(string)App.Project.blocklyProject?["name"]=="UnityReloadCheck","Robot dosyası değişince bağlı Blockly yeni programı alıyor");
+   await Wait(()=>App.BlocklyProjectUpdates>updates&&(string)App.Project.blocklyProject?["name"]=="UnityReloadCheck","Robot dosyası değişince bağlı Blockly yeni programı alıyor");await SingleRobotRegression();
   }
   async Task ImportRegression()
   {

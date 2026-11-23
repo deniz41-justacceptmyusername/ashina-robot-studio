@@ -8,6 +8,12 @@
 
 ![REBUILT sahası ve masaüstü uygulaması](docs/images/rebuilt-training.png)
 
+## 0.4.5 ile daha iyi sürüş
+
+Şase rampada eğilir, serbest topları fiziksel temasla iter ve havadayken sürüş kuvveti uygulamaz. REEFSCAPE kafesleri askılarında sallanır. **Intake çalıştır** robotun mekanizmasına bağlı bir eylemdir; intake ağzının ayrıntıları açılır paneldedir. Yeni robot ve top logosu uygulama ile Windows simgesinde kullanılır.
+
+Varsayılan robot ve örnekler tek **Ana robot** ile başlar. **Robot modelini yükle** ana gövdeyi değiştirir; **Parça ekle** isteğe bağlı mekanizma ekler. Sabit teker ve tamponlar ayrı kayıtlarla listeyi doldurmaz.
+
 ## Hemen başla
 
 1. [Releases](https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/releases/latest) bölümünden Windows ZIP paketini indir.
@@ -21,7 +27,7 @@ Coral örneği için **Coral-Lab.cmd** aç → **Sürüşe başla → Space**. H
 - GLB, STL veya OBJ modelini ekle; montajı alt parçalara ayır.
 - Üst parça, pivot ve ölçeği ayarla. **G** taşıma, **T** döndürme; renkli ekseni sürükle.
 - Bir hareketin başlangıcını ve bitişini kaydet; klavye, kumanda, Blockly veya NT verisine bağla.
-- Toplama bölgesini kutu/küre olarak seç, örneğin temas başına **%70** başarı ver.
+- **Intake çalıştır** eylemini robottaki mekanizmaya bağla, örneğin temas başına **%70** alma başarısı ver. Intake ağzının ölçülerini gerekirse ayrıntı panelinden ayarla.
 - Kapasiteyi ayarla; stok dolunca sahadaki eşya alınmaz, stok bitince normal atış durur.
 - Projeyi modelleri ve eşlemeleriyle birlikte tek `.ashina.json` dosyasında sakla.
 
@@ -53,7 +59,7 @@ Kamera: sağ fare çevirme, tekerlek yakınlaşma, orta fare kaydırma. **F** ro
 
 ## Kaynak ve doğrulama
 
-Unity projesi `Unity/` altında. Sürüm **0.4.4**, yerelde **125 genel + 13 robot entegrasyonu = 138 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
+Unity projesi `Unity/` altında. Sürüm **0.4.5**, yerelde **131 genel + 13 robot entegrasyonu + 13 fizik = 157 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
 
 Bu uygulama serbest sürüş antrenmanı içindir. Tam FMS/hakemlik, ayrıntılı motor/akü dinamiği veya gerçek kamera görüntü işleme sistemi değildir. Bütün fiziksel kumanda modelleri denenmiş sayılmaz.
 

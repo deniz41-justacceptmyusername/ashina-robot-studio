@@ -1,12 +1,24 @@
 {
-  "version": "0.4.4",
+  "version": "0.4.5",
   "unity": "6000.1.13f1",
   "platform": "Windows x64",
-  "generalChecks": 125,
+  "generalChecks": 131,
   "robotIntegrationChecks": 13,
-  "totalChecks": 138,
+  "physicsChecks": 13,
+  "totalChecks": 157,
   "buildErrors": 0,
   "buildWarnings": 0,
   "robotFixtureIncluded": false,
-  "verifiedLocally": true
+  "verifiedLocally": true,
+  "approximation": {
+    "chassisMassKg": 55,
+    "cageMassKg": 12,
+    "individualChainLinks": false
+  },
+  "visualReview": [
+    "native screenshots: original button style restored",
+    "one main robot in part list",
+    "two primary import/add controls"
+  ],
+  "mainRobotReplacementChecks": 6
 }
