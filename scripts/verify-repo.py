@@ -21,7 +21,7 @@ def read_json(file):
 
 required = ["LICENSE", "README.md", "README.tr.md", "THIRD_PARTY_NOTICES.md",
             "docs/images/rebuilt-training.png", "docs/images/coral-lab.png",
-            "docs/assets/hero.svg", "docs/assets/release-pose.svg",
+            "docs/assets/hero.svg", "docs/assets/release-pose.svg", "docs/images/home.png", "docs/images/quick-setup.png", "docs/images/target-practice.png",
             "Unity/Assets/RobotStudio/Runtime/StudioApp.cs",
             "Unity/Assets/RobotStudio/Runtime/ReleasePose.cs",
             "Unity/Packages/manifest.json", "Unity/ProjectSettings/ProjectVersion.txt"]
@@ -73,10 +73,12 @@ robot = read_json(ROOT / "verification/robot-integration.json")
 check(general["success"] and len(general["passed"]) == general["count"] == 131,
       "General validation receipt does not match release")
 check(robot["success"] and len(robot["passed"]) == robot["count"] == 13,
-      "Robot validation receipt does not match 0.4.4")
+      "Robot validation receipt does not match release")
 physics = read_json(ROOT / "verification/physics-polish.json")
 check(physics["success"] and len(physics["passed"]) == physics["count"] == 13, "Physics validation receipt mismatch")
-check(release["totalChecks"] == general["count"] + robot["count"] + physics["count"] == 157,
+features = read_json(ROOT / "verification/home-and-shots.json")
+check(features["success"] and len(features["passed"]) == features["count"] == 31, "Home/shot validation receipt mismatch")
+check(release["totalChecks"] == general["count"] + robot["count"] + physics["count"] + features["count"] == 188,
       "Validation total mismatch")
 check(('bundleVersion="'+release['version']+'"') in (ROOT / "Unity/Assets/RobotStudio/Editor/BatchBuild.cs").read_text(),
       "Source version does not match release")
@@ -113,4 +115,4 @@ check((ROOT / "Unity/Assets/StreamingAssets/licenses/AdvantageScopeAssets.txt").
 
 if errors:
     raise SystemExit("\n".join(f"FAIL: {error}" for error in errors))
-print("PASS: source layout, 2 robot examples, runtime assets, docs, 157-check receipts, and public-package hygiene")
+print("PASS: source layout, 3 robot examples, runtime assets, docs, 188-check receipts, and public-package hygiene")

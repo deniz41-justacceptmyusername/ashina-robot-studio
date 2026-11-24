@@ -13,7 +13,7 @@
   <img alt="Unity 6.1" src="https://img.shields.io/badge/Unity-6.1-101b2b?style=flat-square&amp;logo=unity&amp;logoColor=white">
   <img alt="Windows x64" src="https://img.shields.io/badge/Windows-x64-1578c8?style=flat-square">
   <img alt="NetworkTables 4" src="https://img.shields.io/badge/NetworkTables-NT4-25b8bb?style=flat-square">
-  <img alt="Version 0.4.5" src="https://img.shields.io/badge/version-0.4.5-ff9d57?style=flat-square">
+  <img alt="Version 0.4.6" src="https://img.shields.io/badge/version-0.4.6-ff9d57?style=flat-square">
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-8799ba?style=flat-square"></a>
   <a href="https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/actions/workflows/verify.yml"><img alt="Repository checks" src="https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/actions/workflows/verify.yml/badge.svg"></a>
 </p>
@@ -36,11 +36,11 @@ The focus is a quick path from a robot idea to a useful practice run: configurab
 
 ## Run in a minute
 
-1. Download **Ashina-Robot-Studio-0.4.5-Windows.zip** from [Releases](https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/releases/latest).
-2. Extract the entire folder and open **Start.cmd** or **Baslat.cmd**.
-3. Click **Sürüşe başla** and drive with **W A S D**, turn with **Q / E**, or use a supported gamepad.
+1. Download **Ashina-Robot-Studio-0.4.6-Windows.zip** from [Releases](https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/releases/latest).
+2. Extract the entire folder and double-click **RobotStudio.exe**.
+3. Create or open your robot from the home screen, then click **Sürüşe başla** and drive with **W A S D**, turn with **Q / E**, or use a supported gamepad.
 
-Open **Coral-Lab.cmd** for the REEFSCAPE release-angle demo. Press **Space** after starting the session. The standalone player needs no Unity Editor or Node installation. Running Java robot code additionally requires the matching WPILib development tools.
+Open `examples/REEFSCAPE-Coral-Lab.ashina.json` from the home screen for the REEFSCAPE release-angle demo. Press **Space** after starting the session. The standalone player needs no Unity Editor or Node installation. Running Java robot code additionally requires the matching WPILib development tools.
 
 | Control | Action |
 | --- | --- |
@@ -52,7 +52,15 @@ Open **Coral-Lab.cmd** for the REEFSCAPE release-angle demo. Press **Space** aft
 | Right mouse / wheel / middle mouse | Orbit / zoom / pan |
 | F / Esc | Find robot / stop driving |
 
-## A better practice feel in 0.4.5
+## Home, setup, and one general shot system
+
+The application opens on a home screen. Four setup steps load/scale a model, optionally add moving mechanisms, map live parameters, and configure a shot. Any part rotation/position or shot pitch/yaw/speed can use a published NT value, with explicit units and reference frames.
+
+Offline shots use a fixed direction, a picked point, or field regions with different targets. **Point aiming preserves the normal elevation**, respects maximum power, and adds configured scatter. Feed your side with the same emitter. Live code values take priority.
+
+![Home screen](docs/images/home.png)
+
+## Terrain and contact
 
 The robot now has a dynamic chassis with four suspension contacts: it pitches and rolls on ramps, pushes loose FUEL through actual collisions, and loses drive traction when airborne. All six REEFSCAPE cages swing from a constrained suspension. Intake is a robot action attached to a mechanism, with its mouth settings tucked into a detail panel. The new compact robot-and-ball mark appears in the application and Windows icon.
 
@@ -119,9 +127,11 @@ Default training capacities are **50** for REBUILT and **1** for REEFSCAPE. They
 
 ## Built, exercised, documented
 
-Version **0.4.5** passed **157 local checks**: 131 general player/physics/NT/Blockly checks, 13 checks using a configured team robot integration, and 13 dedicated chassis/cage physics checks. The build completed with **0 errors and 0 warnings**. [Read the validation record](docs/validation.md).
+Version **0.4.6** passed **188 local checks**: 131 general checks, 13 configured robot integration checks, 13 chassis/cage checks, and 31 home/live-parameter/shot checks. The build completed with **0 errors and 0 warnings**. [Read the validation record](docs/validation.md).
 
 Repository CI checks source layout, example integrity, documentation links, and public-package hygiene. It does not claim to run the licensed Unity Editor or a team's private robot fixture. Physical controller models have not all been tested. Vision is geometric rather than pixel image processing; drive and game-piece collisions are training approximations.
+
+A 5–10 minute setup is the goal for a prepared model and already-published robot values. CAD cleanup, unpublished IO and real shot calibration can take longer. [Multiplayer design](docs/online-design.md) is documented; online matches are not included in this release.
 
 ## Explore the source
 
@@ -141,3 +151,4 @@ Open `Unity/` in Unity Hub, or use the [Windows build instructions](docs/buildin
 Project code is available under the **MIT License**. Third-party components and seasonal assets keep their own licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 Built with Unity, [WPILib](https://github.com/wpilibsuite/allwpilib), [AdvantageScope Assets](https://github.com/Mechanical-Advantage/AdvantageScopeAssets), [PhotonVision](https://github.com/PhotonVision/photonvision), and [Blockly](https://github.com/google/blockly). This is an independent community project, unaffiliated with FIRST.
+

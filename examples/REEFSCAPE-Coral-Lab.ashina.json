@@ -94,9 +94,9 @@
         ]
       },
       "spawn": [
-        0.42,
+        0.65,
         0,
-        0.2
+        0.4
       ],
       "loop": false,
       "consume": true,

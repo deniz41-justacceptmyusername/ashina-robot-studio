@@ -56,7 +56,8 @@ namespace AshinaStudio {
    Vector3 current=Vector3.ProjectOnPlane(Body.linearVelocity,GroundNormal);
    var acceleration=Vector3.ClampMagnitude((desired-current)/dt,Mathf.Min(Acceleration,9.5f)*GroundedWheels/4f);
    Body.AddForce(acceleration,ForceMode.Acceleration);
-   float yawError=turn/dt-Vector3.Dot(Body.angularVelocity,GroundNormal);
+   // FRC positive yaw turns left; Unity positive Y torque turns right.
+   float yawError=-turn/dt-Vector3.Dot(Body.angularVelocity,GroundNormal);
    Body.AddTorque(GroundNormal*Mathf.Clamp(yawError*10,-12,12),ForceMode.Acceleration);
   }
   public void ObservePose(Vector3 position,float heading){

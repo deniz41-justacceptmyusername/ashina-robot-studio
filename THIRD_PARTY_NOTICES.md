@@ -11,6 +11,6 @@ The root MIT license applies to this project's original code and documentation. 
 | Blockly and embedded web dependencies | `Unity/Assets/StreamingAssets/blockly/licenses/` and vendor file headers |
 | Three.js, MessagePack, Rapier components used by the embedded tooling | Named notice files in `Unity/Assets/StreamingAssets/licenses/` |
 
-The Windows release retains the corresponding notices under `Windows/RobotStudio_Data/StreamingAssets/`. Java integration helpers require the team's own compatible WPILib/PhotonVision dependencies; this repository does not redistribute a private robot project's vendor bundle.
+The Windows release retains the corresponding notices under `RobotStudio_Data/StreamingAssets/`. Java integration helpers require the team's own compatible WPILib/PhotonVision dependencies; this repository does not redistribute a private robot project's vendor bundle.
 
 FIRST and season names identify compatibility and practice content. This independent project is not an official FIRST product.

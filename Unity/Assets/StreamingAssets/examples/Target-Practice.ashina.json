@@ -1,0 +1,166 @@
+{
+  "format": "ashina-robot-studio",
+  "version": 2,
+  "name": "Hedefli atış · bölge ve feedleme",
+  "team": 10576,
+  "season": "2026",
+  "quality": "high",
+  "drive": {
+    "type": "swerve",
+    "maxSpeed": 4.5,
+    "acceleration": 6,
+    "turnRate": 3.5,
+    "fieldRelative": true,
+    "dimensions": [
+      1.02,
+      0.94,
+      0.5
+    ]
+  },
+  "parts": [
+    {
+      "id": "chassis",
+      "name": "Ana robot",
+      "parent": null,
+      "kind": "box",
+      "color": "#9aaebe",
+      "size": [
+        0.8,
+        0.7,
+        0.13
+      ],
+      "position": [
+        0,
+        0,
+        0.23
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "assetCenter": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1
+    }
+  ],
+  "actions": [
+    {
+      "id": "point-shot",
+      "name": "Noktaya at · Space / RB",
+      "partId": "chassis",
+      "type": "emit",
+      "piece": "fuel",
+      "key": "Space",
+      "button": "rightBumper",
+      "mode": "hold",
+      "consume": true,
+      "speed": 6.5,
+      "pitch": 65,
+      "yaw": 0,
+      "interval": 0.15,
+      "spawn": [
+        0.65,
+        0,
+        0.4
+      ],
+      "duration": 1,
+      "captureRadius": 0.6,
+      "from": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "to": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "aimMode": "point",
+      "maxShotSpeed": 12,
+      "spreadDegrees": 1.5,
+      "target": [
+        4.625,
+        4.025,
+        1.8288
+      ],
+      "directionFrame": "part"
+    }
+  ],
+  "cameras": [
+    {
+      "id": "example-camera",
+      "name": "limelight",
+      "parent": "chassis",
+      "position": [
+        0.3,
+        0,
+        0.34
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "hfov": 65,
+      "vfov": 45,
+      "range": 8,
+      "latency": 30,
+      "enabled": true
+    }
+  ],
+  "assets": {},
+  "initialPose": [
+    2,
+    4,
+    0
+  ],
+  "inventory": {
+    "ball": 0,
+    "coral": 0,
+    "note": 0,
+    "algae": 0,
+    "fuel": 0
+  },
+  "network": {
+    "host": "127.0.0.1",
+    "port": 5810,
+    "mode": "observe",
+    "poseTopic": "/FRCStudio/Drive/Pose",
+    "requestTopic": "/AshinaRobot/Drive/request",
+    "vision": false,
+    "autoConnect": false
+  },
+  "training": {
+    "spawnFuel": false,
+    "recycleFuel": true,
+    "fuelCount": 456,
+    "capacity": 50,
+    "capacitySeason": "2026",
+    "seed": 10576,
+    "alliance": "blue",
+    "unlimitedShots": true
+  }
+}

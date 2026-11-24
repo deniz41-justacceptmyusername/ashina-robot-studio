@@ -15,7 +15,7 @@ Open `Unity/` through Unity Hub and allow the declared packages to resolve. The 
 ./scripts/build-windows.ps1 -UnityPath "C:\Program Files\Unity\Hub\Editor\6000.1.13f1\Editor\Unity.exe"
 ```
 
-The script calls `AshinaStudio.Editor.BatchBuild.Run` and writes the player under `build/Windows/`. It also copies the generic examples, Java helpers, and launchers. The Editor is launched hidden and the script checks the build exit code.
+The script calls `AshinaStudio.Editor.BatchBuild.Run` and writes the player under `build/Windows/`. It creates a portable bundle under `build/Ashina-Robot-Studio/` with the EXE at the root, plus generic examples and Java helpers. The Editor is launched hidden and the script checks the build exit code.
 
 The source entry point can also be called directly with Unity's `-executeMethod`. `ASHINA_UNITY_OUTPUT` controls the target EXE path.
 

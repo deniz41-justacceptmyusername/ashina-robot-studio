@@ -8,19 +8,27 @@
 
 ![REBUILT sahası ve masaüstü uygulaması](docs/images/rebuilt-training.png)
 
-## 0.4.5 ile daha iyi sürüş
+## 0.4.6 ile daha iyi sürüş
 
 Şase rampada eğilir, serbest topları fiziksel temasla iter ve havadayken sürüş kuvveti uygulamaz. REEFSCAPE kafesleri askılarında sallanır. **Intake çalıştır** robotun mekanizmasına bağlı bir eylemdir; intake ağzının ayrıntıları açılır paneldedir. Yeni robot ve top logosu uygulama ile Windows simgesinde kullanılır.
 
 Varsayılan robot ve örnekler tek **Ana robot** ile başlar. **Robot modelini yükle** ana gövdeyi değiştirir; **Parça ekle** isteğe bağlı mekanizma ekler. Sabit teker ve tamponlar ayrı kayıtlarla listeyi doldurmaz.
 
+## Ana ekran ve genel atış sistemi
+
+Uygulama ana ekranda açılır. Dört adımlı kurulumla modeli yükle/ölçekle, gerekiyorsa hareketli parçayı ekle, açı-hız verilerini seç ve dene. WPILib bağlıyken eşlenen canlı değerler otomatik kullanılır.
+
+Bağımsız kullanımda sabit açı, **bu noktaya at** veya **bölgeye göre hedef** seçilir. Normal yukarı açı korunur; maksimum güç aşılmaz. Saçılma ayrı ayarlanır. Aynı eylemle kendi tarafına feedleme yapılabilir.
+
+![Ana ekran](docs/images/home.png)
+
 ## Hemen başla
 
 1. [Releases](https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/releases/latest) bölümünden Windows ZIP paketini indir.
-2. Klasörün tamamını çıkar; **Baslat.cmd** veya **Start.cmd** dosyasını aç.
+2. Klasörün tamamını çıkar; **RobotStudio.exe** dosyasını çift tıkla.
 3. **Sürüşe başla** düğmesine bas. **W A S D** ile sür, **Q / E** ile dön.
 
-Coral örneği için **Coral-Lab.cmd** aç → **Sürüşe başla → Space**. Hazır uygulama için Unity Editor veya Node kurulumu gerekmez. Java robot kodunu çalıştırmak için sezona uygun WPILib geliştirme kurulumu gerekir.
+Coral örneği için Ana ekrandan `examples/REEFSCAPE-Coral-Lab.ashina.json` aç → **Sürüşe başla → Space**. Hazır uygulama için Unity Editor veya Node kurulumu gerekmez. Java robot kodunu çalıştırmak için sezona uygun WPILib geliştirme kurulumu gerekir.
 
 ## Robot sana ait, mekanizma da
 
@@ -59,8 +67,11 @@ Kamera: sağ fare çevirme, tekerlek yakınlaşma, orta fare kaydırma. **F** ro
 
 ## Kaynak ve doğrulama
 
-Unity projesi `Unity/` altında. Sürüm **0.4.5**, yerelde **131 genel + 13 robot entegrasyonu + 13 fizik = 157 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
+Unity projesi `Unity/` altında. Sürüm **0.4.6**, yerelde **131 genel + 13 robot entegrasyonu + 13 fizik + 31 yeni özellik = 188 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
 
 Bu uygulama serbest sürüş antrenmanı içindir. Tam FMS/hakemlik, ayrıntılı motor/akü dinamiği veya gerçek kamera görüntü işleme sistemi değildir. Bütün fiziksel kumanda modelleri denenmiş sayılmaz.
 
 Kod **MIT** lisanslıdır. Saha ve üçüncü taraf bileşenlerin kendi lisansları korunur: [bildirimler](THIRD_PARTY_NOTICES.md). FIRST ile resmi bağlantısı olmayan bir topluluk projesidir.
+
+Hazır model ve yayınlanmış verilerle 5–10 dakikalık kurulum hedeflenir; her CAD ve robot kodu için garanti değildir. [Online maç tasarımı](docs/online-design.md) hazır; çok oyunculu maç bu sürümde henüz yok.
+

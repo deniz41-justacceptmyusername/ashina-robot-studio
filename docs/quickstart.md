@@ -2,15 +2,15 @@
 
 ## Windows player
 
-Download the ZIP from [Releases](https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/releases/latest), extract it, and run **Start.cmd**. Keep `Windows/`, `examples/`, and the launcher together.
+Download the ZIP from [Releases](https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/releases/latest), extract the entire folder, and double-click **RobotStudio.exe**. Keep its data folders beside it. The home screen appears before the workspace.
 
-The REBUILT example starts with empty inventory. Click **Sürüşe başla**, drive to the FUEL, and hold **I** to collect. **Space** shoots the stored FUEL. Default intake success is 70% per new contact entry, with a capacity of 50.
+Open `examples/REBUILT-Training.ashina.json` from the home screen. It starts with empty inventory. Click **Sürüşe başla**, drive to the FUEL, and hold **I** to collect. **Space** shoots the stored FUEL. Default intake success is 70% per new contact entry, with a capacity of 50.
 
-**Coral-Lab.cmd** opens a separate REEFSCAPE demonstration. Start driving, then press **Space**. It uses unlimited demonstration mode, a 55° piece attitude, a 25° trajectory, and zero initial angular speed. These are editable example values.
+Open `examples/REEFSCAPE-Coral-Lab.ashina.json` for the REEFSCAPE demonstration. Start driving, then press **Space**. It uses unlimited demonstration mode, a 55° piece attitude, a 25° trajectory, and zero initial angular speed. These are editable example values.
 
 ## Create a robot
 
-1. Click **Yeni**, select the chassis, and import a **GLB**, **STL**, or **OBJ** from **Parçalar**.
+1. On the home screen click **Yeni robot hazırla**. Follow the [four-step setup](quick-setup.md) to load a **GLB**, **STL**, or **OBJ**.
 2. Set the parent, scale, position, and pivot. GLB assemblies can be split into editable subparts.
 3. Select a part. In **Eylemler**, add a motion and record its start and end poses.
 4. Bind a key or gamepad button. A live NT value can also trigger the action or position it between the endpoints.
@@ -20,7 +20,7 @@ The current application UI is Turkish; [README.tr.md](../README.tr.md) maps the 
 
 ## Configure an emission
 
-**Uçuşun yukarı açısı**, **Uçuşun yana açısı**, and **Çıkış hızı** specify velocity. Choose **Eşyanın çıkış duruşu → Bağımsız açı** to specify the initial body pose separately.
+**Uçuşun yukarı açısı**, **Uçuşun yana açısı**, and **Çıkış hızı** specify velocity. Open **Ayrıntılar → Çıkış duruşu → Bağımsız açı** to specify the initial body pose separately.
 
 For coral, custom inclination 0° is horizontal and 90° is vertical relative to the selected part. **Coral dönüş hızı** controls initial angular speed in degrees per second. Zero does not freeze the object: a collision can still rotate it.
 
@@ -33,3 +33,7 @@ For a desktop WPILib simulation, follow [the NetworkTables guide](networktables.
 ## Main robot and optional mechanisms
 
 Start with **Ana robot**. **Robot modelini yükle** replaces its model. Use **Parça ekle** only for a mechanism you want to edit or move separately. GLB assemblies stay together unless you explicitly split them. Main-model replacement retains your added mechanisms and actions. A failed import leaves the existing project intact.
+
+## Point targets, regions and feeding
+
+The [setup guide](quick-setup.md) covers fixed-elevation point aiming, regional targets, power limits, scatter and live code precedence. [The robot study](robot-study.md) explains the rotating-mechanism and moving-shot integration.

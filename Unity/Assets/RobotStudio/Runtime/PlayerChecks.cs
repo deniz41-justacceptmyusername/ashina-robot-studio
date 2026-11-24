@@ -11,7 +11,7 @@ namespace AshinaStudio {
   public StudioApp App;readonly List<string> passed=new List<string>();string root;
   void Check(bool condition,string name){if(!condition)throw new Exception(name);passed.Add(name);Debug.Log("PASS: "+name);}
   async Task Wait(Func<bool> test,string name,int ms=12000){var start=DateTime.UtcNow;while(!test()){if((DateTime.UtcNow-start).TotalMilliseconds>ms)throw new Exception("Timeout: "+name);await Task.Delay(30);}Check(true,name);}
-  async void Start(){var args=Environment.GetCommandLineArgs();int at=Array.IndexOf(args,"--test-dir");root=at>=0?args[at+1]:Path.Combine(Application.persistentDataPath,"checks");Directory.CreateDirectory(root);try{await Task.Delay(500);await Run();File.WriteAllText(Path.Combine(root,"result.json"),JsonConvert.SerializeObject(new{success=true,passed,count=passed.Count},Formatting.Indented));Application.Quit(0);}catch(Exception e){Debug.LogException(e);File.WriteAllText(Path.Combine(root,"result.json"),JsonConvert.SerializeObject(new{success=false,passed,count=passed.Count,error=e.ToString()},Formatting.Indented));Application.Quit(2);}}
+  async void Start(){var args=Environment.GetCommandLineArgs();int at=Array.IndexOf(args,"--test-dir");root=at>=0?args[at+1]:Path.Combine(Application.persistentDataPath,"checks");Directory.CreateDirectory(root);File.WriteAllText(Path.Combine(root,".ashina-test-data"),"test");try{await Task.Delay(500);await Run();File.WriteAllText(Path.Combine(root,"result.json"),JsonConvert.SerializeObject(new{success=true,passed,count=passed.Count},Formatting.Indented));Application.Quit(0);}catch(Exception e){Debug.LogException(e);File.WriteAllText(Path.Combine(root,"result.json"),JsonConvert.SerializeObject(new{success=false,passed,count=passed.Count,error=e.ToString()},Formatting.Indented));Application.Quit(2);}}
   async Task Run(){
    Check(App.Field.Tags.Count==22,"2025 resmi AprilTag yerleşimi");Check(!App.Field.Root.GetComponentsInChildren<Transform>().Any(t=>t.name=="ALGAE (GE-25501)"),"Saha modelindeki sabit oyun eşyaları kaldırılıyor");Check(App.Field.Root.GetComponentsInChildren<MeshCollider>().Length>0,"2025 gerçek saha çarpışma yüzeyi");
    var point=new[]{2.3,-4.6,.8};Check(Frc.Position(Frc.Position(point)).Zip(point,(a,b)=>Math.Abs(a-b)).Max()<.00001,"FRC metre koordinatı gidiş dönüş");var angles=new[]{23.0,-17,125};var rotation=Frc.Rotation(angles);Check(Quaternion.Angle(rotation,Frc.Rotation(Frc.Euler(rotation)))<.05,"FRC dönüş koordinatı gidiş dönüş");Check(Vector3.Distance(Frc.Rotation(new[]{0.0,0,90})*Vector3.forward,Vector3.left)<.001,"Pozitif FRC yaw yönü");
@@ -68,6 +68,7 @@ namespace AshinaStudio {
   }
  }
 }
+
 
 
 

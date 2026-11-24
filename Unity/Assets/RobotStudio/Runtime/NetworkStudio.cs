@@ -14,7 +14,7 @@ namespace AshinaStudio {
   public bool NetworkPoseOwned=>Nt!=null&&Project.network.driveFromNt&&Project.network.mode=="observe";
   void CycleControlSource(){if(Nt!=null){SetRunning(false);DisconnectNetwork();Notice="Bağımsız sürüş · klavye / kumanda hazır.";}else{Project.network.driveFromNt=true;Project.network.forwardGamepad=true;ConnectNetwork();networkPanel=true;Notice="WPILib kaynağı seçildi. Robot kodunu başlat veya açık sunucuya bağlan.";}}
   public void ConnectNetwork(){Nt?.Dispose();Nt=new Nt4Client();resolvedPoseTopic=null;nextPoseSearch=0;_ = Nt.Connect(Project.network.host,Project.network.port);}
-  public void DisconnectNetwork(){Nt?.Dispose();Nt=null;resolvedPoseTopic=null;visibleTopics=new string[0];nextTopicRefresh=0;}
+  public void DisconnectNetwork(){ClearLiveMotion();Nt?.Dispose();Nt=null;resolvedPoseTopic=null;visibleTopics=new string[0];nextTopicRefresh=0;}
   string PoseSource() {
    var settings=Project.network;if(!settings.autoPose)return resolvedPoseTopic=settings.poseTopic;
    if(Time.unscaledTime>=nextPoseSearch||poseSearchRequest!=settings.poseTopic){nextPoseSearch=Time.unscaledTime+.5f;poseSearchRequest=settings.poseTopic;resolvedPoseTopic=NtData.FindPose(Nt,settings.poseTopic);}
@@ -26,8 +26,9 @@ namespace AshinaStudio {
    if(Project.network.mode=="observe") {
     velocity=Vector3.zero;omega=0;
     string topic=PoseSource();
-    if(Nt.Connected&&NtData.Pose(Nt.Get(topic),topic??"",Project.network.poseFormat,out var pose)) {
-     var position=Frc.Position(new[]{pose[0],pose[1],0});position.y=Field.GroundHeight(position);heading=(float)pose[2];hull.ObservePose(position,heading);
+    var poseValue=Nt.Get(topic);
+    if(Nt.Connected&&NtData.Pose(poseValue,topic??"",Project.network.poseFormat,out var pose)) {
+     var position=Frc.Position(new[]{pose[0],pose[1],0});position.y=Field.GroundHeight(position);heading=(float)pose[2];ObserveMotion(position,heading,poseValue.Received);hull.ObservePose(position,heading);
     }
    } else if(Nt.Connected) {
     var input=Nt.Get(Project.network.requestTopic);
@@ -63,7 +64,7 @@ namespace AshinaStudio {
    GUI.enabled=!Busy&&!FileDialogs.IsOpen;
    GUI.Box(new Rect(10,70,Screen.width-20,Screen.height-110),"",panel);
    GUILayout.BeginArea(new Rect(25,83,Screen.width-50,Screen.height-139));
-   GUILayout.BeginHorizontal();GUILayout.Label("WPILib  /  NETWORKTABLES",title);GUILayout.FlexibleSpace();if(GUILayout.Button("Kapat",button,GUILayout.Width(85))){networkPanel=false;GUI.FocusControl(null);}GUILayout.EndHorizontal();
+   GUILayout.BeginHorizontal();GUILayout.Label("WPILib  /  NETWORKTABLES",title);GUILayout.FlexibleSpace();if(GUILayout.Button("Kapat",button,GUILayout.Width(85))){networkPanel=false;bindingKind=null;GUI.FocusControl(null);}GUILayout.EndHorizontal();
    GUILayout.BeginHorizontal();Text("Sunucu");Project.network.host=GUILayout.TextField(Project.network.host,input,GUILayout.Width(180));Text("Port");
    string port=GUILayout.TextField(Project.network.port.ToString(),input,GUILayout.Width(65));if(int.TryParse(port,out int number)&&number>0&&number<=65535)Project.network.port=number;
    if(GUILayout.Button(Nt==null?"Bağlan":"Bağlantıyı kes",button,GUILayout.Width(140))){if(Nt==null)ConnectNetwork();else DisconnectNetwork();}
@@ -93,7 +94,7 @@ namespace AshinaStudio {
     if(NtData.Speeds(value,out _))if(Button("Bu veriyi hız isteği yap")){Project.network.requestTopic=selectedTopic;Project.network.mode="physics";Project.network.driveFromNt=true;Notice="Robot yönüne göre [vx, vy, omega] hız isteği bağlandı.";}
     Text("Dizi / struct alanı · örnek 0 veya translation.x",true);selectedField=Edit("ntFieldPicker",selectedField);
     if(NtData.Scalar(Nt,value,selectedField,out var scalar)) {
-     Text("Seçili sayısal değer: "+scalar.ToString("0.#####",CultureInfo.InvariantCulture));
+     Text("Seçili sayısal değer: "+scalar.ToString("0.#####",CultureInfo.InvariantCulture));if(bindingKind!=null&&Button("Bu veriyi seçtiğim parametreye bağla"))PickBinding(selectedTopic,selectedField);
      var action=Project.actions.Find(x=>x.id==chosenAction);
      if(action!=null){if(Button("Seçili eyleme bağla: "+action.name)){action.topic=selectedTopic;action.ntSource=true;action.ntField=selectedField;Notice="NetworkTables verisi eyleme bağlandı.";}}
      else Text("Eylemlerden bir hareket seç; sonra buradan veri bağlayabilirsin.",true);

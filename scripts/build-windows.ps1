@@ -14,21 +14,16 @@ try {
  if($process.ExitCode -ne 0){throw "Unity build failed. See $log"}
  $bundle=Join-Path $repo 'build/Ashina-Robot-Studio'
  New-Item -ItemType Directory -Path $bundle -Force | Out-Null
- foreach($entry in @(@{Source=$output;Name='Windows'},@{Source=(Join-Path $repo 'examples');Name='examples'},@{Source=(Join-Path $repo 'integration');Name='integration'})){
-  $destination=Join-Path $bundle $entry.Name
-  New-Item -ItemType Directory -Path $destination -Force | Out-Null
-  Get-ChildItem -LiteralPath $entry.Source -Force | Copy-Item -Destination $destination -Recurse -Force
+ function Copy-BundleTree([string]$from,[string]$to){
+  New-Item -ItemType Directory -Path $to -Force | Out-Null
+  foreach($item in Get-ChildItem -LiteralPath $from -Force){
+   if($item.Name -match 'DoNotShip|BackUpThisFolder' -or $item.Extension -in '.pdb','.mdb'){continue}
+   if($item.PSIsContainer){Copy-BundleTree $item.FullName (Join-Path $to $item.Name)}else{Copy-Item -LiteralPath $item.FullName -Destination $to -Force}
+  }
  }
+ Copy-BundleTree $output $bundle
+ foreach($name in @('examples','integration')){Copy-BundleTree (Join-Path $repo $name) (Join-Path $bundle $name)}
  Copy-Item -LiteralPath (Join-Path $repo 'LICENSE') -Destination $bundle -Force
  Copy-Item -LiteralPath (Join-Path $repo 'THIRD_PARTY_NOTICES.md') -Destination $bundle -Force
- @'
-@echo off
-start "" "%~dp0Windows\RobotStudio.exe" --project "%~dp0examples\REBUILT-Training.ashina.json"
-'@ | Set-Content -LiteralPath (Join-Path $bundle 'Start.cmd') -Encoding ascii
- Copy-Item -LiteralPath (Join-Path $bundle 'Start.cmd') -Destination (Join-Path $bundle 'Baslat.cmd') -Force
- @'
-@echo off
-start "" "%~dp0Windows\RobotStudio.exe" --project "%~dp0examples\REEFSCAPE-Coral-Lab.ashina.json"
-'@ | Set-Content -LiteralPath (Join-Path $bundle 'Coral-Lab.cmd') -Encoding ascii
  Write-Output "Player bundle: $bundle"
 }finally{$env:ASHINA_UNITY_OUTPUT=$previousOutput}
