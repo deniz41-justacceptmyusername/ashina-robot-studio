@@ -21,6 +21,7 @@ namespace AshinaStudio {
    if(season=="2025")FieldDynamics.CreateCages(basis,Root);
    string binary=Path.Combine(dir,"collision.bin");if(File.Exists(binary)){using(var reader=new BinaryReader(File.OpenRead(binary))){int nv=reader.ReadInt32(),ni=reader.ReadInt32();if(nv>2000000||ni>6000000)throw new Exception("Saha geometrisi sınırı.");var vertices=new Vector3[nv];var indices=new int[ni];for(int i=0;i<nv;i++)vertices[i]=Frc.Position(new[]{(double)reader.ReadSingle(),reader.ReadSingle(),reader.ReadSingle()});for(int i=0;i<ni;i+=3){indices[i]=reader.ReadInt32();indices[i+2]=reader.ReadInt32();indices[i+1]=reader.ReadInt32();}CollisionChunks(vertices,indices);}}
    string filename=season=="2024"?"2024-crescendo.json":season=="2025"?"2025-reefscape-"+layout+".json":"2026-rebuilt-"+layout+".json";var data=JObject.Parse(File.ReadAllText(Path.Combine(Application.streamingAssetsPath,"assets/tags",filename)));foreach(var tag in data["tags"]){var p=tag["pose"]["translation"];var q=tag["pose"]["rotation"]["quaternion"];var t=new TagData{Id=(int)tag["ID"],Position=Frc.Position(new[]{(double)p["x"],(double)p["y"],(double)p["z"]}),Rotation=Frc.QuaternionData((double)q["X"],(double)q["Y"],(double)q["Z"],(double)q["W"])};Tags.Add(t);var plate=GameObject.CreatePrimitive(PrimitiveType.Quad);plate.name="AprilTag "+t.Id;plate.transform.SetParent(Root,false);plate.transform.position=t.Position+(t.Rotation*Vector3.forward)*.006f;plate.transform.rotation=t.Rotation*Quaternion.Euler(0,180,0);plate.transform.localScale=Vector3.one*.205f;Lifetime.Destroy(plate.GetComponent<Collider>());var texture=new Texture2D(2,2);texture.LoadImage(File.ReadAllBytes(Path.Combine(Application.streamingAssetsPath,"assets/tags/images",t.Id+".png")));texture.filterMode=FilterMode.Point;var material=new Material(Shader.Find("Unlit/Texture"));material.mainTexture=texture;plate.GetComponent<Renderer>().sharedMaterial=material;}
+   if(season=="2026")AddTrenchColliders(basis);
    Venue=ArenaVenue.Create(Root,Length,Width,season);
   }
   public float GroundHeight(Vector3 position){
@@ -28,6 +29,25 @@ namespace AshinaStudio {
    float height=0;foreach(var hit in hits)if(hit.normal.y>.65f&&hit.point.y<=.35f)height=Mathf.Max(height,hit.point.y);return height;
   }
   static string Canonical(string name)=>System.Text.RegularExpressions.Regex.Replace(System.Text.RegularExpressions.Regex.Replace(name.ToLowerInvariant(),@"[^a-z0-9]+","_").Trim('_'),@"_\d+$","");
+  const float TrenchClearance=.5652f;
+  void AddTrenchColliders(Transform model){
+   foreach(var part in model.GetComponentsInChildren<Transform>(true)){
+    bool arm=part.name.StartsWith("GE-26223:")||part.name.StartsWith("GE-26214:");
+    bool upright=part.name.StartsWith("GE-26220:")||part.name.StartsWith("GE-26204:");
+    if(!arm&&!upright)continue;
+    var renderers=part.GetComponentsInChildren<MeshRenderer>(true);
+    if(renderers.Length==0)continue;
+    var bounds=renderers[0].bounds;
+    for(int i=1;i<renderers.Length;i++)bounds.Encapsulate(renderers[i].bounds);
+    var low=bounds.min;var high=bounds.max;
+    if(arm)low.y=TrenchClearance;
+    if(upright)low.y=0;
+    if(high.y<=low.y)continue;
+    var solid=new GameObject(arm?"TRENCH üst kiriş":"TRENCH destek");
+    solid.transform.SetParent(Root,false);solid.transform.position=(low+high)/2;
+    solid.AddComponent<BoxCollider>().size=high-low;
+   }
+  }
   void CollisionChunks(Vector3[] vertices,int[] indices){for(int start=0;start<indices.Length;start+=450000){int count=Math.Min(450000,indices.Length-start);var remap=new Dictionary<int,int>();var chunkVertices=new List<Vector3>();var chunkIndices=new int[count];for(int i=0;i<count;i++){int old=indices[start+i];if(!remap.TryGetValue(old,out var index)){index=chunkVertices.Count;remap[old]=index;chunkVertices.Add(vertices[old]);}chunkIndices[i]=index;}var collider=new GameObject("Saha çarpışma yüzeyi "+start);collider.transform.SetParent(Root,false);collider.AddComponent<MeshCollider>().sharedMesh=ModelLoader.Mesh(chunkVertices.ToArray(),chunkIndices);}}
   void Line(Vector3 a,Vector3 b,Color color,float width){var go=new GameObject("Saha çizgisi");go.transform.SetParent(Root,false);var line=go.AddComponent<LineRenderer>();line.positionCount=2;line.SetPositions(new[]{a,b});line.startWidth=line.endWidth=width;line.material=new Material(Shader.Find("Sprites/Default")){color=color};line.startColor=line.endColor=color;}
   public void Dispose(){if(Root!=null)Root.gameObject.SetActive(false);Venue?.Dispose();import?.Dispose();if(Root!=null)Lifetime.Destroy(Root.gameObject);Tags.Clear();}

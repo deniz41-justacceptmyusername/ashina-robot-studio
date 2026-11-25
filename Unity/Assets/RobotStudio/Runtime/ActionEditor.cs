@@ -193,7 +193,7 @@ namespace AshinaStudio {
    BeginShotPick(action,5,red);ApplyShotScenePick(action,Frc.Position(new[]{12.0,4.0,0}));
    var saved=ProjectIO.Parse(ProjectIO.Write(Project)).actions.Find(a=>a.id==action.id);
    check(saved.spawn.SequenceEqual(new[]{.8,.05,.35})&&Nodes["chassis"].transform.localPosition==chassis,"Shot guide places and persists the muzzle independently of the chassis");
-   check(saved.zones.Count==2&&saved.zones[0].target[0]==8&&saved.zones[1].target[0]==12&&saved.zones[1].target[2]==.1&&saved.zones[0].center[0]<Field.Length/2&&saved.zones[1].center[0]>Field.Length/2,"Each field half stores its own editable target and height");
+   check(saved.zones.Count==2&&saved.zones[0].target[0]==8&&saved.zones[1].target[0]==12&&Math.Abs(saved.zones[1].target[2]-.075)<.001&&saved.zones[0].center[0]<Field.Length/2&&saved.zones[1].center[0]>Field.Length/2,"Each field half stores its own target and uses carpet height when the target is picked there");
    Project.actions.Remove(action);chosenAction=null;uiTab=0;RestoreEditorGizmo();
   }
  }

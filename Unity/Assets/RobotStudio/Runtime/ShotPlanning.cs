@@ -15,20 +15,30 @@ namespace AshinaStudio {
    float maximum=(float)action.maxShotSpeed;
    plan=new ShotPlan{Origin=origin,Inherited=inherited,Direction=LevelHeading(orientation)*Frc.Direction(input.pitch,input.yaw),Speed=Mathf.Clamp(input.speed,0,maximum)};
    reason="";
-   if(action.aimMode=="fixed"||input.code)return true;
+   if(action.aimMode=="fixed")return true;
    double[] target=action.target;
    if(action.aimMode=="zones"){
     var position=Frc.Position(robot.position);
-    var zone=action.zones.Find(z=>Math.Abs(position[0]-z.center[0])<=z.size[0]/2&&Math.Abs(position[1]-z.center[1])<=z.size[1]/2);
+    var zone=ZoneAt(action,position);
     if(zone!=null)target=zone.target;
     else if(!action.zoneFallback){reason="Bu bölgede atış hedefi tanımlı değil.";return false;}
    }
    if(input.liveSpeed)maximum=plan.Speed;
-   if(!FixedElevation(origin,Frc.Position(target),inherited,input.pitch,maximum,out var launch,out var flight)){
+   if(!FixedElevation(origin,Frc.Position(target),inherited,(float)action.pitch,maximum,out var launch,out var flight)){
     reason=input.liveSpeed?"Dikey açı ve robot kodunun verdiği hız bu hedefe yetmiyor.":"Dikey açı ve maksimum hız bu hedefe yetmiyor.";
     return false;
    }
    plan.Direction=launch.normalized;plan.Speed=launch.magnitude;plan.Flight=flight;return true;
+  }
+
+  internal static AimZone ZoneAt(RobotAction action,double[] position){
+   AimZone match=null;double area=double.PositiveInfinity;
+   foreach(var zone in action.zones){
+    if(Math.Abs(position[0]-zone.center[0])>zone.size[0]/2||Math.Abs(position[1]-zone.center[1])>zone.size[1]/2)continue;
+    double size=zone.size[0]*zone.size[1];
+    if(size<=area){match=zone;area=size;}
+   }
+   return match;
   }
 
   // Solve flight time while preserving the configured elevation. No trajectory

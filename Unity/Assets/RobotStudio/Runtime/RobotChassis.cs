@@ -9,7 +9,7 @@ namespace AshinaStudio {
   public Vector3 GroundNormal {get;private set;}=Vector3.up;
   public int GroundedWheels {get;private set;}
   public float Acceleration=6;
-  Vector3[] wheels=new Vector3[4];BoxCollider bumper;PhysicsMaterial contact;
+  Vector3[] wheels=new Vector3[4];BoxCollider bumper;PhysicsMaterial contact;int bumperId;
   void Awake(){EnsureBody();}
   void EnsureBody(){
    if(Body!=null)return;
@@ -19,6 +19,7 @@ namespace AshinaStudio {
    Body.solverIterations=12;Body.solverVelocityIterations=6;
    Body.linearDamping=.03f;Body.angularDamping=2;Body.maxAngularVelocity=12;
    bumper=gameObject.AddComponent<BoxCollider>();
+   bumperId=SoftBallContacts.AddBumper(bumper);
    contact=new PhysicsMaterial("Robot bumper"){staticFriction=.35f,dynamicFriction=.25f,bounciness=.02f,frictionCombine=PhysicsMaterialCombine.Minimum,bounceCombine=PhysicsMaterialCombine.Minimum};
    bumper.material=contact;
   }
@@ -73,6 +74,6 @@ namespace AshinaStudio {
    if(count==4)position.y=height/4;
    Teleport(position,Quaternion.FromToRotation(Vector3.up,normal)*yaw);
   }
-  void OnDestroy(){if(contact!=null)Lifetime.Destroy(contact);}
+  void OnDestroy(){if(bumperId!=0)SoftBallContacts.RemoveBumper(bumperId);if(contact!=null)Lifetime.Destroy(contact);}
  }
 }

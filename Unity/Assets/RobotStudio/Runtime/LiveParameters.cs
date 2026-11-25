@@ -38,8 +38,8 @@ namespace AshinaStudio {
   }
   MatchActionInput ReadShotInput(RobotAction action){
    var input=new MatchActionInput{id=action.id,pitch=(float)action.pitch,yaw=(float)action.yaw};
-   if(LiveNumber(action.pitchTopic,action.pitchField,out var pitch)){input.pitch=(float)ShotPlanning.Angle(pitch,action.pitchUnit);input.code=true;}
-   if(LiveNumber(action.yawTopic,action.yawField,out var yaw)){input.yaw=(float)ShotPlanning.Angle(yaw,action.yawUnit);input.code=true;}
+   if(LiveNumber(action.pitchTopic,action.pitchField,out var pitch))input.pitch=(float)ShotPlanning.Angle(pitch,action.pitchUnit);
+   if(LiveNumber(action.yawTopic,action.yawField,out var yaw))input.yaw=(float)ShotPlanning.Angle(yaw,action.yawUnit);
    input.liveSpeed=LiveNumber(action.speedTopic,action.speedField,out var speed);
    input.speed=Mathf.Clamp((float)(input.liveSpeed?speed*action.speedScale+action.speedOffset:action.speed),0,(float)action.maxShotSpeed);
    return input;

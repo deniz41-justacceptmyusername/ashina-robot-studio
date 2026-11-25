@@ -1,6 +1,6 @@
 {
   "success": true,
-  "count": 45,
+  "count": 47,
   "passed": [
     "Normal startup stays on the home screen",
     "Home screen cannot silently enable the robot",
@@ -10,7 +10,7 @@
     "Intake position and dimensions save independently of the chassis",
     "Capture uses the moved and resized intake volume",
     "Shot guide places and persists the muzzle independently of the chassis",
-    "Each field half stores its own editable target and height",
+    "Each field half stores its own target and uses carpet height when the target is picked there",
     "Red alliance reverses both field-relative translation axes from the driver's station",
     "Robot-relative manual controls use robot heading only",
     "Quick setup fits the main model to the carpet",
@@ -25,6 +25,7 @@
     "Unreachable maximum power does not create a shot or consume stock",
     "First field region selects its own target",
     "Second region feeds toward the team's side using the same action",
+    "A custom region takes priority over an overlapping default region",
     "No matching region blocks unconfigured shots",
     "Region fallback uses the explicitly configured default target",
     "Scatter varies direction inside the configured cone",
@@ -38,7 +39,8 @@
     "A stopped WPILib shooter cannot drop a point-targeted piece",
     "NT picker binds directly to the selected angle parameter",
     "Live speed is scaled and limited by configured maximum power",
-    "Live code angles override target assistance with correct units and reference frame",
+    "Fixed mode uses live code angles with correct units and reference frame",
+    "A selected region still aims at its target when WPILib publishes a different yaw",
     "Observed WPILib movement contributes muzzle velocity",
     "World-referenced mechanism keeps its heading while the robot turns",
     "Offline target mode resumes without changing the regular angle",
@@ -48,5 +50,5 @@
     "Fixed-angle target solver launches toward the official HUB",
     "Target-assisted shot enters the real HUB through collision geometry"
   ],
-  "nearestTargetMetres": 0.0252815764
+  "nearestTargetMetres": 0.0286309384
 }

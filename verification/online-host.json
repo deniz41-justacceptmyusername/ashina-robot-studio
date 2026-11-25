@@ -30,7 +30,7 @@
     "Online target solver preserves normal elevation and maximum launch speed",
     "Online aimed shot leaves the configured muzzle and clears its own bumper",
     "Online region target can feed backward toward the team's side",
-    "Code-owned shot parameters override offline target assistance on the host",
+    "Fixed mode uses code-owned shot parameters on the host",
     "Host scores a real descending HUB crossing",
     "Shared score reaches every manual client",
     "Two independently controlled robot bodies collide without passing through",

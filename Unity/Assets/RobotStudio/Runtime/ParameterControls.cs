@@ -66,7 +66,7 @@ namespace AshinaStudio {
   };
 
   void DrawShotZones(RobotAction action){
-   Text("Her bölgeye ayrı hedef ver. Robotun bulunduğu ilk eşleşen bölgenin hedefi kullanılır.",true);
+   Text("Her bölgeye ayrı hedef ver. Bölgeler üst üste gelirse daha küçük bölgenin hedefi kullanılır.",true);
    for(int i=0;i<action.zones.Count;i++){
     var zone=action.zones[i];Section(zone.name.ToUpperInvariant());
     Text($"Hedef  X {zone.target[0]:0.0} · Y {zone.target[1]:0.0} m",true);
@@ -100,7 +100,7 @@ namespace AshinaStudio {
    orbitDistance=Mathf.Clamp(Mathf.Max(fieldHeight,fieldWidth)*1.22f,7,35);
   }
   void DrawShotLinks(RobotAction a){
-   Section("CANLI ATIŞ DEĞERLERİ");Text("WPILib açı gönderiyorsa atış yönünü kod belirler. Yalnız hız bağlıysa hedefli atışta üst sınır olarak kullanılır.",true);
+   Section("CANLI ATIŞ DEĞERLERİ");Text("Canlı açılar ayarladığın yönde atışta kullanılır. Saha hedefi seçiliyse yönü hedef belirler, canlı hız üst sınır olur.",true);
    a.directionFrame=Cycle("Yatay yön referansı",a.directionFrame,new[]{"part","robot","field"},new[]{"Seçili mekanizma","Robot","Saha"});
    BindingButton("Dikey açı",a.pitchTopic,"pitch",a.id);a.pitchUnit=Cycle("Dikey açı birimi",a.pitchUnit,new[]{"degrees","radians","rotations"},new[]{"Derece","Radyan","Tur"});
    BindingButton("Yatay açı",a.yawTopic,"yaw",a.id);a.yawUnit=Cycle("Yatay açı birimi",a.yawUnit,new[]{"degrees","radians","rotations"},new[]{"Derece","Radyan","Tur"});
@@ -117,14 +117,19 @@ namespace AshinaStudio {
 
   void ApplyShotScenePick(RobotAction a,Vector3 point){
    var position=Frc.Position(point);
-   if(pickingStage==1){a.target[0]=position[0];a.target[1]=position[1];pickingAction=null;Notice="Atış hedefi seçildi. Yukarı açı korunacak.";}
+   if(pickingStage==1){SetSceneShotTarget(a.target,position,a.piece);pickingAction=null;Notice="Atış hedefi seçildi. Dikey açı korunacak.";}
    else if(pickingStage==2){zoneCorner=point;pickingStage=3;Notice="Şimdi bölgenin karşı köşesine tıkla.";}
    else if(pickingStage==3){var first=Frc.Position(zoneCorner);pendingZone.center=new[]{(first[0]+position[0])/2,(first[1]+position[1])/2};pendingZone.size=new[]{Math.Max(.1,Math.Abs(first[0]-position[0])),Math.Max(.1,Math.Abs(first[1]-position[1]))};pickingStage=4;Notice="Bu bölgedeyken atılacak hedefe tıkla.";}
    else if(pendingZone!=null){
-    pendingZone.target[0]=position[0];pendingZone.target[1]=position[1];
+    SetSceneShotTarget(pendingZone.target,position,a.piece);
     if(pickingStage==4)a.zones.Add(pendingZone);
     CancelTargetPick();Notice="Bölgeye ayrı atış hedefi kaydedildi.";
    }
+  }
+  void SetSceneShotTarget(double[] target,double[] position,string piece){
+   target[0]=position[0];target[1]=position[1];
+   target[2]=Math.Min(5,Math.Max(position[2]+PieceCatalog.Radius(piece),PieceCatalog.Radius(piece)));
+   fields.Clear();
   }
  }
 }

@@ -1,4 +1,4 @@
-# Validation record · v0.4.10
+# Validation record · v0.4.11
 
 Built locally with Unity **6000.1.13f1**: **0 errors, 0 warnings**.
 
@@ -6,12 +6,12 @@ Built locally with Unity **6000.1.13f1**: **0 errors, 0 warnings**.
 | --- | ---: | --- |
 | General native player | 131 | CAD, project/motion persistence, stock, fields, real NT4/Blockly |
 | Configured team robot | 13 | Java/YAGSL, Xbox input, intake, shooter, HUB, odometry and PhotonVision |
-| Chassis/cage physics | 13 | Ramp tilt, settling, FUEL contact, airborne traction and six swinging cages |
-| Home and shots | 45 | Home/setup, angle independence on a rolled mount, rear-directed release, live speed, point/region aiming and scatter |
+| Chassis/cage physics | 18 | Packed FUEL at 40 kg, low and tall TRENCH clearance, ramps, airborne traction and cages |
+| Home and shots | 47 | Home/setup, rolled mounts, custom region priority, target height, live speed and field aiming |
 | Online host | 43 | Six-player room, shared collisions/stock/HUB, timeout/disconnect, field dynamics and online shot rules |
 | Separate native client | 26 | 456 replicas, real WPILib DS/odometry/camera, autonomous selection and host loss |
 | Dedicated server | 20 | Six remote places, ready barrier, clock, control isolation and invalid data rejection |
-| **Total** | **291** | Local executed checks |
+| **Total** | **298** | Local executed checks |
 
 Receipts are in [verification](../verification/). The private configured robot fixture is excluded from the repository and download.
 
@@ -25,7 +25,7 @@ The tests verified stock-limited code firing, competing intakes claiming a piece
 
 ## Retained physics and shots
 
-The chassis has four support contacts and a fixed 55 kg training mass. The official ramp produced about 12.4 degrees of tilt. Loose FUEL is displaced through collisions; airborne drive has no traction. Six REEFSCAPE cages have hollow colliders and constrained suspension with estimated 12 kg mass.
+The chassis has four support contacts and a fixed 55 kg training mass. The official ramp produced about 12.4 degrees of tilt. Loose FUEL is displaced through collisions. A packed FUEL pile lifted the 40 kg validation chassis about 6.2 cm before the fix and less than 1 mm after it. The four REBUILT TRENCH arms preserve 56.52 cm of clearance. Separately, airborne drive has no traction. Six REEFSCAPE cages have hollow colliders and constrained suspension with estimated 12 kg mass.
 
 The shot suite used a real WPILib server for units, references, live values and moving mechanisms. It verified unreachable-target stock preservation, regions/backward feeding, bounded scatter and code precedence. The suite checks that a Rigidbody passes near a configured point and enters the official HUB through actual collision geometry. Real shooter calibration still needs measurements.
 

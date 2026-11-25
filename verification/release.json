@@ -1,13 +1,13 @@
 {
-  "version": "0.4.10",
+  "version": "0.4.11",
   "unity": "6000.1.13f1",
   "platform": "Windows x64",
   "generalChecks": 131,
   "robotIntegrationChecks": 13,
-  "physicsChecks": 13,
-  "featureChecks": 45,
+  "physicsChecks": 18,
+  "featureChecks": 47,
   "onlineChecks": 89,
-  "totalChecks": 291,
+  "totalChecks": 298,
   "buildErrors": 0,
   "buildWarnings": 0,
   "robotFixtureIncluded": false,
@@ -33,7 +33,7 @@
     "independent targets for both field halves",
     "three-step shot setup"
   ],
-  "nativeAssemblySha256": "61547b58d9a50e950f232efd4324b245e5a729562565846bd74b158d48e69921",
+  "nativeAssemblySha256": "5d9e3bb66345f3170b21e31a3c8cb1eb9d03b2e43580da2ee42dc37c537a89fe",
   "portableEntry": "RobotStudio.exe",
   "presentation": {
     "emptyStands": true,

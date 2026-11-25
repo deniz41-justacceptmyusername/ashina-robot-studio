@@ -76,7 +76,7 @@ check(general["success"] and len(general["passed"]) == general["count"] == 131,
 check(robot["success"] and len(robot["passed"]) == robot["count"] == 13,
       "Robot validation receipt does not match release")
 physics = read_json(ROOT / "verification/physics-polish.json")
-check(physics["success"] and len(physics["passed"]) == physics["count"] == 13, "Physics validation receipt mismatch")
+check(physics["success"] and len(physics["passed"]) == physics["count"] == release["physicsChecks"], "Physics validation receipt mismatch")
 features = read_json(ROOT / "verification/home-and-shots.json")
 check(features["success"] and len(features["passed"]) == features["count"] == release["featureChecks"], "Home/shot validation receipt mismatch")
 online = [read_json(ROOT / ("verification/" + name)) for name in ("online-host.json", "online-client.json", "online-dedicated.json")]

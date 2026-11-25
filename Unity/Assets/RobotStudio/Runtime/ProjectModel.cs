@@ -44,6 +44,9 @@ namespace AshinaStudio {
   public static double[] Euler(Quaternion q){double x=-q.z,y=q.x,z=-q.y,w=q.w,m11=1-2*(y*y+z*z),m12=2*(x*y-z*w),m13=2*(x*z+y*w),m23=2*(y*z-x*w),m33=1-2*(x*x+y*y),m32=2*(y*z+x*w),m22=1-2*(x*x+z*z);double ey=Math.Asin(Math.Max(-1,Math.Min(1,m13))),ex,ez;if(Math.Abs(m13)<.9999999){ex=Math.Atan2(-m23,m33);ez=Math.Atan2(-m12,m11);}else{ex=Math.Atan2(m32,m22);ez=0;}return new[]{ex*180/Math.PI,ey*180/Math.PI,ez*180/Math.PI};}
   public static Vector3 Direction(double pitch,double yaw)=>Position(new[]{Math.Cos(pitch*Math.PI/180)*Math.Cos(yaw*Math.PI/180),Math.Cos(pitch*Math.PI/180)*Math.Sin(yaw*Math.PI/180),Math.Sin(pitch*Math.PI/180)});
  }
- public static class PieceCatalog {public static readonly Dictionary<string,string> Names=new Dictionary<string,string>{{"ball","Top"},{"coral","Coral · 2025"},{"note","Note · 2024"},{"algae","Algae · 2025"},{"fuel","Fuel · 2026"}};}
+ public static class PieceCatalog {
+  public static readonly Dictionary<string,string> Names=new Dictionary<string,string>{{"ball","Top"},{"coral","Coral · 2025"},{"note","Note · 2024"},{"algae","Algae · 2025"},{"fuel","Fuel · 2026"}};
+  public static float Radius(string kind)=>kind=="fuel"?.075f:kind=="algae"?.2032f:kind=="note"?.18f:kind=="coral"?.16f:.12f;
+ }
 }
 

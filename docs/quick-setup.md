@@ -17,11 +17,11 @@ The nozzle position follows its attached mechanism. For a rotating part, select 
 
 Choose **Tek hedefe at**, pick XY in the field, and set target height. The normal elevation remains unchanged. The solver chooses heading and relative launch speed using inherited muzzle motion, gravity and the game's damping. An unreachable shot creates no piece and consumes no inventory.
 
-Choose **Bölgeye göre hedef** to draw two rectangle corners and then that region's target. Each region has its own target height. Regions are checked in list order; the first match wins. Outside all regions, shots are blocked unless the explicit default-target option is enabled. Feeding toward your side uses this same action with a low target height.
+Choose **Bölgeye göre farklı hedeflere at** to draw two rectangle corners and then select that region's target. A click on the carpet sets a low target. The target height can still be edited. In overlapping regions, the smallest region wins. Equal-size regions favor the last one added. Outside all regions, a shot needs the explicit fallback option.
 
 Scatter is a bounded cone around the nominal direction. Individual shots can deviate from the configured elevation. During release, the piece clears the firing robot's bumper. The field and other robots still collide with the piece, and the launcher's own collision returns once the piece is clear.
 
-Live NT pitch or yaw switches to code-directed shooting. If the only live parameter is speed, point and region aiming still apply and the live speed caps the calculated shot. Code angles use the selected units, elevation above the field, and the selected heading reference.
+Live NT pitch and yaw control shots in **Ayarladığım yönde at**. Point and region modes keep their selected field target and configured elevation. Live speed caps the calculated shot.
 
 ## Limits
 

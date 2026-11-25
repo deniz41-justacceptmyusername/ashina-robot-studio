@@ -34,6 +34,10 @@ namespace AshinaStudio {
    Check(App.PlanShot(a,out var zoneOne,out _)&&Vector3.Distance(ShotPlanning.Position(zoneOne.Origin,zoneOne.Direction*zoneOne.Speed,zoneOne.Flight),Frc.Position(a.zones[0].target))<.02,"First field region selects its own target");
    p.initialPose=new[]{8.0,4,0};App.RequestRobotReset();
    Check(App.PlanShot(a,out var feed,out _)&&feed.Direction.z<0&&Vector3.Distance(ShotPlanning.Position(feed.Origin,feed.Direction*feed.Speed,feed.Flight),Frc.Position(a.zones[1].target))<.02,"Second region feeds toward the team's side using the same action");
+   var ownTarget=new AimZone{name="Feed corner",center=new[]{8.0,4},size=new[]{.8,.65},target=new[]{6.0,5,.1}};
+   a.zones.Add(ownTarget);
+   Check(App.PlanShot(a,out var custom,out _)&&Vector3.Distance(ShotPlanning.Position(custom.Origin,custom.Direction*custom.Speed,custom.Flight),Frc.Position(ownTarget.target))<.02,"A custom region takes priority over an overlapping default region");
+   a.zones.Remove(ownTarget);
    p.initialPose=new[]{13.0,4,0};App.RequestRobotReset();Check(!App.PlanShot(a,out _,out _),"No matching region blocks unconfigured shots");a.zoneFallback=true;Check(App.PlanShot(a,out _,out _),"Region fallback uses the explicitly configured default target");
    var random=new System.Random(8);var scattered=Enumerable.Range(0,100).Select(_=>ShotPlanning.Scatter(Vector3.forward,3,random)).ToArray();
    Check(scattered.All(v=>Vector3.Angle(Vector3.forward,v)<=3.01f)&&scattered.Any(v=>Vector3.Angle(Vector3.forward,v)>1),"Scatter varies direction inside the configured cone");
@@ -49,9 +53,12 @@ namespace AshinaStudio {
    Check(App.PlanShot(a,out var liveTarget,out _)&&liveTarget.Flight>0&&Vector3.Distance(ShotPlanning.Position(liveTarget.Origin,liveTarget.Direction*liveTarget.Speed,liveTarget.Flight),Frc.Position(a.target))<.02,"A live speed alone preserves point aiming");
    a.speedScale=0;Check(!App.PlanShot(a,out _,out _),"A stopped WPILib shooter cannot drop a point-targeted piece");
    App.BeginBinding("pitch",a.id);Check(App.PickBinding("/Feature/Pitch","")&&a.pitchTopic=="/Feature/Pitch","NT picker binds directly to the selected angle parameter");
-   a.partId="chassis";a.yawTopic="/Feature/Yaw";a.yawUnit="radians";a.directionFrame="field";a.speedTopic="/Feature/Speed";a.speedScale=.1;a.maxShotSpeed=5;a.aimMode="point";a.target=new[]{100.0,100,4};
+   a.partId="chassis";a.yawTopic="/Feature/Yaw";a.yawUnit="radians";a.directionFrame="field";a.speedTopic="/Feature/Speed";a.speedScale=.1;a.maxShotSpeed=5;a.aimMode="fixed";a.target=new[]{100.0,100,4};
    Check(App.PlanShot(a,out var live,out _)&&Math.Abs(live.Speed-5)<.001,"Live speed is scaled and limited by configured maximum power");
-   Check(Math.Abs(live.Direction.y-Math.Sin(35*Math.PI/180))<.001&&live.Direction.x<-.8&&Math.Abs(live.Direction.z)<.001,"Live code angles override target assistance with correct units and reference frame");
+   Check(Math.Abs(live.Direction.y-Math.Sin(35*Math.PI/180))<.001&&live.Direction.x<-.8&&Math.Abs(live.Direction.z)<.001,"Fixed mode uses live code angles with correct units and reference frame");
+   a.aimMode="zones";a.pitch=30;a.speedScale=1;a.maxShotSpeed=12;
+   Check(App.PlanShot(a,out var liveRegion,out _)&&Vector3.Distance(ShotPlanning.Position(liveRegion.Origin,liveRegion.Direction*liveRegion.Speed,liveRegion.Flight),Frc.Position(a.zones[0].target))<.02,"A selected region still aims at its target when WPILib publishes a different yaw");
+   a.aimMode="fixed";
    a.inheritVelocity=true;p.network.driveFromNt=true;p.network.mode="observe";p.network.autoPose=false;p.network.poseTopic="/Feature/Pose";await Task.Delay(350);
    Check(App.PlanShot(a,out var observed,out _)&&observed.Inherited.magnitude>.15,"Observed WPILib movement contributes muzzle velocity");Check(Vector3.Angle(App.Nodes["axis"].transform.forward,Vector3.left)<.15,"World-referenced mechanism keeps its heading while the robot turns");
    App.SetRunning(false);App.DisconnectNetwork();a.pitchTopic=a.yawTopic=a.speedTopic="";a.partId="chassis";a.directionFrame="field";a.pitch=35;a.aimMode="point";a.maxShotSpeed=12;a.spreadDegrees=0;p.initialPose=new[]{2.0,4,0};App.RequestRobotReset();a.target=new[]{5.0,4,1.0};

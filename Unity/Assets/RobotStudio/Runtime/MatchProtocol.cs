@@ -42,7 +42,7 @@ namespace AshinaStudio {
   }
  }
  [Serializable] public sealed class MatchPartState {public string id;public float[] p,q;}
- [Serializable] public sealed class MatchActionInput {public string id;public bool down,code,liveSpeed;public float pitch,yaw,speed;}
+ [Serializable] public sealed class MatchActionInput {public string id;public bool down,liveSpeed;public float pitch,yaw,speed;}
  [Serializable] public sealed class MatchInput {
   public string type="input";public long sequence;public double echo;public float[] drive={0,0,0};public MatchPartState[] parts=new MatchPartState[0];public MatchActionInput[] actions=new MatchActionInput[0];
   public bool Validate(RobotProject p){

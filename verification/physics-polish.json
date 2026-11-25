@@ -1,22 +1,29 @@
 {
   "success": true,
-  "count": 13,
+  "count": 18,
   "passed": [
     "Robot has dynamic mass and collider response",
     "Four contacts settle level on carpet",
     "Bumper physically displaces loose FUEL",
     "Loose FUEL does not act as a flat support platform",
+    "The chassis still pushes through a packed FUEL pile toward the wall",
+    "A 40 kg chassis stays on the carpet in a packed FUEL pile (rise 0,000 m, tilt 0,0°)",
     "Airborne chassis falls under gravity",
     "No ground traction or yaw steering in midair",
-    "Official REBUILT ramp tilts and lifts the chassis (tilt=12,4, high=0,094, x=9,63)",
+    "Official REBUILT ramp tilts and lifts the chassis (tilt=12,4, high=0,094, x=9,64)",
     "Robot traverses the real ramp collision geometry",
     "Suspension settles after leaving the ramp",
+    "All four REBUILT TRENCH arms and supports have solid geometry at the official clearance",
+    "A low chassis can drive through the open TRENCH gap",
+    "A chassis above the TRENCH clearance hits the overhead beam",
     "All six REEFSCAPE cages are dynamic",
     "Cage colliders preserve four uprights and two plates",
     "Deep cage swings after a physical impulse",
     "Cage remains attached at its suspension point"
   ],
-  "rampMaximumTilt": 12.365406,
-  "rampMaximumHeight": 0.09396029,
-  "ballMaximumRideHeight": 0.000752183551
+  "rampMaximumTilt": 12.3868856,
+  "rampMaximumHeight": 0.0939079747,
+  "ballMaximumRideHeight": 0,
+  "packedFuelRiseMetres": 2.98023224e-8,
+  "packedFuelTiltDegrees": 0
 }
