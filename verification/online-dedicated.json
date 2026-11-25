@@ -1,0 +1,28 @@
+{
+  "success": true,
+  "count": 20,
+  "passed": [
+    "Headless dedicated server starts",
+    "Dedicated server supports a configured public invitation",
+    "Remote participant 1 is assigned a slot",
+    "Remote participant 2 is assigned a slot",
+    "Remote participant 3 is assigned a slot",
+    "Remote participant 4 is assigned a slot",
+    "Remote participant 5 is assigned a slot",
+    "Remote participant 6 is assigned a slot",
+    "All six remote players share one dedicated world",
+    "Dedicated host does not consume a player slot",
+    "Dedicated room assigns three robots to each alliance",
+    "Ready barrier starts autonomous for all six remote players",
+    "Remote player cannot issue host-only match commands",
+    "Dedicated server advances every player into teleop",
+    "One player drives its own server-owned body",
+    "Other player bodies are not overwritten by that request",
+    "Dedicated match ends and disables on a shared clock",
+    "Countdown and disabled transition replicate to every participant",
+    "Malformed controls are rejected",
+    "Rejected peer is removed from the shared physics roster"
+  ],
+  "remotePlayers": 6,
+  "nativeServerProcesses": 1
+}

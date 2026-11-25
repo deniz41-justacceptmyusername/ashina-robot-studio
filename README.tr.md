@@ -8,7 +8,15 @@
 
 ![REBUILT sahası ve masaüstü uygulaması](docs/images/rebuilt-training.png)
 
-## 0.4.6 ile daha iyi sürüş
+## Ortak sahada altı robot
+
+Ana ekrandan **Çevrimiçi maça gir** → oda oluştur → daveti paylaş. Oyuncular kendi robotlarıyla katılır; üç mavi ve üç kırmızı robot ortak çarpışma, top, stok ve maç saatiyle çalışır. Herkes hazır olunca otonom ve teleop birlikte başlar. WPILib ve kumanda kullanıcıları aynı odada bulunabilir.
+
+Ayrı Windows sunucusu altı yerin tamamını uzaktan gelen oyunculara ayırır. İnternet için erişilebilir sunucu/VPN adresi gerekir; otomatik genel oda/relay hizmeti bulunmaz. [Katılma ve WPILib rehberi](docs/online.md).
+
+![Online oda](docs/images/online-lobby.png)
+
+## Sürüş ve fizik
 
 Şase rampada eğilir, serbest topları fiziksel temasla iter ve havadayken sürüş kuvveti uygulamaz. REEFSCAPE kafesleri askılarında sallanır. **Intake çalıştır** robotun mekanizmasına bağlı bir eylemdir; intake ağzının ayrıntıları açılır paneldedir. Yeni robot ve top logosu uygulama ile Windows simgesinde kullanılır.
 
@@ -67,11 +75,11 @@ Kamera: sağ fare çevirme, tekerlek yakınlaşma, orta fare kaydırma. **F** ro
 
 ## Kaynak ve doğrulama
 
-Unity projesi `Unity/` altında. Sürüm **0.4.6**, yerelde **131 genel + 13 robot entegrasyonu + 13 fizik + 31 yeni özellik = 188 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
+Unity projesi `Unity/` altında. Sürüm **0.4.7**, yerelde **188 mevcut + 88 online = 276 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
 
 Bu uygulama serbest sürüş antrenmanı içindir. Tam FMS/hakemlik, ayrıntılı motor/akü dinamiği veya gerçek kamera görüntü işleme sistemi değildir. Bütün fiziksel kumanda modelleri denenmiş sayılmaz.
 
 Kod **MIT** lisanslıdır. Saha ve üçüncü taraf bileşenlerin kendi lisansları korunur: [bildirimler](THIRD_PARTY_NOTICES.md). FIRST ile resmi bağlantısı olmayan bir topluluk projesidir.
 
-Hazır model ve yayınlanmış verilerle 5–10 dakikalık kurulum hedeflenir; her CAD ve robot kodu için garanti değildir. [Online maç tasarımı](docs/online-design.md) hazır; çok oyunculu maç bu sürümde henüz yok.
+Hazır model ve yayınlanmış verilerle 5–10 dakikalık kurulum hedeflenir; her CAD ve robot kodu için garanti değildir. [Online maç](docs/online.md) doğrudan bağlantı ve kendi sunucunla çalışır. Yönetilen genel oda hizmeti, sunucu göçü ve tam sezon hakem/skor kuralları eklenmedi.
 

@@ -1,6 +1,6 @@
-# Online match design — not implemented in 0.4.6
+# Shared match architecture · 0.4.7
 
-The current release is a single-player desktop application. This document defines the next multiplayer stage; it is not a claim that room joining, internet hosting or six-robot matches are available.
+Native rooms, joining, shared physics and six-player sessions are implemented. See the [usage guide](online.md) for direct connections, WPILib setup, dedicated Windows hosting and current limits.
 
 ## Shared world, local code
 
@@ -25,13 +25,15 @@ The existing observe-only path cannot produce consistent shared collisions: inde
 - A piece can belong to only one inventory. Pickup probability and emission stock consumption run on the server once, rather than separately on every client.
 - Model size limits, asset hashes and field versions are agreed before enabling the match.
 
-## Delivery gates
+## Implemented and verified
 
-1. Two processes on one LAN: coherent chassis collisions and shared pieces.
-2. One WPILib-controlled participant: server displacement reaches gyro/odometry and AprilTag feedback.
-3. Six participants: mixed control sources, ready/start/phase transitions, scoring and disconnect/rejoin.
-4. Internet rooms: relay/reachable hosting, delayed/lost-packet tests and moving-shot stability.
+1. Two native processes: coherent chassis collisions and 456 shared pieces, with 80 ms added round-trip delay.
+2. One real WPILib participant: shared displacement reaches wheel/gyro odometry, DriverStation and AprilTag feedback.
+3. Six participants: manual/code input, ready/start/phase transitions, HUB totals, individual stock and disconnect handling.
+4. Separate Windows hosting: six remote slots; configured public address; automatic start after the ready barrier.
 
-A UI room button should ship only after these paths are usable. Merely broadcasting positions or exposing NetworkTables to other computers does not complete multiplayer physics.
+`MatchTransport` bounds queues and message sizes and replaces obsolete unsent snapshots. Robots update at about 20 Hz and pieces at 10 Hz. Clients interpolate remote visuals and use kinematic piece replicas. `MatchFieldSync` shares moving REEFSCAPE cages too. Input older than 350 ms brakes; losing the host disables the local DriverStation bridge. Field geometry/tag signatures must agree. Shared projects strip NT endpoints, local code paths and Blockly contents.
+
+Direct reachable addresses and VPN connectivity are supported. A managed public room directory, NAT relay, host migration and rejoining an active match remain future work. The transport is TCP without application TLS. WAN testing across different providers and six physical PCs has not been performed. HUB totals are practice counters; full season officiating is outside this release.
 
 Reference: [Unity authoritative physics model](https://mp-docs.dl.it.unity3d.com/netcode/current/advanced-topics/physics/).

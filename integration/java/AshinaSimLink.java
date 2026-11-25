@@ -8,7 +8,10 @@ import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 /** Simulation only. Xbox-compatible input for the team's existing command bindings. */
 public final class AshinaSimLink implements AutoCloseable {
   private final IntegerSubscriber heartbeat;
-  private final BooleanSubscriber enabled, autonomous;
+  private final BooleanSubscriber enabled, autonomous, online;
+  private final StringSubscriber alliance;
+  private final IntegerSubscriber station;
+  private final DoubleSubscriber matchTime;
   private final DoubleArraySubscriber[] axes = new DoubleArraySubscriber[2];
   private final IntegerSubscriber[] buttons = new IntegerSubscriber[2], pov = new IntegerSubscriber[2];
   private final BooleanSubscriber[] connected = new BooleanSubscriber[2];
@@ -31,6 +34,10 @@ public final class AshinaSimLink implements AutoCloseable {
     heartbeat = nt.getIntegerTopic("/AshinaSim/DriverStation/heartbeat").subscribe(-1);
     enabled = nt.getBooleanTopic("/AshinaSim/DriverStation/enabled").subscribe(false);
     autonomous = nt.getBooleanTopic("/AshinaSim/DriverStation/autonomous").subscribe(false);
+    online=nt.getBooleanTopic("/AshinaSim/Online/active").subscribe(false);
+    alliance=nt.getStringTopic("/AshinaSim/DriverStation/alliance").subscribe("blue");
+    station=nt.getIntegerTopic("/AshinaSim/DriverStation/station").subscribe(1);
+    matchTime=nt.getDoubleTopic("/AshinaSim/Online/matchTime").subscribe(-1);
     resetSequence = nt.getIntegerTopic("/AshinaSim/Robot/resetSequence").subscribe(0);
     resetPose = nt.getDoubleArrayTopic("/AshinaSim/Robot/resetPose").subscribe(new double[0]);
     fuel = nt.getIntegerTopic("/AshinaSim/Robot/fuelCount").subscribe(0);
@@ -55,6 +62,11 @@ public final class AshinaSimLink implements AutoCloseable {
     DriverStationSim.setAutonomous(live && autonomous.get());
     DriverStationSim.setEnabled(live && enabled.get());
     DriverStationSim.setTest(false);
+    if(online.get()){
+      int slot=(int)Math.max(1,Math.min(3,station.get()));
+      var ids=alliance.get().equals("red")?new edu.wpi.first.hal.AllianceStationID[]{edu.wpi.first.hal.AllianceStationID.Red1,edu.wpi.first.hal.AllianceStationID.Red2,edu.wpi.first.hal.AllianceStationID.Red3}:new edu.wpi.first.hal.AllianceStationID[]{edu.wpi.first.hal.AllianceStationID.Blue1,edu.wpi.first.hal.AllianceStationID.Blue2,edu.wpi.first.hal.AllianceStationID.Blue3};
+      DriverStationSim.setAllianceStationId(ids[slot-1]);DriverStationSim.setMatchTime(matchTime.get());
+    }
     for (int i = 0; i < 2; i++) {
       boolean attached = live && connected[i].get();
       double[] a = axes[i].get();
@@ -79,7 +91,7 @@ public final class AshinaSimLink implements AutoCloseable {
   public int fuelCount() { return (int)Math.max(0, fuel.get()); }
   @Override public void close() {
     DriverStationSim.setEnabled(false);DriverStationSim.notifyNewData();
-    resetSequence.close();resetPose.close();heartbeat.close();enabled.close();autonomous.close();fuel.close();ready.close();
+    online.close();alliance.close();station.close();matchTime.close();resetSequence.close();resetPose.close();heartbeat.close();enabled.close();autonomous.close();fuel.close();ready.close();
     for (int i = 0; i < 2; i++) {axes[i].close();buttons[i].close();pov[i].close();connected[i].close();}
   }
 }

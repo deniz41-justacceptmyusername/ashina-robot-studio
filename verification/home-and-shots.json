@@ -34,5 +34,5 @@
     "Fixed-angle target solver launches toward the official HUB",
     "Target-assisted shot enters the real HUB through collision geometry"
   ],
-  "nearestTargetMetres": 0.0248653442
+  "nearestTargetMetres": 0.0260805674
 }

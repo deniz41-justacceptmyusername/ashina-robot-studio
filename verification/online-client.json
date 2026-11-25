@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "count": 26,
+  "passed": [
+    "Native client connects to its own real WPILib NT server",
+    "Separate native application joins using its invitation",
+    "Native client builds all six shared robot models",
+    "Full 456-piece field replicates before players enable",
+    "Client and host agree on official field collision and AprilTag assets",
+    "Room UI selects the existing WPILib autonomous chooser",
+    "Robot code receives the chosen autonomous command",
+    "Client receives synchronized autonomous enable",
+    "Online client does not teleport from its local odometry",
+    "Client receives server-owned shot count and empty inventory",
+    "WPILib DriverStation sees autonomous mode",
+    "Client receives synchronized teleop enable",
+    "WPILib DriverStation sees teleop mode",
+    "Native client receives the shared HUB score",
+    "Local robot code receives simulated AprilTag camera data",
+    "Wheel and gyro adapter updates a real WPILib odometry estimator",
+    "Local robot pose follows the shared collision result",
+    "Client replicas cannot create competing robot physics",
+    "Client game pieces are replicas of the host world",
+    "Generic NT mechanism angles reach the online robot",
+    "Server replicates live mechanism motion to other players",
+    "WPILib wheel and gyro odometry agrees with shared field truth",
+    "WPILib receives its own alliance and driver station slot",
+    "Losing the host disables the native client",
+    "WPILib disables after shared match control is lost",
+    "Disconnected client returns to its offline robot project"
+  ]
+}

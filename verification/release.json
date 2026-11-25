@@ -1,27 +1,35 @@
 {
-  "version": "0.4.6",
+  "version": "0.4.7",
   "unity": "6000.1.13f1",
   "platform": "Windows x64",
   "generalChecks": 131,
   "robotIntegrationChecks": 13,
   "physicsChecks": 13,
   "featureChecks": 31,
-  "totalChecks": 188,
+  "onlineChecks": 88,
+  "totalChecks": 276,
   "buildErrors": 0,
   "buildWarnings": 0,
   "robotFixtureIncluded": false,
   "verifiedLocally": true,
+  "multiplayerImplemented": true,
+  "onlineTransport": "direct TCP / self-hosted Windows",
+  "onlinePlayers": 6,
+  "fullFieldPieces": 456,
+  "onlineValidation": {
+    "nativeApplications": 2,
+    "manualTcpDrivers": 4,
+    "realWpilibServers": 1,
+    "addedRoundTripMs": 80,
+    "dedicatedRemoteDrivers": 6,
+    "physicalPcWanTested": false,
+    "managedRelayDeployed": false
+  },
   "visualReview": [
-    "native home screen",
-    "four-step setup overlay",
-    "general point aiming controls and trajectory"
+    "home",
+    "online room entry",
+    "native room lobby"
   ],
-  "multiplayerImplemented": false,
-  "setupTimeGoalMinutes": [
-    5,
-    10
-  ],
-  "setupGoalRequires": "Prepared CAD and published simulation values; real shot calibration is separate",
-  "nativeAssemblySha256": "2c4c4d4ebb4de2ad4dd7c4725e0b73de9d9305c53edfda170cbaf5df38112268",
+  "nativeAssemblySha256": "0d773f49cf9afd3a4ac15a493f9aa4ec1e42b9e3d1d913242b2d10a5f6121c3b",
   "portableEntry": "RobotStudio.exe"
 }

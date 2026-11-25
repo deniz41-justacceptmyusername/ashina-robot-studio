@@ -87,3 +87,7 @@ Launching from the application passes `ashinaStudio` and selects an available lo
 | `/AshinaSim/Game/blueFuel`, `redFuel`, `fuelShots` | REBUILT practice counters |
 
 The browser receives published topics and reconnects automatically. It cannot read unpublished motor internals. Java helpers were exercised with WPILib/PhotonVision 2026; other releases and C++/Python code need an equivalent adaptation.
+
+## Online shared-world mode
+
+Online rooms automatically select chassis-request physics. Keep each NT connection local and send the desired robot-relative chassis speeds. Feed the shared-world wheel/gyro IO back to existing odometry with `AshinaSwerveSim`; handle `AshinaSimLink.takeResetPose()` at match resets. The updated controller bridge also forwards alliance, station and match time. Existing mechanism/shot topics stay local and their resolved inputs are sent to the assigned room robot. [Online setup](online.md).

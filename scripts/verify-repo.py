@@ -24,6 +24,7 @@ required = ["LICENSE", "README.md", "README.tr.md", "THIRD_PARTY_NOTICES.md",
             "docs/assets/hero.svg", "docs/assets/release-pose.svg", "docs/images/home.png", "docs/images/quick-setup.png", "docs/images/target-practice.png",
             "Unity/Assets/RobotStudio/Runtime/StudioApp.cs",
             "Unity/Assets/RobotStudio/Runtime/ReleasePose.cs",
+            "Unity/Assets/RobotStudio/Runtime/MatchRoom.cs", "Unity/Assets/RobotStudio/Runtime/MatchTransport.cs", "Unity/Assets/RobotStudio/Runtime/MatchFieldSync.cs", "docs/online.md", "docs/images/online-entry.png", "docs/images/online-lobby.png",
             "Unity/Packages/manifest.json", "Unity/ProjectSettings/ProjectVersion.txt"]
 for item in required:
     check((ROOT / item).is_file(), f"Missing file: {item}")
@@ -78,7 +79,12 @@ physics = read_json(ROOT / "verification/physics-polish.json")
 check(physics["success"] and len(physics["passed"]) == physics["count"] == 13, "Physics validation receipt mismatch")
 features = read_json(ROOT / "verification/home-and-shots.json")
 check(features["success"] and len(features["passed"]) == features["count"] == 31, "Home/shot validation receipt mismatch")
-check(release["totalChecks"] == general["count"] + robot["count"] + physics["count"] + features["count"] == 188,
+online = [read_json(ROOT / ("verification/" + name)) for name in ("online-host.json", "online-client.json", "online-dedicated.json")]
+for suite in online:
+    check(suite["success"] and len(suite["passed"]) == suite["count"], "Online validation receipt mismatch")
+check(release["onlineChecks"] == sum(suite["count"] for suite in online), "Online total mismatch")
+check(release["multiplayerImplemented"] and release["onlinePlayers"] == 6, "Online release metadata mismatch")
+check(release["totalChecks"] == general["count"] + robot["count"] + physics["count"] + features["count"] + release["onlineChecks"],
       "Validation total mismatch")
 check(('bundleVersion="'+release['version']+'"') in (ROOT / "Unity/Assets/RobotStudio/Editor/BatchBuild.cs").read_text(),
       "Source version does not match release")
@@ -115,4 +121,4 @@ check((ROOT / "Unity/Assets/StreamingAssets/licenses/AdvantageScopeAssets.txt").
 
 if errors:
     raise SystemExit("\n".join(f"FAIL: {error}" for error in errors))
-print("PASS: source layout, 3 robot examples, runtime assets, docs, 188-check receipts, and public-package hygiene")
+print("PASS: source layout, 3 robot examples, runtime assets, docs, native and online receipts, and public-package hygiene")

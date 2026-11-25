@@ -13,7 +13,7 @@
   <img alt="Unity 6.1" src="https://img.shields.io/badge/Unity-6.1-101b2b?style=flat-square&amp;logo=unity&amp;logoColor=white">
   <img alt="Windows x64" src="https://img.shields.io/badge/Windows-x64-1578c8?style=flat-square">
   <img alt="NetworkTables 4" src="https://img.shields.io/badge/NetworkTables-NT4-25b8bb?style=flat-square">
-  <img alt="Version 0.4.6" src="https://img.shields.io/badge/version-0.4.6-ff9d57?style=flat-square">
+  <img alt="Version 0.4.7" src="https://img.shields.io/badge/version-0.4.7-ff9d57?style=flat-square">
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-8799ba?style=flat-square"></a>
   <a href="https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/actions/workflows/verify.yml"><img alt="Repository checks" src="https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/actions/workflows/verify.yml/badge.svg"></a>
 </p>
@@ -34,9 +34,17 @@ The focus is a quick path from a robot idea to a useful practice run: configurab
 
 ![REBUILT field running in the native Unity desktop application](docs/images/rebuilt-training.png)
 
+## One field. Six robots.
+
+Create a room from the home screen, share its invitation, and join with your own robot. Three blue and three red robots share chassis collisions, pieces, stock and a match clock. WPILib and manual players can mix. Your local code receives your robot's shared-world pose and camera data. Existing NT mechanism and shot mappings continue to work.
+
+A separate headless Windows host supports six remote players. Internet use needs a reachable host address or VPN; a managed public relay is not included. [Hosting and WPILib setup](docs/online.md).
+
+![Native online room](docs/images/online-lobby.png)
+
 ## Run in a minute
 
-1. Download **Ashina-Robot-Studio-0.4.6-Windows.zip** from [Releases](https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/releases/latest).
+1. Download **Ashina-Robot-Studio-0.4.7-Windows.zip** from [Releases](https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/releases/latest).
 2. Extract the entire folder and double-click **RobotStudio.exe**.
 3. Create or open your robot from the home screen, then click **Sürüşe başla** and drive with **W A S D**, turn with **Q / E**, or use a supported gamepad.
 
@@ -127,11 +135,11 @@ Default training capacities are **50** for REBUILT and **1** for REEFSCAPE. They
 
 ## Built, exercised, documented
 
-Version **0.4.6** passed **188 local checks**: 131 general checks, 13 configured robot integration checks, 13 chassis/cage checks, and 31 home/live-parameter/shot checks. The build completed with **0 errors and 0 warnings**. [Read the validation record](docs/validation.md).
+Version **0.4.7** passed **276 local checks**: 188 retained CAD/robot/physics/home/shot checks and 88 online checks. The build completed with **0 errors and 0 warnings**. [Read the validation record](docs/validation.md).
 
 Repository CI checks source layout, example integrity, documentation links, and public-package hygiene. It does not claim to run the licensed Unity Editor or a team's private robot fixture. Physical controller models have not all been tested. Vision is geometric rather than pixel image processing; drive and game-piece collisions are training approximations.
 
-A 5–10 minute setup is the goal for a prepared model and already-published robot values. CAD cleanup, unpublished IO and real shot calibration can take longer. [Multiplayer design](docs/online-design.md) is documented; online matches are not included in this release.
+A 5–10 minute setup is the goal for a prepared model and already-published robot values. CAD cleanup, unpublished IO and real shot calibration can take longer. [Online rooms](docs/online.md) use direct TCP and self-hosting. Public relay/matchmaking, host migration and full season officiating are not included.
 
 ## Explore the source
 

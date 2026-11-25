@@ -25,10 +25,11 @@ namespace AshinaStudio {
    float width=Mathf.Min(870,Screen.width-56),x=(Screen.width-width)/2,y=Mathf.Max(32,(Screen.height-620)/2);
    GUILayout.BeginArea(new Rect(x,y,width,Screen.height-y-25));
    GUILayout.BeginHorizontal();if(brandIcon!=null)GUILayout.Label(brandIcon,GUILayout.Width(72),GUILayout.Height(72));GUILayout.BeginVertical();GUILayout.Space(8);GUILayout.Label("ASHINA ROBOT STUDIO",title);Text("Robotunu hazırla. Kodunu bağla. Sahaya çık.",true);Text("Masaüstü · "+Application.version,true);GUILayout.EndVertical();GUILayout.EndHorizontal();GUILayout.Space(25);
-   GUI.enabled=!Busy&&Project!=null;
+   GUI.enabled=!Busy&&Project!=null&&!roomPanel;
    GUILayout.BeginHorizontal();GUILayout.BeginVertical(GUILayout.Width(width*.53f));
    if(Button("Yeni robot hazırla"))StartNewRobot();Text("Tek ana modelle başla; yalnız ihtiyaç duyduğun mekanizmaları ekle.",true);GUILayout.Space(12);
    if(Button("Robot projesi aç"))Open();Text("Kaydettiğin robot, eylemler ve bağlantılar birlikte açılır.",true);GUILayout.Space(12);
+   if(Button("Çevrimiçi maça gir")){roomPanel=true;fields.Clear();}Text("Altı robota kadar ortak saha · yerel WPILib veya kumanda.",true);GUILayout.Space(12);
    if(Button("Hedefli atış örneğini incele"))LoadHomeProject(Path.Combine(Application.streamingAssetsPath,"examples/Target-Practice.ashina.json"));Text("Sabit açı, maksimum güç, saçılma ve bölgeye göre feedleme.",true);
    GUILayout.EndVertical();GUILayout.Space(30);GUILayout.BeginVertical();
    Text("HAZIR PROJE",true);Text(Project?.name??"Hazırlanıyor…");GUILayout.Space(8);if(Button("Düzenlemeye / antrenmana devam et",true))EnterWorkspace();
