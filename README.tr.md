@@ -12,7 +12,7 @@
 
 Ana ekrandan **Çevrimiçi maça gir** → oda oluştur → daveti paylaş. Oyuncular kendi robotlarıyla katılır; üç mavi ve üç kırmızı robot ortak çarpışma, top, stok ve maç saatiyle çalışır. Herkes hazır olunca otonom ve teleop birlikte başlar. WPILib ve kumanda kullanıcıları aynı odada bulunabilir.
 
-Ayrı Windows sunucusu altı yerin tamamını uzaktan gelen oyunculara ayırır. İnternet için erişilebilir sunucu/VPN adresi gerekir; otomatik genel oda/relay hizmeti bulunmaz. [Katılma ve WPILib rehberi](docs/online.md).
+Ayrı Windows sunucusu altı yerin tamamını uzaktan gelen oyunculara ayırır. Farklı ağlardan oynamak için **İnternet odası aç** düğmesiyle geçici davet oluştur. [Katılma ve WPILib rehberi](docs/online.md).
 
 ![Online oda](docs/images/online-lobby.png)
 
@@ -26,7 +26,7 @@ Varsayılan robot ve örnekler tek **Ana robot** ile başlar. **Robot modelini y
 
 Açılışta sol altta yarı saydam panel ve büyük düğmeler, sağda 3B saha görünür. Boş kırmızı/mavi tribünler, çatı makasları, salon ışıkları ve saha görevlisi masası regional atmosferi oluşturur. Bu salon antrenmanda da görünür. Dört adımlı kurulumla modeli yükle/ölçekle, gerekiyorsa hareketli parçayı ekle, açı-hız verilerini seç ve dene. WPILib bağlıyken eşlenen canlı değerler otomatik kullanılır.
 
-Bağımsız kullanımda sabit açı, **bu noktaya at** veya **bölgeye göre hedef** seçilir. Normal yukarı açı korunur; maksimum güç aşılmaz. Saçılma ayrı ayarlanır. Aynı eylemle kendi tarafına feedleme yapılabilir.
+Yeni atış rehberinde çıkış noktasını robottan ayrı taşı. Her yarı sahaya veya çizdiğin bölgeye kendi hedef noktasını ver. Intake alanı sahnede taşınıp boyutlandırılabilir. Yeni atış rehberinde çıkış noktasını robottan ayrı taşı. Her yarı sahaya veya çizdiğin bölgeye kendi hedef noktasını ver. Intake alanı sahnede taşınıp boyutlandırılabilir. Yeni atış rehberinde çıkış noktasını robottan ayrı taşı. Her yarı sahaya veya çizdiğin bölgeye kendi hedef noktasını ver. Intake alanı sahnede taşınıp boyutlandırılabilir. Bağımsız kullanımda sabit açı, **bu noktaya at** veya **bölgeye göre hedef** seçilir. Normal yukarı açı korunur; maksimum güç aşılmaz. Saçılma ayrı ayarlanır. Aynı eylemle kendi tarafına feedleme yapılabilir.
 
 ![Ana ekran](docs/images/home.png)
 
@@ -75,11 +75,11 @@ Kamera: sağ fare çevirme, tekerlek yakınlaşma, orta fare kaydırma. **F** ro
 
 ## Kaynak ve doğrulama
 
-Unity projesi `Unity/` altında. Sürüm **0.4.8**, yerelde **188 mevcut + 88 online = 276 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
+Unity projesi `Unity/` altında. Sürüm **0.4.9**, yerelde **283 kontrol** ve ayrı internet odası testi geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
 
 Bu uygulama serbest sürüş antrenmanı içindir. Tam FMS/hakemlik, ayrıntılı motor/akü dinamiği veya gerçek kamera görüntü işleme sistemi değildir. Bütün fiziksel kumanda modelleri denenmiş sayılmaz.
 
 Kod **MIT** lisanslıdır. Saha ve üçüncü taraf bileşenlerin kendi lisansları korunur: [bildirimler](THIRD_PARTY_NOTICES.md). FIRST ile resmi bağlantısı olmayan bir topluluk projesidir.
 
-Hazır model ve yayınlanmış verilerle 5–10 dakikalık kurulum hedeflenir; her CAD ve robot kodu için garanti değildir. [Online maç](docs/online.md) doğrudan bağlantı ve kendi sunucunla çalışır. Yönetilen genel oda hizmeti, sunucu göçü ve tam sezon hakem/skor kuralları eklenmedi.
+Hazır model ve yayınlanmış verilerle 5–10 dakikalık kurulum hedeflenir; her CAD ve robot kodu için garanti değildir. [Online maç](docs/online.md) geçici internet daveti, yerel oda ve kendi sunucunla doğrudan bağlantı destekler.
 

@@ -1,12 +1,12 @@
-# Çevrimiçi maç · 0.4.7
+# Çevrimiçi maç
 
 Bir oyuncu oda açar; diğerleri davet koduyla katılır. Oda sahibi de oynayabilir: toplam **6 robot, 3 mavi + 3 kırmızı**. Klavye/kumanda ve WPILib kullanan oyuncular aynı sahada bulunabilir. Uygulama masaüstünde çalışır.
 
 ## Oda aç ve katıl
 
 1. Robot projenizi açın. Ana ekrandan **Çevrimiçi maça gir** seçin. Çalışma alanında aynı giriş **Saha → Çevrimiçi maç** altında bulunur.
-2. Oyuncu adını ve ittifakı seçin. Bir oyuncu **Bu bilgisayarda oda oluştur** düğmesine basar.
-3. Üstteki **Oda** panelinden davet kodunu kopyalayıp diğer oyunculara verin. Kod `adres:5820/oda-anahtarı` biçimindedir.
+2. Oyuncu adını ve ittifakı seçin. Farklı ağlarda oynuyorsanız oda sahibi **İnternet odası aç** düğmesine basar. Aynı ağda **Aynı Wi-Fi / yerel ağ → Yerel oda aç** seçilebilir.
+3. Davet hazır olunca **Daveti kopyala** düğmesine basın ve diğer oyunculara gönderin.
 4. Diğer oyuncular kendi robotlarını açıp kodu yapıştırır ve **Davet koduyla katıl** seçer. Oda sahibinin sezonu kullanılır; uyumsuz saha dosyalarıyla katılım engellenir.
 5. Herkes **Hazırım** seçer. Oda sahibi **Maçı başlat** düğmesine basar. Altı kişi zorunlu değildir; birkaç robotla da antrenman yapılabilir.
 
@@ -16,9 +16,9 @@ Geri sayımın ardından otonom, devre dışı ara ve teleop birlikte başlar. R
 
 ## İnternetten erişim
 
-Davet kodunda otomatik seçilen adres yerel ağ adresidir. Başka ağdan katılmak için oda sahibinin **erişilebilir IP/alan adı veya VPN adresi** kullanılmalıdır. Doğrudan barındırmada seçilen TCP portunun (varsayılan **5820**) oda bilgisayarına erişmesi gerekir. TCP oda trafiği uygulama tarafından şifrelenmez; şifreli taşıma özel ağ/VPN üzerinden sağlanabilir.
+İnternet odası, Windows paketindeki araçla geçici bir tünel açar. Uygulama erişebildiği adresi doğruladıktan sonra daveti gösterir. Daveti **Davet koduyla katıl** alanına yapıştırın. Oda sahibi uygulamayı kapattığında link geçersiz olur. Yeni oturumda yeni bir davet paylaşılır. Geçici hizmetin erişilebilirliği ağınıza ve hizmet sağlayıcısına bağlıdır. [Cloudflare Quick Tunnels](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/)
 
-Bu sürüm doğrudan bağlantı ve kendiniz barındırdığınız sunucuyla çalışır. Herkese açık otomatik oda listesi, yönetilen relay ve otomatik modem ayarı bulunmaz. WPILib bağlantısı her oyuncunun kendi bilgisayarında kalır; NT portunu internet için paylaşmak gerekmez.
+Yerel ağ daveti `adres:port/oda-anahtarı` biçimindedir. Doğrudan barındırılan bir oda için erişilebilir sunucu veya VPN adresi de kullanılabilir. WPILib bağlantısı her oyuncunun kendi bilgisayarında kalır.
 
 ## WPILib robotu ile oyna
 

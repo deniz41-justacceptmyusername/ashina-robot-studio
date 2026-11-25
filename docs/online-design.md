@@ -34,6 +34,6 @@ The existing observe-only path cannot produce consistent shared collisions: inde
 
 `MatchTransport` bounds queues and message sizes and replaces obsolete unsent snapshots. Robots update at about 20 Hz and pieces at 10 Hz. Clients interpolate remote visuals and use kinematic piece replicas. `MatchFieldSync` shares moving REEFSCAPE cages too. Input older than 350 ms brakes; losing the host disables the local DriverStation bridge. Field geometry/tag signatures must agree. Shared projects strip NT endpoints, local code paths and Blockly contents.
 
-Direct reachable addresses and VPN connectivity are supported. A managed public room directory, NAT relay, host migration and rejoining an active match remain future work. The transport is TCP without application TLS. WAN testing across different providers and six physical PCs has not been performed. HUB totals are practice counters; full season officiating is outside this release.
+The Windows app can open a temporary Cloudflare Quick Tunnel to a loopback WebSocket listener. The invitation key is checked before the upgrade. The host verifies the public TLS WebSocket address before showing the link. Direct TCP rooms still support reachable addresses and VPNs. The public tunnel was exercised by two processes on one PC, with the guest's traffic routed through Cloudflare. HUB totals are practice counters.
 
 Reference: [Unity authoritative physics model](https://mp-docs.dl.it.unity3d.com/netcode/current/advanced-topics/physics/).

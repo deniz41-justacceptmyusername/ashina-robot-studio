@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$UnityPath)
+param([Parameter(Mandatory=$true)][string]$UnityPath,[switch]$IncludeInternetRooms)
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 $project=Join-Path $repo 'Unity'
@@ -22,6 +22,7 @@ try {
   }
  }
  Copy-BundleTree $output $bundle
+ if($IncludeInternetRooms){& (Join-Path $PSScriptRoot 'prepare-internet-rooms.ps1') -PlayerDirectory $bundle}
  foreach($name in @('examples','integration')){Copy-BundleTree (Join-Path $repo $name) (Join-Path $bundle $name)}
  Copy-Item -LiteralPath (Join-Path $repo 'LICENSE') -Destination $bundle -Force
  Copy-Item -LiteralPath (Join-Path $repo 'THIRD_PARTY_NOTICES.md') -Destination $bundle -Force

@@ -17,7 +17,11 @@ namespace AshinaStudio {
    App.EnterWorkspace();Check(!App.HomeVisible&&App.Robot.gameObject.activeSelf&&App.ViewCamera.enabled,"Continue opens the workspace explicitly");
    App.SetRunning(true);App.ShowHome();Check(App.HomeVisible&&!App.Running&&!App.Robot.gameObject.activeSelf,"Returning home stops and hides the simulation");App.EnterWorkspace();
    var p=RobotProject.Empty();p.season="practice";p.training.spawnFuel=false;p.initialPose=new[]{2.0,4,0};
-   p.parts.Add(new RobotPart{id="axis",name="Moving mechanism",position=new[]{0.0,0,.5}});await App.LoadProject(p);
+   p.parts.Add(new RobotPart{id="axis",name="Moving mechanism",position=new[]{0.0,0,.5}});await App.LoadProject(p);App.CheckIntakeEditor(Check);App.CheckShotGuide(Check);
+   var drive=new DriveData{maxSpeed=2,fieldRelative=true};
+   Check(StudioApp.RoomManualDrive(Vector2.right,drive,Quaternion.identity,"blue")==Vector3.forward*2&&StudioApp.RoomManualDrive(Vector2.right,drive,Quaternion.identity,"red")==Vector3.back*2&&StudioApp.RoomManualDrive(Vector2.up,drive,Quaternion.identity,"red")==Vector3.right*2,"Red alliance reverses both field-relative translation axes from the driver's station");
+   drive.fieldRelative=false;var redFacing=Quaternion.Euler(0,180,0);
+   Check(Vector3.Distance(StudioApp.RoomManualDrive(Vector2.right,drive,redFacing,"red"),redFacing*Vector3.forward*2)<.001f&&StudioApp.RoomManualDrive(Vector2.right,drive,Quaternion.identity,"red")==Vector3.forward*2,"Robot-relative manual controls use robot heading only");
    Check(App.FitMainRobot(),"Quick setup fits the main model to the carpet");
    var a=new RobotAction{id="test-shot",type="emit",partId="chassis",piece="fuel",key="",button="",pitch=35,spawn=new[]{.3,0,.4},aimMode="point",target=new[]{6.0,4,1.0},maxShotSpeed=12,inheritVelocity=true};App.Project.actions.Add(a);
    Check(App.PlanShot(a,out var stationary,out _),"Point target has a reachable fixed-elevation solution");

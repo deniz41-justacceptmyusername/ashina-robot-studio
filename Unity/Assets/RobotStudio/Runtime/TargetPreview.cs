@@ -7,13 +7,17 @@ namespace AshinaStudio {
   void PreviewTargets(RobotAction action){
    int used=0;bool visible=action!=null&&action.type=="emit"&&!Running&&!networkPanel&&!homeScreen;
    if(visible&&action.aimMode!="fixed"){
-    if(action.aimMode=="zones")foreach(var zone in action.zones){
-     float x=(float)zone.center[0],y=(float)zone.center[1],w=(float)zone.size[0]/2,h=(float)zone.size[1]/2;
-     TargetLine(used++,new[]{Frc.Position(new[]{(double)x-w,y-h,.025}),Frc.Position(new[]{(double)x+w,y-h,.025}),Frc.Position(new[]{(double)x+w,y+h,.025}),Frc.Position(new[]{(double)x-w,y+h,.025}),Frc.Position(new[]{(double)x-w,y-h,.025})},new Color(.2f,.9f,.7f));TargetCross(used++,Frc.Position(zone.target));
+    if(action.aimMode=="zones"){
+     foreach(var zone in action.zones){TargetZone(used++,zone,new Color(.2f,.9f,.7f));TargetCross(used++,Frc.Position(zone.target));}
+     if(pickingAction==action.id&&pendingZone!=null&&pickingStage>=4)TargetZone(used++,pendingZone,new Color(.4f,.78f,1));
     }
     if(action.aimMode=="point"||action.zoneFallback)TargetCross(used++,Frc.Position(action.target));
    }
    for(int i=used;i<targetLines.Count;i++)if(targetLines[i]!=null)targetLines[i].enabled=false;
+  }
+  void TargetZone(int index,AimZone zone,Color color){
+   double x=zone.center[0],y=zone.center[1],w=zone.size[0]/2,h=zone.size[1]/2;
+   TargetLine(index,new[]{Frc.Position(new[]{x-w,y-h,.025}),Frc.Position(new[]{x+w,y-h,.025}),Frc.Position(new[]{x+w,y+h,.025}),Frc.Position(new[]{x-w,y+h,.025}),Frc.Position(new[]{x-w,y-h,.025})},color);
   }
   void TargetCross(int index,Vector3 point){TargetLine(index,new[]{point-Vector3.right*.15f,point+Vector3.right*.15f,point,point-Vector3.forward*.15f,point+Vector3.forward*.15f,point,point-Vector3.up*.15f,point+Vector3.up*.15f},new Color(1,.65f,.25f));}
   void TargetLine(int index,Vector3[] points,Color color){

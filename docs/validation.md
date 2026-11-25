@@ -1,4 +1,4 @@
-# Validation record · v0.4.8
+# Validation record · v0.4.9
 
 Built locally with Unity **6000.1.13f1**: **0 errors, 0 warnings**.
 
@@ -7,15 +7,17 @@ Built locally with Unity **6000.1.13f1**: **0 errors, 0 warnings**.
 | General native player | 131 | CAD, project/motion persistence, stock, fields, real NT4/Blockly |
 | Configured team robot | 13 | Java/YAGSL, Xbox input, intake, shooter, HUB, odometry and PhotonVision |
 | Chassis/cage physics | 13 | Ramp tilt, settling, FUEL contact, airborne traction and six swinging cages |
-| Home and shots | 31 | Home/setup, generic live parameters, moving muzzle, point/region aiming, power and scatter |
+| Home and shots | 38 | Home/setup, generic live parameters, moving muzzle, point/region aiming, power and scatter |
 | Online host | 42 | Six-player room, shared collisions/stock/HUB, timeout/disconnect, field dynamics and online shot rules |
 | Separate native client | 26 | 456 replicas, real WPILib DS/odometry/camera, autonomous selection and host loss |
 | Dedicated server | 20 | Six remote places, ready barrier, clock, control isolation and invalid data rejection |
-| **Total** | **276** | Local executed checks |
+| **Total** | **283** | Local executed checks |
 
 Receipts are in [verification](../verification/). The private configured robot fixture is excluded from the repository and download.
 
 ## Online evidence
+
+A separate run joined the native client through a temporary public HTTPS/WebSocket invitation. Host and client ran on the same physical PC, and traffic went through Cloudflare.
 
 The room test used **two separate native Unity processes** plus four lightweight TCP drivers: six robot identities in total. One native client used a real WPILib NT4 server, the supplied controller and swerve IO helpers, and a real WPILib odometry estimator. A TCP proxy added 40 ms in each direction (80 ms round trip). The full 456-piece field reached the client before enable. A second run used a separate native headless host and six TCP drivers. These were local processes; six physical computers and a real provider-to-provider WAN were not tested.
 
@@ -31,6 +33,6 @@ The shot suite used a real WPILib server for units, references, live values and 
 
 The redesigned native home was visually inspected with empty bleachers, a translucent lower-left menu, large buttons and the regional hall/lighting. The home uses a separate mesh-only presentation, so the simulated robot stays disabled while the menu is open. Venue meshes contain no colliders or rigidbodies; the physics, vision, CAD, Blockly and online suites were rerun. Workspace button styling remains unchanged.
 
-Rooms use direct TCP or self-hosted reachable/VPN addresses. No managed public room service was deployed. Match scoring currently counts REBUILT HUB entries; full active/inactive HUB periods, climb/coral scoring and penalties are not implemented. Vision is geometric and uses configured camera geometry/latency. Prepared CAD and published robot values are required; generic bindings do not infer unpublished internals.
+Rooms support temporary public invitations through Cloudflare Quick Tunnels, direct TCP and self-hosted reachable/VPN addresses. No permanent public host was deployed. Match scoring currently counts REBUILT HUB entries; full active/inactive HUB periods, climb/coral scoring and penalties are not implemented. Vision is geometric and uses configured camera geometry/latency. Prepared CAD and published robot values are required; generic bindings do not infer unpublished internals.
 
 GitHub Actions checks repository integrity and public-package hygiene. It does not run the licensed Unity Editor or the private robot fixture.

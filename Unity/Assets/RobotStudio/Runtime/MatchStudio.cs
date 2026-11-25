@@ -10,6 +10,21 @@ namespace AshinaStudio {
   public MatchRoom Room {get;private set;}
   public bool RoomActive=>Room!=null||roomConnecting;
   bool roomConnecting,roomPanel,roomControlled,roomEmergency,roomNeedReset;RobotProject offlineProject;string roomName="",roomAlliance="blue",roomAddress="",roomError="";int roomPort=MatchProtocol.DefaultPort;Vector2 roomScroll;float roomPublishTick,roomVisionTick;
+  bool internetRoom,internetPreparing,showLanRoom;
+  string ownMatchAlliance;
+  float offlineOrbitYaw;
+  bool offlineFollow;
+  internal string CloudRoomExecutable=>Path.GetFullPath(Path.Combine(Application.dataPath,"../tools/cloudflared.exe"));
+  async Task HostInternetRoom(){
+   if(await HostRoom(0,null,roomAlliance,true)){internetRoom=true;roomPanel=true;await PrepareInternetInvitation();}
+  }
+  async Task PrepareInternetInvitation(){
+   var room=Room;if(room?.Hosting!=true||internetPreparing)return;
+   internetPreparing=true;roomError="";
+   try{await room.EnableInternet(CloudRoomExecutable);if(Room==room)Notice="İnternet daveti hazır.";}
+   catch(Exception e){if(Room==room)roomError=e.Message;}
+   finally{internetPreparing=false;}
+  }
   public async Task<bool> HostRoom(int port=MatchProtocol.DefaultPort,string name=null,string alliance="blue",bool localOnly=false,bool spectator=false){
    if(RoomActive||Busy||Project==null)return false;
    try{PrepareRoom();Room=await MatchRoom.Host(this,port,PlayerName(name),alliance,localOnly,spectator);if(this==null){Room.Dispose();return false;}if(spectator)foreach(var r in Robot.GetComponentsInChildren<Renderer>())r.enabled=false;roomConnecting=false;roomPanel=false;Notice="Oda açıldı · davet kodunu arkadaşlarınla paylaş.";return true;}
@@ -17,24 +32,37 @@ namespace AshinaStudio {
   }
   public async Task<bool> JoinRoom(string invitation,string name=null,string alliance="blue"){
    if(RoomActive||Busy||Project==null)return false;
-   try{string code=invitation.Trim();if(code.StartsWith("ashina://",StringComparison.OrdinalIgnoreCase))code=code.Substring(9);int slash=code.LastIndexOf('/');if(slash<1)throw new Exception("Adres ve oda anahtarını birlikte yapıştır: adres:port/anahtar");string endpoint=code.Substring(0,slash),key=code.Substring(slash+1);var uri=new Uri("tcp://"+endpoint);if(uri.Port<1||key.Length!=32||key.Any(c=>!Uri.IsHexDigit(c)))throw new Exception("Davet kodu geçersiz.");
-    PrepareRoom();Room=await MatchRoom.Join(this,uri.Host,uri.Port,key,PlayerName(name),alliance);roomConnecting=false;roomPanel=false;return true;
+   try{
+    string code=invitation.Trim();Uri internet=null;Uri endpoint=null;string key;
+    if(code.StartsWith("https://",StringComparison.OrdinalIgnoreCase)){
+     var invitationUri=new Uri(code);var path=invitationUri.AbsolutePath.Split('/');
+     if(!invitationUri.Host.EndsWith(".trycloudflare.com",StringComparison.OrdinalIgnoreCase)||!invitationUri.IsDefaultPort||invitationUri.UserInfo.Length!=0||invitationUri.Query.Length!=0||invitationUri.Fragment.Length!=0||path.Length!=3||path[1]!="room")throw new IOException("İnternet daveti geçersiz. Arkadaşının uygulamadan kopyaladığı linkin tamamını yapıştır.");
+     key=path[2];internet=new UriBuilder(invitationUri){Scheme="wss",Port=-1}.Uri;
+    }else{
+     if(code.StartsWith("ashina://",StringComparison.OrdinalIgnoreCase))code=code.Substring(9);
+     int slash=code.LastIndexOf('/');if(slash<1)throw new IOException("Arkadaşının uygulamadan kopyaladığı daveti yapıştır.");
+     endpoint=new Uri("tcp://"+code.Substring(0,slash));key=code.Substring(slash+1);if(endpoint.Port<1)throw new IOException("Yerel davet adresinde port eksik.");
+    }
+    if(key.Length!=32||key.Any(c=>!Uri.IsHexDigit(c)))throw new IOException("Davet anahtarı geçersiz.");
+    PrepareRoom();Room=await MatchRoom.Join(this,endpoint?.Host,endpoint?.Port??0,key,PlayerName(name),alliance,internet);roomConnecting=false;roomPanel=false;return true;
    }catch(Exception e){roomError="Odaya girilemedi: "+e.Message;roomConnecting=false;await LeaveRoom();return false;}
   }
   string PlayerName(string name){var result=(name??roomName).Trim();if(string.IsNullOrEmpty(result))result="Takım "+Project.team;if(result.Length>40)result=result.Substring(0,40);return result;}
   void PrepareRoom(){
-   RecordNode();ProjectIO.Validate(Project);offlineProject=ProjectIO.Parse(ProjectIO.Write(Project));SetRunning(false);PublishDriverStation();EnterWorkspace();networkPanel=quickSetup=help=false;roomEmergency=false;roomNeedReset=true;roomError="";roomConnecting=true;Project.network.mode="physics";ClearLiveMotion();gizmo.Select(null,false);SetRoomCollider(false);
+   ownMatchAlliance=null;offlineOrbitYaw=orbitYaw;offlineFollow=follow;
+   RecordNode();ProjectIO.Validate(Project);offlineProject=ProjectIO.Parse(ProjectIO.Write(Project));SetRunning(false);PublishDriverStation();EnterWorkspace();networkPanel=quickSetup=help=false;roomEmergency=false;roomNeedReset=true;roomError="";internetRoom=false;roomConnecting=true;Project.network.mode="physics";ClearLiveMotion();gizmo.Select(null,false);SetRoomCollider(false);
   }
   void SetRoomCollider(bool enabled){if(hull!=null){hull.enabled=false;foreach(var c in Robot.GetComponents<Collider>())c.enabled=enabled;}if(Robot!=null)foreach(var c in Robot.GetComponentsInChildren<Collider>())if(c.gameObject.layer==9)c.enabled=false;}
   public async Task LeaveRoom(){
    if(Nt?.Connected==true)_ = Nt.Publish("/AshinaSim/Online/active",false,"boolean");var old=Room;Room=null;roomConnecting=false;roomControlled=true;try{SetRunning(false);}finally{roomControlled=false;}PublishDriverStation();old?.Dispose();Pieces.Clear();roomPanel=false;roomEmergency=false;var restore=offlineProject;offlineProject=null;
-   if(restore!=null&&this!=null){while(Busy)await Task.Delay(20);await LoadProject(restore);EnterWorkspace();}if(!string.IsNullOrEmpty(roomError))Notice=roomError;else Notice="Odadan ayrıldın · robot projen korundu.";
+   if(restore!=null&&this!=null){while(Busy)await Task.Delay(20);await LoadProject(restore);orbitYaw=offlineOrbitYaw;follow=offlineFollow;EnterWorkspace();}if(!string.IsNullOrEmpty(roomError))Notice=roomError;else Notice="Odadan ayrıldın · robot projen korundu.";
   }
   internal void ResetRoomWorld(){Pieces.Clear();ResetTraining();}
   internal void RoomTrainingTick()=>TrainingTick();
   internal void ApplyRoomScore(int blue,int red){BlueFuel=blue;RedFuel=red;}
   internal void RoomEpochChanged(){roomNeedReset=true;visionQueues.Clear();visionResults.Clear();lastMuzzleLocal.Clear();muzzleRelativeVelocity.Clear();}
   internal void ApplyRoomRobot(MatchRobotState state){
+   if(ownMatchAlliance==null){ownMatchAlliance=state.alliance;orbitYaw=ownMatchAlliance=="red"?180:0;follow=true;}
    hull.Teleport(MatchProtocol.Vector(state.p),MatchProtocol.Rotation(state.q));heading=Mathf.Atan2(-Robot.forward.x,Robot.forward.z);velocity=MatchProtocol.Vector(state.v);omega=-state.w[1];observedVelocity=velocity;observedOmega=omega;observedAt=DateTime.UtcNow.Ticks;
    Project.inventory=new System.Collections.Generic.Dictionary<string,int>(state.stock);ShotsFired=state.shots;FuelCollected=state.pickups;
    if(roomNeedReset&&Nt?.Connected==true){_ = Nt.Publish("/AshinaSim/Robot/resetPose",Pose);_ = Nt.Publish("/AshinaSim/Robot/resetSequence",++resetSequence,"int");roomNeedReset=false;}
@@ -47,12 +75,26 @@ namespace AshinaStudio {
    ApplyActions(false);Vector3 desired=Vector3.zero;float turn=0;bool allowed=Running&&!roomEmergency;
    if(allowed){bool external=false;if(Nt!=null&&Project.network.driveFromNt){external=true;if(Project.network.mode=="physics")ReadNetworkDrive(ref desired,ref turn);}
     if(!external&&Bridge?.Fresh==true&&blockOutput!=null){var v=blockOutput["velocity"];if(v!=null){desired=Frc.Position(new[]{(double?)v["x"]??0,(double?)v["y"]??0,0});turn=(float?)v["omega"]??0;external=true;}}
-    if(!external&&RobotMode!="autonomous"&&!Typing&&Application.isFocused&&!networkPanel&&!roomPanel){var pad=DriverInput.Read(0);float x=(Input.GetKey(KeyCode.W)?1:0)-(Input.GetKey(KeyCode.S)?1:0)-(float)pad.Axes[1],y=(Input.GetKey(KeyCode.A)?1:0)-(Input.GetKey(KeyCode.D)?1:0)-(float)pad.Axes[0],r=(Input.GetKey(KeyCode.Q)?1:0)-(Input.GetKey(KeyCode.E)?1:0)-(float)pad.Axes[4];if(Project.drive.type=="differential")y=0;var flat=Vector2.ClampMagnitude(new Vector2(x,y),1);desired=Frc.Position(new[]{flat.x*Project.drive.maxSpeed,flat.y*Project.drive.maxSpeed,0});if(!Project.drive.fieldRelative)desired=Robot.rotation*desired;turn=Mathf.Clamp(r,-1,1)*(float)Project.drive.turnRate;}
+    if(!external&&RobotMode!="autonomous"&&!Typing&&Application.isFocused&&!networkPanel&&!roomPanel){
+     var pad=DriverInput.Read(0);
+     float x=(Input.GetKey(KeyCode.W)?1:0)-(Input.GetKey(KeyCode.S)?1:0)-(float)pad.Axes[1];
+     float y=(Input.GetKey(KeyCode.A)?1:0)-(Input.GetKey(KeyCode.D)?1:0)-(float)pad.Axes[0];
+     float rotation=(Input.GetKey(KeyCode.Q)?1:0)-(Input.GetKey(KeyCode.E)?1:0)-(float)pad.Axes[4];
+     desired=RoomManualDrive(new Vector2(x,y),Project.drive,Robot.rotation,ownMatchAlliance);
+     turn=Mathf.Clamp(rotation,-1,1)*(float)Project.drive.turnRate;
+    }
     if(CheckVelocity.HasValue){desired=CheckVelocity.Value;turn=CheckOmega;}
    }
    return new MatchInput{sequence=sequence,echo=MatchLink.Clock,drive=new[]{desired.z,-desired.x,turn},parts=Project.parts.Select(p=>new MatchPartState{id=p.id,p=MatchProtocol.V(Nodes[p.id].transform.localPosition),q=MatchProtocol.Q(Nodes[p.id].transform.localRotation)}).ToArray(),actions=Project.actions.Select(a=>{
     double pitch=a.pitch,yaw=a.yaw,speed=a.speed;bool code=false;if(LiveNumber(a.pitchTopic,a.pitchField,out var pv)){pitch=ShotPlanning.Angle(pv,a.pitchUnit);code=true;}if(LiveNumber(a.yawTopic,a.yawField,out var yv)){yaw=ShotPlanning.Angle(yv,a.yawUnit);code=true;}if(LiveNumber(a.speedTopic,a.speedField,out var sv)){speed=sv*a.speedScale+a.speedOffset;code=true;}
     return new MatchActionInput{id=a.id,down=allowed&&(RobotMode!="autonomous"||Nt!=null||Bridge?.Fresh==true||CheckInput.HasValue)&&ActionDown(a),pitch=(float)pitch,yaw=(float)yaw,speed=Mathf.Clamp((float)speed,0,(float)a.maxShotSpeed),code=code};}).ToArray()};
+  }
+  internal static Vector3 RoomManualDrive(Vector2 axes,DriveData drive,Quaternion robotRotation,string alliance){
+   if(drive.type=="differential")axes.y=0;
+   var limited=Vector2.ClampMagnitude(axes,1)*(float)drive.maxSpeed;
+   var desired=new Vector3(-limited.y,0,limited.x);
+   if(!drive.fieldRelative)return robotRotation*desired;
+   return alliance=="red"?-desired:desired;
   }
   void RoomFixedUpdate(){
    if(Room==null)return;Room.FixedTick();roomPublishTick+=Time.fixedDeltaTime;roomVisionTick+=Time.fixedDeltaTime;
@@ -65,7 +107,7 @@ namespace AshinaStudio {
    if(viewport&&Input.GetMouseButtonDown(0))GUI.FocusControl(null);if(Input.GetKeyDown(KeyCode.F)&&!Typing){follow=true;orbitDistance=6;}
    if(Input.GetKeyDown(KeyCode.Escape)&&!Typing){roomEmergency=true;ApplyRoomEnabled(false,"disabled");Notice="Senin robotun durduruldu. Devam etmek için sol paneli kullan.";}
    if(viewport){if(Input.GetMouseButton(1)){orbitYaw+=Input.GetAxisRaw("Mouse X")*3;orbitPitch=Mathf.Clamp(orbitPitch-Input.GetAxisRaw("Mouse Y")*3,8,85);}orbitDistance=Mathf.Clamp(orbitDistance-Input.mouseScrollDelta.y*.45f,.6f,35);if(Input.GetMouseButton(2)){follow=false;cameraTarget+=(-ViewCamera.transform.right*Input.GetAxisRaw("Mouse X")-ViewCamera.transform.up*Input.GetAxisRaw("Mouse Y"))*.025f*orbitDistance;}}
-   if(follow)cameraTarget=Vector3.Lerp(cameraTarget,Robot.position+Vector3.up*.5f,1-Mathf.Exp(-Time.unscaledDeltaTime*8));var rotation=Quaternion.Euler(orbitPitch,orbitYaw,0);ViewCamera.transform.position=cameraTarget-rotation*Vector3.forward*orbitDistance;ViewCamera.transform.LookAt(cameraTarget);
+   if(follow)cameraTarget=Vector3.Lerp(cameraTarget,Robot.position+Vector3.up*.5f,1-Mathf.Exp(-Time.unscaledDeltaTime*8));var rotation=Quaternion.Euler(orbitPitch,orbitYaw,0);ViewCamera.transform.position=cameraTarget-rotation*Vector3.forward*orbitDistance;ViewCamera.transform.LookAt(cameraTarget);ViewCamera.cullingMask=~((1<<HomeLayer)|(ViewCamera.transform.position.y>=10.2f?1<<ArenaVenue.RoofLayer:0));
    if(Bridge!=null){var message=Bridge.Take();if(message!=null)HandleBlock(message);}if(actionLine!=null)actionLine.enabled=false;
   }
   static string LocalRoomAddress(){try{
@@ -79,14 +121,22 @@ namespace AshinaStudio {
    if(!roomPanel)return;float w=Mathf.Min(680,Screen.width-40),h=Mathf.Min(570,Screen.height-60);GUI.Box(new Rect((Screen.width-w)/2,(Screen.height-h)/2,w,h),"",panel);GUILayout.BeginArea(new Rect((Screen.width-w)/2+24,(Screen.height-h)/2+20,w-48,h-40));
    GUILayout.BeginHorizontal();GUILayout.Label("ÇEVRİMİÇİ MAÇ",title);GUILayout.FlexibleSpace();if(GUILayout.Button("Kapat",button,GUILayout.Width(80))){roomPanel=false;GUI.FocusControl(null);}GUILayout.EndHorizontal();roomScroll=GUILayout.BeginScrollView(roomScroll);
    if(Room==null){Text("Seçili robot: "+Project?.name);Text("Model ve simülasyon ayarları odadaki oyuncularla paylaşılır. Robot kodu ve bilgisayarındaki dosya yolları paylaşılmaz.",true);GUILayout.Space(8);Text("Oyuncu adı",true);roomName=Edit("roomName",roomName);roomAlliance=Cycle("İttifak",roomAlliance,new[]{"blue","red"},new[]{"Mavi","Kırmızı"});GUI.enabled=!roomConnecting&&!Busy;
-    Section("ODA OLUŞTUR");roomPort=(int)Num("roomPort","Bağlantı portu",roomPort,1024,65535);if(Button("Bu bilgisayarda oda oluştur"))_ = HostRoom(roomPort,null,roomAlliance);
+    Section("ODA OLUŞTUR");if(Button("İnternet odası aç",true))_ = HostInternetRoom();
+    showLanRoom=Fold("Aynı Wi-Fi / yerel ağ",showLanRoom);if(showLanRoom){roomPort=(int)Num("roomPort","Bağlantı portu",roomPort,1024,65535);if(Button("Yerel oda aç"))_ = HostRoom(roomPort,null,roomAlliance);}
     Section("ODAYA KATIL");roomAddress=Edit("roomAddress",roomAddress);if(Button("Davet koduyla katıl"))_ = JoinRoom(roomAddress,null,roomAlliance);GUI.enabled=true;
-    Text("Aynı ağda davet kodu yeterlidir. İnternet için oda sahibinin adresi erişilebilir olmalı; özel ağ / VPN adresi veya yönlendirilmiş sunucu adresi kullanılabilir.",true);if(!string.IsNullOrEmpty(roomError))Text(roomError);
+    if(!string.IsNullOrEmpty(roomError))Text(roomError);else Text("Farklı evlerden oynamak için internet odası aç ve arkadaşına daveti gönder.",true);
    }else{DrawRoomLobby();}
    GUILayout.EndScrollView();GUILayout.EndArea();
   }
   void DrawRoomLobby(){
-   if(Room==null)return;Text(Room.Status);if(!string.IsNullOrEmpty(Room.Failure))Text(Room.Failure);if(Room.Hosting){Text("DAVET KODU",true);GUILayout.TextField(RoomInvitation,input);if(Button("Davet kodunu kopyala"))GUIUtility.systemCopyBuffer=RoomInvitation;Text("İnternetten bağlanacak oyuncu, davetteki yerel IP yerine senin erişilebilir IP / VPN adresini kullanır.",true);}
+   if(Room==null)return;Text(Room.Status);if(!string.IsNullOrEmpty(Room.Failure))Text(Room.Failure);
+   if(Room.Hosting){
+    Text(internetRoom?"İNTERNET DAVETİ":"YEREL AĞ DAVETİ",true);
+    string invite=internetRoom?Room.InternetInvitation:RoomInvitation;
+    if(invite.Length>0){GUILayout.TextField(invite,input);if(Button("Daveti kopyala",true))GUIUtility.systemCopyBuffer=invite;}
+    else if(internetPreparing)Text("İnternet daveti hazırlanıyor…");
+    else{Text(string.IsNullOrEmpty(roomError)?"İnternet bağlantısı kapandı.":roomError);if(Button("İnternet davetini yeniden oluştur"))_ = PrepareInternetInvitation();}
+   }
    Section("OYUNCULAR · "+Room.Robots.Count+" / 6");foreach(var r in Room.Robots.Values.OrderBy(r=>r.Slot))Text((r.Alliance=="blue"?"Mavi ":"Kırmızı ")+(r.Slot%3+1)+" · "+r.Name+(r.Id==Room.LocalId?" · sen":"")+(r.Ready?"  ✓ hazır":"  · bekliyor"));
    Section("SENİN ROBOTUN");if(Button(Nt==null?"Kontrol: klavye / kumanda":Nt.Connected?"Kontrol: WPILib bağlı":"Kontrol: WPILib bekliyor"))CycleControlSource();if(Button("WPILib bağlantısı / otonom seçimi")){roomPanel=false;networkPanel=true;}
    DrawAutoChooser();Text("WPILib robotları hız isteğiyle sürülür. Standart konum izleme, ortak çarpışma fiziği için yeterli değildir.",true);

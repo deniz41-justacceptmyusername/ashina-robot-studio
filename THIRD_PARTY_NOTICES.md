@@ -10,6 +10,7 @@ The root MIT license applies to this project's original code and documentation. 
 | glTFast, Unity packages, Newtonsoft JSON | Named license/notice files in `Unity/Assets/StreamingAssets/licenses/`; package declarations in `Unity/Packages/` |
 | Blockly and embedded web dependencies | `Unity/Assets/StreamingAssets/blockly/licenses/` and vendor file headers |
 | Three.js, MessagePack, Rapier components used by the embedded tooling | Named notice files in `Unity/Assets/StreamingAssets/licenses/` |
+| Cloudflare cloudflared Windows helper | Apache-2.0, `tools/cloudflared-LICENSE.txt` in the Windows release. [Upstream release](https://github.com/cloudflare/cloudflared/releases/tag/2026.11.2). |
 
 The Windows release retains the corresponding notices under `RobotStudio_Data/StreamingAssets/`. Java integration helpers require the team's own compatible WPILib/PhotonVision dependencies; this repository does not redistribute a private robot project's vendor bundle.
 

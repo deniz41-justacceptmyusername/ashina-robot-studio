@@ -78,11 +78,13 @@ check(robot["success"] and len(robot["passed"]) == robot["count"] == 13,
 physics = read_json(ROOT / "verification/physics-polish.json")
 check(physics["success"] and len(physics["passed"]) == physics["count"] == 13, "Physics validation receipt mismatch")
 features = read_json(ROOT / "verification/home-and-shots.json")
-check(features["success"] and len(features["passed"]) == features["count"] == 31, "Home/shot validation receipt mismatch")
+check(features["success"] and len(features["passed"]) == features["count"] == release["featureChecks"], "Home/shot validation receipt mismatch")
 online = [read_json(ROOT / ("verification/" + name)) for name in ("online-host.json", "online-client.json", "online-dedicated.json")]
 for suite in online:
     check(suite["success"] and len(suite["passed"]) == suite["count"], "Online validation receipt mismatch")
 check(release["onlineChecks"] == sum(suite["count"] for suite in online), "Online total mismatch")
+internet = read_json(ROOT / "verification/online-internet.json")
+check(internet["success"] and internet["host"]["success"] and internet["client"]["success"], "Internet room validation receipt mismatch")
 check(release["multiplayerImplemented"] and release["onlinePlayers"] == 6, "Online release metadata mismatch")
 check(release["totalChecks"] == general["count"] + robot["count"] + physics["count"] + features["count"] + release["onlineChecks"],
       "Validation total mismatch")

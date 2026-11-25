@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Security.Cryptography;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -12,6 +13,10 @@ namespace AshinaStudio {
   sealed class PieceView {public GamePiece Piece;public Vector3 From,To;public Quaternion RotationFrom,RotationTo;public double At;}
   readonly StudioApp app;readonly List<Peer> peers=new List<Peer>();readonly Dictionary<int,PieceView> pieceViews=new Dictionary<int,PieceView>();readonly HashSet<string> loading=new HashSet<string>();
   MatchFieldSync fieldSync;MatchListener listener;MatchLink server;bool disposed,welcomed,fieldReady;long inputSequence,snapshotSequence,lastSnapshot=-1;double lastSend,lastSnapshotAt,phaseEnd,lastClientClock;int pieceTick;
+  MatchInternetListener internetListener;
+  CloudRoomTunnel tunnel;
+  readonly CancellationTokenSource roomClosed=new CancellationTokenSource();
+  public string InternetInvitation=>tunnel?.Running==true&&tunnel.Address!=null?tunnel.Address+"/room/"+Token:"";
   public readonly Dictionary<string,MatchRobot> Robots=new Dictionary<string,MatchRobot>();
   public bool Hosting {get;private set;}public bool LocalOnly {get;private set;}public string LocalId {get;private set;}public string Token {get;private set;}public int Port=>listener?.Port??0;
   public string FieldHash {get;private set;}
@@ -27,19 +32,35 @@ namespace AshinaStudio {
     if(!spectator){var actor=await MatchRobot.Create(MatchProtocol.Share(app.Project),room.LocalId,name,alliance,alliance=="red"?3:0,true);actor.Spawn(app.Field.Length);actor.HideVisuals();room.Robots.Add(actor.Id,actor);}room.fieldSync=new MatchFieldSync(app.Field,true);room.fieldSync.Reset();room.fieldReady=true;room.welcomed=true;room.Status="Oda açık · oyuncular bekleniyor";app.ResetRoomWorld();return room;
    }catch{room.Dispose();throw;}
   }
-  public static async Task<MatchRoom> Join(StudioApp app,string host,int port,string key,string name,string alliance){
-   var room=new MatchRoom(app);try{var project=MatchProtocol.Share(app.Project);room.server=await MatchLink.Connect(host,port);room.server.Send(new{type="join",protocol=MatchProtocol.Version,key,name,alliance,project});room.Status="Robot odaya gönderiliyor…";return room;}catch{room.Dispose();throw;}
+  public static async Task<MatchRoom> Join(StudioApp app,string host,int port,string key,string name,string alliance,Uri internetAddress=null){
+   var room=new MatchRoom(app);try{var project=MatchProtocol.Share(app.Project);room.server=internetAddress==null?await MatchLink.Connect(host,port):await MatchLink.Connect(internetAddress);room.server.Send(new{type="join",protocol=MatchProtocol.Version,key,name,alliance,project});room.Status="Robot odaya gönderiliyor…";return room;}catch{room.Dispose();throw;}
   }
+  public async Task EnableInternet(string executable){
+   if(!Hosting||disposed)throw new InvalidOperationException("İnternet davetini oda sahibi oluşturabilir.");
+   if(tunnel?.Running==true)return;
+   tunnel?.Dispose();internetListener?.Dispose();
+   internetListener=new MatchInternetListener(Token);
+   try{
+    for(int attempt=0;;attempt++){
+     roomClosed.Token.ThrowIfCancellationRequested();
+     tunnel=new CloudRoomTunnel(executable,internetListener.Port);
+     try{await tunnel.Verify(Token,roomClosed.Token);break;}
+     catch(TunnelAddressUnavailable) when(attempt<2){tunnel.Dispose();tunnel=null;}
+    }
+   }
+   catch{tunnel?.Dispose();tunnel=null;internetListener?.Dispose();internetListener=null;throw;}
+  }
+  void AddIncoming(MatchLink link){if(peers.Count>=8)link.Dispose();else peers.Add(new Peer{Link=link});}
   public void Update(){
    if(disposed)return;
-   if(Hosting){while(listener.Take(out var link)){if(peers.Count>=8){link.Dispose();continue;}peers.Add(new Peer{Link=link});}
+   if(Hosting){while(listener.Take(out var link))AddIncoming(link);if(internetListener!=null)while(internetListener.Take(out var webLink))AddIncoming(webLink);
     foreach(var peer in peers.ToArray()){
      if(!peer.Link.Connected||peer.CloseAt>0&&MatchLink.Clock>=peer.CloseAt||MatchLink.Clock-peer.Since>180&&peer.Id==null||MatchLink.Clock-peer.Link.LastReceived>10){Remove(peer);continue;}
      int budget=16;while(budget-->0&&peer.Link.Take(out var packet))try{HostPacket(peer,packet);}catch(Exception e){Reject(peer,"Oda isteği geçersiz: "+e.Message);break;}
     }
     AdvancePhase();
    }else{
-    if(server?.Connected!=true){Failure=string.IsNullOrEmpty(server?.Error)?"Oda sahibiyle bağlantı kesildi.":server.Error;Status=Failure;app.ApplyRoomEnabled(false,"disabled");return;}
+    if(server?.Connected!=true){if(string.IsNullOrEmpty(Failure))Failure=string.IsNullOrEmpty(server?.Error)?"Oda sahibiyle bağlantı kesildi.":server.Error;Status=Failure;app.ApplyRoomEnabled(false,"disabled");return;}
     int budget=24;while(budget-->0&&server.Take(out var packet))try{ClientPacket(packet);}catch(Exception e){Failure="Oda verisi okunamadı: "+e.Message;server.Dispose();app.ApplyRoomEnabled(false,"disabled");return;}
     if(MatchLink.Clock-server.LastReceived>10){Failure="Oda sahibi yanıt vermiyor.";server.Dispose();app.ApplyRoomEnabled(false,"disabled");}
     foreach(var robot in Robots.Values)robot.Render();RenderPieces();
@@ -119,6 +140,6 @@ namespace AshinaStudio {
   }
   void RenderPieces(){foreach(var view in pieceViews.Values){float t=Mathf.Clamp01((float)((MatchLink.Clock-view.At)/.1));view.Piece.transform.SetPositionAndRotation(Vector3.Lerp(view.From,view.To,t),Quaternion.Slerp(view.RotationFrom,view.RotationTo,t));}}
   void ClearPieceViews(){foreach(var view in pieceViews.Values)if(view.Piece!=null)app.Pieces.Remove(view.Piece);pieceViews.Clear();}
-  public void Dispose(){if(disposed)return;disposed=true;fieldSync?.Dispose();server?.Dispose();listener?.Dispose();foreach(var peer in peers)peer.Link.Dispose();peers.Clear();foreach(var robot in Robots.Values)robot.Dispose();Robots.Clear();ClearPieceViews();}
+  public void Dispose(){if(disposed)return;disposed=true;roomClosed.Cancel();tunnel?.Dispose();internetListener?.Dispose();fieldSync?.Dispose();server?.Dispose();listener?.Dispose();foreach(var peer in peers)peer.Link.Dispose();peers.Clear();foreach(var robot in Robots.Values)robot.Dispose();Robots.Clear();ClearPieceViews();}
  }
 }

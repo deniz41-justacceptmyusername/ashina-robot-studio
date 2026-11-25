@@ -1,11 +1,18 @@
 {
   "success": true,
-  "count": 31,
+  "count": 38,
   "passed": [
     "Normal startup stays on the home screen",
     "Home screen cannot silently enable the robot",
     "Continue opens the workspace explicitly",
     "Returning home stops and hides the simulation",
+    "Intake selects its own scene handle instead of the chassis",
+    "Intake position and dimensions save independently of the chassis",
+    "Capture uses the moved and resized intake volume",
+    "Shot guide places and persists the muzzle independently of the chassis",
+    "Each field half stores its own editable target and height",
+    "Red alliance reverses both field-relative translation axes from the driver's station",
+    "Robot-relative manual controls use robot heading only",
     "Quick setup fits the main model to the carpet",
     "Point target has a reachable fixed-elevation solution",
     "Point aiming preserves the configured elevation",
@@ -34,5 +41,5 @@
     "Fixed-angle target solver launches toward the official HUB",
     "Target-assisted shot enters the real HUB through collision geometry"
   ],
-  "nearestTargetMetres": 0.0276063029
+  "nearestTargetMetres": 0.0333604328
 }
