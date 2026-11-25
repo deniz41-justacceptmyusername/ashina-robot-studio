@@ -33,7 +33,8 @@ namespace AshinaStudio {
     Project=project;Robot=nextRobot;loader=nextLoader;Nodes.Clear();foreach(var item in nextNodes)Nodes.Add(item.Key,item.Value);
     hull=Robot.gameObject.AddComponent<RobotChassis>();ConfigureHull();hull.enabled=false;
     if(nextField!=null){Field?.Dispose();Field=nextField;Field.Root.gameObject.SetActive(true);visionQueues.Clear();visionResults.Clear();}
-    Robot.gameObject.SetActive(true);if(oldRobot!=null)Lifetime.Destroy(oldRobot.gameObject);oldLoader?.Dispose();
+    if(oldRobot!=null){oldRobot.gameObject.SetActive(false);Lifetime.Destroy(oldRobot.gameObject);}
+    Robot.gameObject.SetActive(true);oldLoader?.Dispose();
     committed=true;PrepareInventory();ResetPose();ResetTraining();if(!homeScreen&&Project.network.autoConnect&&Nt==null)ConnectNetwork();Selected="chassis";chosenAction=null;chosenCamera=null;Select(Selected);if(Bridge?.Connected==true&&Project.blocklyProject!=null)Bridge.Send(new{type="project",project=Project.blocklyProject});Notice="Robot hazır · kendi parçalarını ve hareketlerini ekleyebilirsin.";WorldVisible(!homeScreen);InvalidateHomeStage();return true;
    }
    catch(Exception error){Notice="Proje açılamadı: "+error.Message;Debug.LogWarning(Notice);return false;}
@@ -81,13 +82,7 @@ namespace AshinaStudio {
   public GamePiece Emit(RobotAction a){
    if(!PlanShot(a,out var plan,out var reason)){Notice=reason;return null;}if(!Project.training.unlimitedShots){if(Stored(a.piece)<=0)return null;Project.inventory[a.piece]--;}
    a.consume=true;ShotsFired++;var node=Nodes[a.partId].content;LastShotSpeed=plan.Speed;if(a.piece=="fuel")FuelShots++;
-   Vector3 direction=ShotPlanning.Scatter(plan.Direction,(float)a.spreadDegrees,shotRandom);Quaternion orientation=ReleaseOrientation(a,node,direction);
-   var piece=Pieces.Spawn(a.piece,plan.Origin,direction*plan.Speed+plan.Inherited,orientation);
-   if(a.piece=="coral"){
-    Vector3 axis=Vector3.Cross(piece.transform.up,node.up);if(axis.sqrMagnitude<.0001f)axis=Vector3.ProjectOnPlane(node.right,piece.transform.up);
-    float spin=(float)a.coralSpin*Mathf.Deg2Rad;piece.Body.maxAngularVelocity=Mathf.Max(7,Mathf.Abs(spin));piece.Body.angularVelocity=axis.normalized*spin;
-   }
-   return piece;
+   return Pieces.Release(a,node,hull.Bumper,plan,shotRandom);
   }
   public void SetRunning(bool running){if(RoomActive&&!roomControlled)return;if(Busy||Project==null||FileDialogs.IsOpen||running&&homeScreen)return;if(!Running)RecordNode();ClearActionAnchor(false);Running=running;lastMuzzleLocal.Clear();muzzleRelativeVelocity.Clear();velocity=Vector3.zero;omega=0;progress.Clear();lastEmit.Clear();previous.Clear();toggled.Clear();if(!running){foreach(var p in Project.parts){Nodes[p.id].transform.localPosition=Frc.Position(p.position);Nodes[p.id].transform.localRotation=Frc.Rotation(p.rotation);}}else ConfigureHull();SetPicking();if(running)hull.Body.ResetInertiaTensor();hull.enabled=running&&!NetworkPoseOwned;if(running||RoomActive)gizmo.Select(null,false);else RestoreEditorGizmo();GUI.FocusControl(null);}
   void SetPicking(){foreach(var c in Robot.GetComponentsInChildren<Collider>(true))if(c.gameObject.layer==9)c.enabled=!Running;}

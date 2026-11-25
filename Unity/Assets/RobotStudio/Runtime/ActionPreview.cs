@@ -49,7 +49,8 @@ namespace AshinaStudio {
    actionLine.startWidth=actionLine.endWidth=action.type=="capture"?.016f:.009f;
    var mount=Nodes[action.partId].content;Vector3 center=mount.TransformPoint(Frc.Position(action.spawn));Vector3[] points;
    if(action.type=="emit") {
-    points=new Vector3[35];if(!PlanShot(action,out var plan,out _)){actionLine.enabled=false;return;}center=plan.Origin;Vector3 speed=plan.Direction*plan.Speed+plan.Inherited;
+    if(actionAnchor!=null&&anchorAction==action.id)center=actionAnchor.position;
+    points=new Vector3[35];if(!PlanShot(action,out var plan,out _,center)){actionLine.enabled=false;return;}center=plan.Origin;Vector3 speed=plan.Direction*plan.Speed+plan.Inherited;
     for(int i=0;i<points.Length;i++){float time=plan.Flight>0?i*plan.Flight/(points.Length-1):i*.04f;points[i]=ShotPlanning.Position(center,speed,time);}
    } else if(action.captureShape=="sphere") {
     bool editing=actionAnchor!=null&&anchorAction==action.id;if(editing)center=actionAnchor.position;

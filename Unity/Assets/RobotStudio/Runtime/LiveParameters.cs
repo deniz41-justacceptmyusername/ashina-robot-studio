@@ -36,25 +36,19 @@ namespace AshinaStudio {
    Vector3 result=hull!=null&&!hull.Body.isKinematic?hull.Body.GetPointVelocity(point):observedAt!=0&&DateTime.UtcNow.Ticks-observedAt<TimeSpan.TicksPerMillisecond*300?observedVelocity+Vector3.Cross(Vector3.down*observedOmega,point-Robot.position):Vector3.zero;
    if(muzzleRelativeVelocity.TryGetValue(actionId,out var relative))result+=Robot.TransformDirection(relative);return result;
   }
-  public bool PlanShot(RobotAction a,out ShotPlan plan,out string reason){
-   var node=Nodes[a.partId].content;plan=new ShotPlan{Origin=node.TransformPoint(Frc.Position(a.spawn))};reason="";
-   double pitch=a.pitch,yaw=a.yaw,speed=a.speed;bool code=false;
-   if(LiveNumber(a.pitchTopic,a.pitchField,out var pv)){pitch=ShotPlanning.Angle(pv,a.pitchUnit);code=true;}
-   if(LiveNumber(a.yawTopic,a.yawField,out var yv)){yaw=ShotPlanning.Angle(yv,a.yawUnit);code=true;}
-   if(LiveNumber(a.speedTopic,a.speedField,out var sv)){speed=sv*a.speedScale+a.speedOffset;code=true;}
-   Quaternion frame=a.directionFrame=="field"?Quaternion.identity:a.directionFrame=="robot"?Robot.rotation:node.rotation;
-   plan.Direction=(frame*Frc.Direction(pitch,yaw)).normalized;plan.Inherited=a.inheritVelocity?PointVelocity(plan.Origin,a.id):Vector3.zero;
-   if(a.aimMode!="fixed"&&!code){
-    double[] target=a.target;
-    if(a.aimMode=="zones"){
-     var position=Frc.Position(Robot.position);var zone=a.zones.Find(z=>Math.Abs(position[0]-z.center[0])<=z.size[0]/2&&Math.Abs(position[1]-z.center[1])<=z.size[1]/2);
-     if(zone!=null)target=zone.target;else if(!a.zoneFallback){reason="Bu bölgede atış hedefi tanımlı değil.";return false;}
-    }
-    float elevation=Mathf.Atan2(plan.Direction.y,new Vector2(plan.Direction.x,plan.Direction.z).magnitude)*Mathf.Rad2Deg;
-    if(!ShotPlanning.FixedElevation(plan.Origin,Frc.Position(target),plan.Inherited,elevation,(float)a.maxShotSpeed,out var launch,out var flight)){reason="Normal atış açısı ve maksimum güç bu hedefe yetmiyor.";return false;}
-    plan.Direction=launch.normalized;speed=launch.magnitude;plan.Flight=flight;
-   }
-   plan.Speed=Mathf.Clamp((float)speed,0,(float)a.maxShotSpeed);return true;
+  MatchActionInput ReadShotInput(RobotAction action){
+   var input=new MatchActionInput{id=action.id,pitch=(float)action.pitch,yaw=(float)action.yaw};
+   if(LiveNumber(action.pitchTopic,action.pitchField,out var pitch)){input.pitch=(float)ShotPlanning.Angle(pitch,action.pitchUnit);input.code=true;}
+   if(LiveNumber(action.yawTopic,action.yawField,out var yaw)){input.yaw=(float)ShotPlanning.Angle(yaw,action.yawUnit);input.code=true;}
+   input.liveSpeed=LiveNumber(action.speedTopic,action.speedField,out var speed);
+   input.speed=Mathf.Clamp((float)(input.liveSpeed?speed*action.speedScale+action.speedOffset:action.speed),0,(float)action.maxShotSpeed);
+   return input;
+  }
+  public bool PlanShot(RobotAction a,out ShotPlan plan,out string reason,Vector3? previewOrigin=null){
+   var mount=Nodes[a.partId].content;
+   var origin=previewOrigin??mount.TransformPoint(Frc.Position(a.spawn));
+   var inherited=a.inheritVelocity?PointVelocity(origin,a.id):Vector3.zero;
+   return ShotPlanning.Resolve(a,ReadShotInput(a),Robot,mount,origin,inherited,out plan,out reason);
   }
  }
 }

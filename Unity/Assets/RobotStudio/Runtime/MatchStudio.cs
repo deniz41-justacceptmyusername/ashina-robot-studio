@@ -86,8 +86,9 @@ namespace AshinaStudio {
     if(CheckVelocity.HasValue){desired=CheckVelocity.Value;turn=CheckOmega;}
    }
    return new MatchInput{sequence=sequence,echo=MatchLink.Clock,drive=new[]{desired.z,-desired.x,turn},parts=Project.parts.Select(p=>new MatchPartState{id=p.id,p=MatchProtocol.V(Nodes[p.id].transform.localPosition),q=MatchProtocol.Q(Nodes[p.id].transform.localRotation)}).ToArray(),actions=Project.actions.Select(a=>{
-    double pitch=a.pitch,yaw=a.yaw,speed=a.speed;bool code=false;if(LiveNumber(a.pitchTopic,a.pitchField,out var pv)){pitch=ShotPlanning.Angle(pv,a.pitchUnit);code=true;}if(LiveNumber(a.yawTopic,a.yawField,out var yv)){yaw=ShotPlanning.Angle(yv,a.yawUnit);code=true;}if(LiveNumber(a.speedTopic,a.speedField,out var sv)){speed=sv*a.speedScale+a.speedOffset;code=true;}
-    return new MatchActionInput{id=a.id,down=allowed&&(RobotMode!="autonomous"||Nt!=null||Bridge?.Fresh==true||CheckInput.HasValue)&&ActionDown(a),pitch=(float)pitch,yaw=(float)yaw,speed=Mathf.Clamp((float)speed,0,(float)a.maxShotSpeed),code=code};}).ToArray()};
+    var input=ReadShotInput(a);
+    input.down=allowed&&(RobotMode!="autonomous"||Nt!=null||Bridge?.Fresh==true||CheckInput.HasValue)&&ActionDown(a);
+    return input;}).ToArray()};
   }
   internal static Vector3 RoomManualDrive(Vector2 axes,DriveData drive,Quaternion robotRotation,string alliance){
    if(drive.type=="differential")axes.y=0;

@@ -1,6 +1,6 @@
 {
   "success": true,
-  "count": 38,
+  "count": 45,
   "passed": [
     "Normal startup stays on the home screen",
     "Home screen cannot silently enable the robot",
@@ -17,6 +17,11 @@
     "Point target has a reachable fixed-elevation solution",
     "Point aiming preserves the configured elevation",
     "Point solution includes gravity and game-piece drag",
+    "Horizontal angle keeps flight level on a mechanism rolled 90 degrees",
+    "Vertical angle points up on a rolled mechanism even with horizontal angle set",
+    "Point aiming can shoot back across the frame from a low corner",
+    "Aimed shot starts at the exact muzzle and temporarily clears its own bumper",
+    "A low rear-directed shot flies to its target and restores chassis collisions when clear",
     "Unreachable maximum power does not create a shot or consume stock",
     "First field region selects its own target",
     "Second region feeds toward the team's side using the same action",
@@ -29,6 +34,8 @@
     "Real WPILib server publishes live shot parameters",
     "Generic field-relative mechanism rotation converts turns to degrees",
     "Shot direction follows the current moving mechanism pose",
+    "A live speed alone preserves point aiming",
+    "A stopped WPILib shooter cannot drop a point-targeted piece",
     "NT picker binds directly to the selected angle parameter",
     "Live speed is scaled and limited by configured maximum power",
     "Live code angles override target assistance with correct units and reference frame",
@@ -41,5 +48,5 @@
     "Fixed-angle target solver launches toward the official HUB",
     "Target-assisted shot enters the real HUB through collision geometry"
   ],
-  "nearestTargetMetres": 0.0333604328
+  "nearestTargetMetres": 0.0252815764
 }

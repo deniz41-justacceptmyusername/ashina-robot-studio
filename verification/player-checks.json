@@ -75,7 +75,7 @@
     "Sıfır eğim ve sıfır dönüş seçilince coral yatay ve dönmeden çıkıyor",
     "Dikey atışta ve ters yönde hızlı dönüşte geçerli fiziksel dönme ekseni korunuyor",
     "Coral dönüş hızı robot dosyasına kaydedilip geri açılıyor",
-    "Coral duruşu 55° iken uçuş 12° olabilir; montaj yönü her ikisine doğru uygulanır",
+    "Yana 90° yatmış montajda uçuş ve coral duruşu bağımsız yatay ve dikey açıları korur",
     "Uçuş açısını değiştirmek bağımsız coral duruşunu değiştirmez",
     "Eşyanın duruş açısını değiştirmek çıkış hızını veya uçuş yönünü değiştirmez",
     "Kendi eksenindeki dönüş uzun eksenin yönünden bağımsız ayarlanabiliyor",

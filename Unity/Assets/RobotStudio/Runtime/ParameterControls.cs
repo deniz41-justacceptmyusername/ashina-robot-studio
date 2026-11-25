@@ -34,12 +34,12 @@ namespace AshinaStudio {
    DrawAimMode(action,"point","Tek hedefe at");
    DrawAimMode(action,"zones","Bölgeye göre farklı hedeflere at");
    GUILayout.Space(8);
-   action.pitch=Num("pitch"+action.id,"Yukarı açı · derece",action.pitch,-90,90);
+   action.pitch=Num("pitch"+action.id,"Dikey uçuş açısı · derece",action.pitch,-90,90);
    if(action.aimMode=="fixed"){
-    action.yaw=Num("yaw"+action.id,"Yana açı · derece",action.yaw,-180,180);
+    action.yaw=Num("yaw"+action.id,"Yatay uçuş açısı · derece",action.yaw,-180,180);
     action.speed=Num("speed"+action.id,"Çıkış hızı · m/s",action.speed,0,40);
    }else{
-    Text("Hedefe göre yön ve hız ayarlanır. Yukarı açın korunur.",true);
+    Text("Hedefe göre yatay yön ve hız ayarlanır. Dikey açı korunur.",true);
     if(action.aimMode=="zones")DrawShotZones(action);
     else DrawSingleShotTarget(action,false);
    }
@@ -100,9 +100,9 @@ namespace AshinaStudio {
    orbitDistance=Mathf.Clamp(Mathf.Max(fieldHeight,fieldWidth)*1.22f,7,35);
   }
   void DrawShotLinks(RobotAction a){
-   Section("CANLI ATIŞ DEĞERLERİ");Text("Bağladığın açı ve hızlar WPILib bağlıyken otomatik kullanılır; hedef yardımı bu değerleri değiştirmez.",true);
-   a.directionFrame=Cycle("Açı referansı",a.directionFrame,new[]{"part","robot","field"},new[]{"Seçili mekanizma","Robot","Saha"});
-   BindingButton("Yukarı açı",a.pitchTopic,"pitch",a.id);a.pitchUnit=Cycle("Yukarı açı birimi",a.pitchUnit,new[]{"degrees","radians","rotations"},new[]{"Derece","Radyan","Tur"});
+   Section("CANLI ATIŞ DEĞERLERİ");Text("WPILib açı gönderiyorsa atış yönünü kod belirler. Yalnız hız bağlıysa hedefli atışta üst sınır olarak kullanılır.",true);
+   a.directionFrame=Cycle("Yatay yön referansı",a.directionFrame,new[]{"part","robot","field"},new[]{"Seçili mekanizma","Robot","Saha"});
+   BindingButton("Dikey açı",a.pitchTopic,"pitch",a.id);a.pitchUnit=Cycle("Dikey açı birimi",a.pitchUnit,new[]{"degrees","radians","rotations"},new[]{"Derece","Radyan","Tur"});
    BindingButton("Yatay açı",a.yawTopic,"yaw",a.id);a.yawUnit=Cycle("Yatay açı birimi",a.yawUnit,new[]{"degrees","radians","rotations"},new[]{"Derece","Radyan","Tur"});
    BindingButton("Çıkış hızı",a.speedTopic,"speed",a.id);BindingButton("Atış izni / komut",a.topic,"trigger",a.id);
    if(Button("Sadece açı bağlantılarını temizle")){a.pitchTopic=a.yawTopic="";}

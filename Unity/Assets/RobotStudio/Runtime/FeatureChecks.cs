@@ -27,6 +27,7 @@ namespace AshinaStudio {
    Check(App.PlanShot(a,out var stationary,out _),"Point target has a reachable fixed-elevation solution");
    Check(Math.Abs(Math.Asin(stationary.Direction.y)*180/Math.PI-35)<.01,"Point aiming preserves the configured elevation");
    Check(Vector3.Distance(ShotPlanning.Position(stationary.Origin,stationary.Direction*stationary.Speed+stationary.Inherited,stationary.Flight),Frc.Position(a.target))<.02,"Point solution includes gravity and game-piece drag");
+   await CheckMuzzleRelease();
    a.maxShotSpeed=1;int shots=App.ShotsFired;App.Project.inventory["fuel"]=2;
    Check(!App.PlanShot(a,out _,out _)&&App.Emit(a)==null&&App.ShotsFired==shots&&App.Stored("fuel")==2,"Unreachable maximum power does not create a shot or consume stock");a.maxShotSpeed=12;
    a.zones.Add(new AimZone{name="Near",center=new[]{2.0,4},size=new[]{2.0,2},target=new[]{6.0,4,1.0}});a.zones.Add(new AimZone{name="Feed",center=new[]{8.0,4},size=new[]{2.0,2},target=new[]{3.0,4,.1}});a.aimMode="zones";
@@ -44,6 +45,9 @@ namespace AshinaStudio {
    App.SetRunning(true);await Task.Delay(150);var forward=App.Nodes["axis"].transform.forward;
    Check(Vector3.Angle(forward,Vector3.left)<.1,"Generic field-relative mechanism rotation converts turns to degrees");
    a.aimMode="fixed";a.partId="axis";a.pitch=0;a.yaw=0;a.inheritVelocity=false;Check(App.PlanShot(a,out var rotating,out _)&&Vector3.Angle(rotating.Direction,Vector3.left)<.1,"Shot direction follows the current moving mechanism pose");
+   a.partId="chassis";a.aimMode="point";a.pitch=35;a.speedTopic="/Feature/Speed";a.speedScale=1;
+   Check(App.PlanShot(a,out var liveTarget,out _)&&liveTarget.Flight>0&&Vector3.Distance(ShotPlanning.Position(liveTarget.Origin,liveTarget.Direction*liveTarget.Speed,liveTarget.Flight),Frc.Position(a.target))<.02,"A live speed alone preserves point aiming");
+   a.speedScale=0;Check(!App.PlanShot(a,out _,out _),"A stopped WPILib shooter cannot drop a point-targeted piece");
    App.BeginBinding("pitch",a.id);Check(App.PickBinding("/Feature/Pitch","")&&a.pitchTopic=="/Feature/Pitch","NT picker binds directly to the selected angle parameter");
    a.partId="chassis";a.yawTopic="/Feature/Yaw";a.yawUnit="radians";a.directionFrame="field";a.speedTopic="/Feature/Speed";a.speedScale=.1;a.maxShotSpeed=5;a.aimMode="point";a.target=new[]{100.0,100,4};
    Check(App.PlanShot(a,out var live,out _)&&Math.Abs(live.Speed-5)<.001,"Live speed is scaled and limited by configured maximum power");
@@ -63,5 +67,46 @@ namespace AshinaStudio {
    int previousScore=App.BlueFuel;Check(App.Emit(a)!=null,"Fixed-angle target solver launches toward the official HUB");await Wait(()=>App.BlueFuel>previousScore,"Target-assisted shot enters the real HUB through collision geometry");
    App.ShowHome();File.WriteAllText(Path.Combine(Output,"result.json"),JsonConvert.SerializeObject(new{success=true,count=passed.Count,passed,nearestTargetMetres=nearest},Formatting.Indented));Application.Quit(0);
   }catch(Exception e){Debug.LogException(e);File.WriteAllText(Path.Combine(Output,"result.json"),JsonConvert.SerializeObject(new{success=false,count=passed.Count,passed,error=e.ToString()},Formatting.Indented));Application.Quit(2);}}
+
+  async Task CheckMuzzleRelease(){
+   var axle=App.Nodes["axis"].transform;
+   var original=axle.localRotation;
+   axle.localRotation=Frc.Rotation(new[]{90.0,0,0});
+   var action=new RobotAction{type="emit",partId="axis",piece="fuel",pitch=0,yaw=90,inheritVelocity=false};
+   Check(App.PlanShot(action,out var flat,out _)&&Vector3.Angle(flat.Direction,Vector3.left)<.05f,"Horizontal angle keeps flight level on a mechanism rolled 90 degrees");
+   action.pitch=90;
+   Check(App.PlanShot(action,out var vertical,out _)&&Vector3.Angle(vertical.Direction,Vector3.up)<.05f,"Vertical angle points up on a rolled mechanism even with horizontal angle set");
+   axle.localRotation=original;
+
+   var project=App.Project;
+   project.training.unlimitedShots=true;
+   App.SetRunning(true);
+   action.partId="chassis";action.aimMode="point";action.pitch=30;
+   action.target=new[]{.85,4.5,.27};
+   var mount=App.Nodes["chassis"].content;
+   var origin=App.Robot.TransformPoint(Frc.Position(new[]{.19,-.19,.16}));
+   action.spawn=Frc.Position(mount.InverseTransformPoint(origin));
+   Check(App.PlanShot(action,out var plan,out _)&&plan.Direction.z<0,"Point aiming can shoot back across the frame from a low corner");
+   var piece=App.Emit(action);
+   var bumper=App.Robot.GetComponent<RobotChassis>().Bumper;
+   var shape=piece.GetComponentInChildren<Collider>();
+   Check(Vector3.Distance(piece.Body.position,origin)<.001f&&Physics.GetIgnoreCollision(shape,bumper),"Aimed shot starts at the exact muzzle and temporarily clears its own bumper");
+   float nearest=float.PositiveInfinity, until=Time.time+plan.Flight+.25f;
+   var previous=origin;
+   var target=Frc.Position(action.target);
+   while(Time.time<until){
+    var current=piece.Body.position;
+    var step=current-previous;
+    float progress=Mathf.Clamp01(Vector3.Dot(target-previous,step)/Mathf.Max(.000001f,step.sqrMagnitude));
+    nearest=Mathf.Min(nearest,Vector3.Distance(previous+step*progress,target));
+    previous=current;
+    await Task.Yield();
+   }
+   if(nearest>=.16f)throw new Exception($"Low shot missed by {nearest:F3} m; flight {plan.Flight:F2} s.");
+   Check(!Physics.GetIgnoreCollision(shape,bumper),"A low rear-directed shot flies to its target and restores chassis collisions when clear");
+   App.Pieces.Clear();
+   App.SetRunning(false);
+   project.training.unlimitedShots=false;
+  }
  }
 }

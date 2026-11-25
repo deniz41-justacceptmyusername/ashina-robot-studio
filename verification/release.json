@@ -1,13 +1,13 @@
 {
-  "version": "0.4.9",
+  "version": "0.4.10",
   "unity": "6000.1.13f1",
   "platform": "Windows x64",
   "generalChecks": 131,
   "robotIntegrationChecks": 13,
   "physicsChecks": 13,
-  "featureChecks": 38,
-  "onlineChecks": 88,
-  "totalChecks": 283,
+  "featureChecks": 45,
+  "onlineChecks": 89,
+  "totalChecks": 291,
   "buildErrors": 0,
   "buildWarnings": 0,
   "robotFixtureIncluded": false,
@@ -25,7 +25,7 @@
     "physicalPcWanTested": false,
     "managedRelayDeployed": false,
     "internetProviderLoopbackTested": true,
-    "internetHostAssertions": 43,
+    "internetHostAssertions": 44,
     "internetClientAssertions": 26
   },
   "visualReview": [
@@ -33,7 +33,7 @@
     "independent targets for both field halves",
     "three-step shot setup"
   ],
-  "nativeAssemblySha256": "dc9e91d85e1d3b7b94bd29081e7a24bab066f0a9293e2df348cc294d56f9e6b3",
+  "nativeAssemblySha256": "61547b58d9a50e950f232efd4324b245e5a729562565846bd74b158d48e69921",
   "portableEntry": "RobotStudio.exe",
   "presentation": {
     "emptyStands": true,

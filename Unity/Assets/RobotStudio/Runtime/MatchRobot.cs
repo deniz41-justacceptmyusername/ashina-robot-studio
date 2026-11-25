@@ -59,16 +59,9 @@ namespace AshinaStudio {
   public GamePiece Emit(GamePieces pieces,RobotAction a,MatchActionInput sample){
    if(!Project.training.unlimitedShots&&(!Project.inventory.TryGetValue(a.piece,out int stock)||stock<=0))return null;
    var mount=Nodes[a.partId].content;Vector3 origin=mount.TransformPoint(Frc.Position(a.spawn));
-   var frame=a.directionFrame=="field"?Quaternion.identity:a.directionFrame=="robot"?Root.rotation:mount.rotation;
-   Vector3 direction=frame*Frc.Direction(sample.pitch,sample.yaw);float speed=Mathf.Clamp(sample.speed,0,(float)a.maxShotSpeed);
    Vector3 inherited=a.inheritVelocity?Chassis.Body.GetPointVelocity(origin):Vector3.zero;if(a.inheritVelocity&&muzzleVelocity.TryGetValue(a.id,out var relative))inherited+=Root.TransformDirection(relative);
-   if(a.aimMode!="fixed"&&!sample.code){
-    var target=a.target;if(a.aimMode=="zones"){var frc=Frc.Position(Root.position);var zone=a.zones.Find(z=>Math.Abs(frc[0]-z.center[0])<=z.size[0]/2&&Math.Abs(frc[1]-z.center[1])<=z.size[1]/2);if(zone==null&&!a.zoneFallback)return null;if(zone!=null)target=zone.target;}
-    float elevation=Mathf.Atan2(direction.y,new Vector2(direction.x,direction.z).magnitude)*Mathf.Rad2Deg;
-    if(!ShotPlanning.FixedElevation(origin,Frc.Position(target),inherited,elevation,(float)a.maxShotSpeed,out var launch,out _))return null;direction=launch.normalized;speed=launch.magnitude;
-   }
-   direction=ShotPlanning.Scatter(direction,(float)a.spreadDegrees,random);var rotation=StudioApp.ReleaseOrientation(a,mount,direction);var piece=pieces.Spawn(a.piece,origin,direction*speed+inherited,rotation);
-   if(a.piece=="coral"){var axis=Vector3.Cross(piece.transform.up,mount.up);if(axis.sqrMagnitude<.0001f)axis=Vector3.ProjectOnPlane(mount.right,piece.transform.up);float spin=(float)a.coralSpin*Mathf.Deg2Rad;piece.Body.maxAngularVelocity=Mathf.Max(7,Math.Abs(spin));piece.Body.angularVelocity=axis.normalized*spin;}
+   if(!ShotPlanning.Resolve(a,sample,Root,mount,origin,inherited,out var plan,out _))return null;
+   var piece=pieces.Release(a,mount,Chassis.Bumper,plan,random);
    if(!Project.training.unlimitedShots)Project.inventory[a.piece]--;Shots++;return piece;
   }
   void Capture(GamePieces pieces,RobotAction a,bool active){

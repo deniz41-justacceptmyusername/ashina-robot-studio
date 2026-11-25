@@ -5,6 +5,7 @@ namespace AshinaStudio {
  // loose game pieces collide with the chassis and never become a ground ray.
  public sealed class RobotChassis : MonoBehaviour {
   public Rigidbody Body {get;private set;}
+  internal Collider Bumper=>bumper;
   public Vector3 GroundNormal {get;private set;}=Vector3.up;
   public int GroundedWheels {get;private set;}
   public float Acceleration=6;

@@ -8,7 +8,7 @@
     "Loose FUEL does not act as a flat support platform",
     "Airborne chassis falls under gravity",
     "No ground traction or yaw steering in midair",
-    "Official REBUILT ramp tilts and lifts the chassis (tilt=12,4, high=0,094, x=9,64)",
+    "Official REBUILT ramp tilts and lifts the chassis (tilt=12,4, high=0,094, x=9,63)",
     "Robot traverses the real ramp collision geometry",
     "Suspension settles after leaving the ramp",
     "All six REEFSCAPE cages are dynamic",
@@ -16,7 +16,7 @@
     "Deep cage swings after a physical impulse",
     "Cage remains attached at its suspension point"
   ],
-  "rampMaximumTilt": 12.3878565,
-  "rampMaximumHeight": 0.0939364359,
-  "ballMaximumRideHeight": 0.0007418745
+  "rampMaximumTilt": 12.365406,
+  "rampMaximumHeight": 0.09396029,
+  "ballMaximumRideHeight": 0.000752183551
 }

@@ -11,7 +11,8 @@ namespace AshinaStudio {
    var floor=new GameObject("Coral dönüş fizik testi zemini");floor.transform.position=Frc.Position(new[]{1.0,-2.0,-.06});var box=floor.AddComponent<BoxCollider>();box.size=new Vector3(4,.12f,4);
    try {
     mount.localRotation=Frc.Rotation(new[]{15.0,0,30});action.spawn=Frc.Position(mount.InverseTransformPoint(Frc.Position(new[]{1.0,-2.0,1.2})));
-    Vector3 direction=mount.TransformDirection(Frc.Direction(action.pitch,action.yaw));var coral=App.Emit(action);
+    var coral=App.Emit(action);
+    Vector3 direction=coral.Body.linearVelocity.normalized;
     Check(Vector3.Dot(coral.transform.up,direction)>.999f&&Mathf.Abs(coral.transform.up.y)<.95f,"Coral uzun ekseni dönmüş montajın atış yönüne hizalanıyor; dik oluşturulmuyor");
     Check(Math.Abs(coral.Body.angularVelocity.magnitude-Math.PI)<.001&&coral.Body.constraints==RigidbodyConstraints.None,"Coral ayarlanan 180 derece/sn hızıyla serbestçe dönebiliyor");
     var initial=coral.Body.rotation;await Task.Delay(230);

@@ -8,7 +8,7 @@ namespace AshinaStudio {
    // An explicit perpendicular up keeps the frame stable even for vertical release angles.
    Quaternion frame=Quaternion.LookRotation(forward,Vector3.Cross(forward,right))*Quaternion.AngleAxis((float)action.pieceRoll,Vector3.forward);
    Quaternion modelBasis=action.piece=="coral"?Quaternion.FromToRotation(Vector3.up,Vector3.forward):Quaternion.identity;
-   return mount.rotation*frame*modelBasis;
+   return ShotPlanning.LevelHeading(mount.rotation)*frame*modelBasis;
   }
  }
 }

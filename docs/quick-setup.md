@@ -11,17 +11,17 @@ The 5–10 minute goal assumes a prepared model and already-published simulation
 
 There is no dedicated turret subsystem in the simulator. Parent a moving part to the main robot and bind `rotation.z` to its yaw value. Bind another part to the vertical axis if a hood moves separately. Degree, radian and turn units are supported. A field-relative yaw value subtracts the parent's current heading, so the mechanism can stay pointed while the chassis turns.
 
-If the geometry already follows the measured joint angles, leave the emitter's extra yaw/pitch at its local nozzle offsets. Do not bind the same angle again at the emitter. If no moving CAD is available, bind the emitter direction directly and select the appropriate part/robot/field reference.
+The nozzle position follows its attached mechanism. For a rotating part, select the mechanism as the horizontal reference and leave the yaw offset at zero if the part already points in the desired direction. Enter or bind the launch elevation measured from horizontal, including the hood angle if the hood moves. You can bind direction directly and choose a robot or field heading when moving CAD is unavailable.
 
 ## Offline targets and feeding
 
-Choose **Bu noktaya at**, pick XY in the field, and set target height. The normal elevation remains unchanged. The solver chooses heading and relative launch speed using inherited muzzle motion, gravity and the game's damping. Maximum speed bounds the solution; an unreachable shot creates no piece and consumes no inventory.
+Choose **Tek hedefe at**, pick XY in the field, and set target height. The normal elevation remains unchanged. The solver chooses heading and relative launch speed using inherited muzzle motion, gravity and the game's damping. An unreachable shot creates no piece and consumes no inventory.
 
 Choose **Bölgeye göre hedef** to draw two rectangle corners and then that region's target. Each region has its own target height. Regions are checked in list order; the first match wins. Outside all regions, shots are blocked unless the explicit default-target option is enabled. Feeding toward your side uses this same action with a low target height.
 
-Scatter is a bounded cone around the nominal direction. The nominal elevation remains configured; individual scattered shots can deviate. After launch, pieces receive no target-seeking correction and can hit the field or other objects.
+Scatter is a bounded cone around the nominal direction. Individual shots can deviate from the configured elevation. During release, the piece clears the firing robot's bumper. The field and other robots still collide with the piece, and the launcher's own collision returns once the piece is clear.
 
-When configured NT pitch/yaw/speed values are available, robot code owns the shot solution and offline point assistance does not replace it. Code-owned angles use explicit units and reference frames. Power and scatter still apply.
+Live NT pitch or yaw switches to code-directed shooting. If the only live parameter is speed, point and region aiming still apply and the live speed caps the calculated shot. Code angles use the selected units, elevation above the field, and the selected heading reference.
 
 ## Limits
 

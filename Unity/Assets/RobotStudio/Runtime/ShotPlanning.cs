@@ -4,6 +4,33 @@ using UnityEngine;
 
 namespace AshinaStudio {
  public static class ShotPlanning {
+  internal static Quaternion LevelHeading(Quaternion orientation){
+   var forward=Vector3.ProjectOnPlane(orientation*Vector3.forward,Vector3.up);
+   if(forward.sqrMagnitude<.0001f)forward=Vector3.Cross(orientation*Vector3.right,Vector3.up);
+   return Quaternion.LookRotation(forward,Vector3.up);
+  }
+
+  internal static bool Resolve(RobotAction action,MatchActionInput input,Transform robot,Transform mount,Vector3 origin,Vector3 inherited,out ShotPlan plan,out string reason){
+   var orientation=action.directionFrame=="field"?Quaternion.identity:action.directionFrame=="robot"?robot.rotation:mount.rotation;
+   float maximum=(float)action.maxShotSpeed;
+   plan=new ShotPlan{Origin=origin,Inherited=inherited,Direction=LevelHeading(orientation)*Frc.Direction(input.pitch,input.yaw),Speed=Mathf.Clamp(input.speed,0,maximum)};
+   reason="";
+   if(action.aimMode=="fixed"||input.code)return true;
+   double[] target=action.target;
+   if(action.aimMode=="zones"){
+    var position=Frc.Position(robot.position);
+    var zone=action.zones.Find(z=>Math.Abs(position[0]-z.center[0])<=z.size[0]/2&&Math.Abs(position[1]-z.center[1])<=z.size[1]/2);
+    if(zone!=null)target=zone.target;
+    else if(!action.zoneFallback){reason="Bu bölgede atış hedefi tanımlı değil.";return false;}
+   }
+   if(input.liveSpeed)maximum=plan.Speed;
+   if(!FixedElevation(origin,Frc.Position(target),inherited,input.pitch,maximum,out var launch,out var flight)){
+    reason=input.liveSpeed?"Dikey açı ve robot kodunun verdiği hız bu hedefe yetmiyor.":"Dikey açı ve maksimum hız bu hedefe yetmiyor.";
+    return false;
+   }
+   plan.Direction=launch.normalized;plan.Speed=launch.magnitude;plan.Flight=flight;return true;
+  }
+
   // Solve flight time while preserving the configured elevation. No trajectory
   // assistance runs after the piece is released.
   public static bool FixedElevation(Vector3 origin,Vector3 target,Vector3 inherited,float degrees,float maximum,out Vector3 relative,out float flight){

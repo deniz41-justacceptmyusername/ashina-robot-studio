@@ -124,8 +124,8 @@ namespace AshinaStudio {
   void DrawReleaseOrientation(RobotAction action){
    action.orientationMode=Cycle("Eşyanın duruşu",action.orientationMode,new[]{"auto","custom"},new[]{"Otomatik","Bağımsız açı"});
    if(action.orientationMode=="custom"){
-    action.piecePitch=Num("piecePitch"+action.id,"Eşyanın eğimi · derece",action.piecePitch,-180,180);
-    action.pieceYaw=Num("pieceYaw"+action.id,"Eşyanın yönü · derece",action.pieceYaw,-180,180);
+    action.piecePitch=Num("piecePitch"+action.id,"Dikey duruş · derece",action.piecePitch,-180,180);
+    action.pieceYaw=Num("pieceYaw"+action.id,"Yatay duruş · derece",action.pieceYaw,-180,180);
     action.pieceRoll=Num("pieceRoll"+action.id,"Kendi ekseninde dönüş · derece",action.pieceRoll,-180,180);
    }
    if(action.piece=="coral")action.coralSpin=Num("coralSpin"+action.id,"Coral dönüşü · derece/sn",action.coralSpin,-1440,1440);
