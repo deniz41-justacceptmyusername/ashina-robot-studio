@@ -24,7 +24,7 @@ Varsayılan robot ve örnekler tek **Ana robot** ile başlar. **Robot modelini y
 
 ## Ana ekran ve genel atış sistemi
 
-Uygulama ana ekranda açılır. Dört adımlı kurulumla modeli yükle/ölçekle, gerekiyorsa hareketli parçayı ekle, açı-hız verilerini seç ve dene. WPILib bağlıyken eşlenen canlı değerler otomatik kullanılır.
+Açılışta sol altta yarı saydam panel ve büyük düğmeler, sağda 3B saha görünür. Boş kırmızı/mavi tribünler, çatı makasları, salon ışıkları ve saha görevlisi masası regional atmosferi oluşturur. Bu salon antrenmanda da görünür. Dört adımlı kurulumla modeli yükle/ölçekle, gerekiyorsa hareketli parçayı ekle, açı-hız verilerini seç ve dene. WPILib bağlıyken eşlenen canlı değerler otomatik kullanılır.
 
 Bağımsız kullanımda sabit açı, **bu noktaya at** veya **bölgeye göre hedef** seçilir. Normal yukarı açı korunur; maksimum güç aşılmaz. Saçılma ayrı ayarlanır. Aynı eylemle kendi tarafına feedleme yapılabilir.
 
@@ -75,7 +75,7 @@ Kamera: sağ fare çevirme, tekerlek yakınlaşma, orta fare kaydırma. **F** ro
 
 ## Kaynak ve doğrulama
 
-Unity projesi `Unity/` altında. Sürüm **0.4.7**, yerelde **188 mevcut + 88 online = 276 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
+Unity projesi `Unity/` altında. Sürüm **0.4.8**, yerelde **188 mevcut + 88 online = 276 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
 
 Bu uygulama serbest sürüş antrenmanı içindir. Tam FMS/hakemlik, ayrıntılı motor/akü dinamiği veya gerçek kamera görüntü işleme sistemi değildir. Bütün fiziksel kumanda modelleri denenmiş sayılmaz.
 

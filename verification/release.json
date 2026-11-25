@@ -1,5 +1,5 @@
 {
-  "version": "0.4.7",
+  "version": "0.4.8",
   "unity": "6000.1.13f1",
   "platform": "Windows x64",
   "generalChecks": 131,
@@ -26,10 +26,18 @@
     "managedRelayDeployed": false
   },
   "visualReview": [
-    "home",
-    "online room entry",
-    "native room lobby"
+    "regional arena home",
+    "empty red/blue bleachers",
+    "translucent lower-left menu",
+    "large controls",
+    "indoor lighting"
   ],
-  "nativeAssemblySha256": "0d773f49cf9afd3a4ac15a493f9aa4ec1e42b9e3d1d913242b2d10a5f6121c3b",
-  "portableEntry": "RobotStudio.exe"
+  "nativeAssemblySha256": "dd66dc873c0b1a4bac59165598d638900bfa45a37feb5dc6ee8705748b17039c",
+  "portableEntry": "RobotStudio.exe",
+  "presentation": {
+    "emptyStands": true,
+    "combinedVenueMeshes": true,
+    "decorativeColliders": false,
+    "homeUsesSeparateVisualSnapshot": true
+  }
 }

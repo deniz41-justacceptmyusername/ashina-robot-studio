@@ -1,4 +1,4 @@
-# Validation record · v0.4.7
+# Validation record · v0.4.8
 
 Built locally with Unity **6000.1.13f1**: **0 errors, 0 warnings**.
 
@@ -29,7 +29,7 @@ The shot suite used a real WPILib server for units, references, live values and 
 
 ## Visual review and limits
 
-Native home, room entry and room lobby screenshots were inspected. The beveled buttons are retained; online play has a compact match sidebar. General CAD, shot and offline workflows were rerun.
+The redesigned native home was visually inspected with empty bleachers, a translucent lower-left menu, large buttons and the regional hall/lighting. The home uses a separate mesh-only presentation, so the simulated robot stays disabled while the menu is open. Venue meshes contain no colliders or rigidbodies; the physics, vision, CAD, Blockly and online suites were rerun. Workspace button styling remains unchanged.
 
 Rooms use direct TCP or self-hosted reachable/VPN addresses. No managed public room service was deployed. Match scoring currently counts REBUILT HUB entries; full active/inactive HUB periods, climb/coral scoring and penalties are not implemented. Vision is geometric and uses configured camera geometry/latency. Prepared CAD and published robot values are required; generic bindings do not infer unpublished internals.
 
