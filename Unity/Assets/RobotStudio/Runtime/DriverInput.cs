@@ -55,7 +55,7 @@ namespace AshinaStudio {
     _ = Nt.Publish(prefix+"/pov",(long)pad.Pov,"int");
     _ = Nt.Publish(prefix+"/connected",pad.Connected,"boolean");
    }
-   _ = Nt.Publish("/AshinaSim/DriverStation/enabled",Running,"boolean");
+   _ = Nt.Publish("/AshinaSim/DriverStation/enabled",Running&&!StandaloneAutoRunning,"boolean");
    _ = Nt.Publish("/AshinaSim/DriverStation/autonomous",RobotMode=="autonomous","boolean");
    _ = Nt.Publish("/AshinaSim/DriverStation/heartbeat",++driverSequence,"int");
   }

@@ -84,5 +84,6 @@
       "WPILib disables after shared match control is lost",
       "Disconnected client returns to its offline robot project"
     ]
-  }
+  },
+  "version": "0.4.11"
 }

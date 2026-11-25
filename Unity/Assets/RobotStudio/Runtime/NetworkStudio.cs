@@ -6,12 +6,12 @@ using UnityEngine;
 namespace AshinaStudio {
  public partial class StudioApp {
   long resetSequence;
-  internal void RequestRobotReset(){if(RoomActive){Notice="Ortak saha oda sahibinin lobiye dönüşüyle sıfırlanır.";return;}if(Nt?.Connected==true&&Project.network.driveFromNt){_ = Nt.Publish("/AshinaSim/Robot/resetPose",Project.initialPose);_ = Nt.Publish("/AshinaSim/Robot/resetSequence",++resetSequence,"int");Notice="WPILib robotuna başlangıç konumu isteği gönderildi.";}else ResetPose();}
+  internal void RequestRobotReset(){if(RoomActive){Notice="Ortak saha oda sahibinin lobiye dönüşüyle sıfırlanır.";return;}if(StandaloneAutoRunning)SetRunning(false);if(Nt?.Connected==true&&Project.network.driveFromNt){_ = Nt.Publish("/AshinaSim/Robot/resetPose",Project.initialPose);_ = Nt.Publish("/AshinaSim/Robot/resetSequence",++resetSequence,"int");Notice="WPILib robotuna başlangıç konumu isteği gönderildi.";}else ResetPose();}
   bool networkPanel;string topicFilter="",selectedTopic="",selectedField="",resolvedPoseTopic;
   bool showSystemTopics;Vector2 topicScroll,topicDetailScroll;string[] visibleTopics=new string[0];
   float nextTopicRefresh,nextPoseSearch;string poseSearchRequest;
   public string EffectivePoseTopic=>resolvedPoseTopic??"";
-  public bool NetworkPoseOwned=>!RoomActive&&Nt!=null&&Project.network.driveFromNt&&Project.network.mode=="observe";
+  public bool NetworkPoseOwned=>!RoomActive&&!StandaloneAutoRunning&&Nt!=null&&Project.network.driveFromNt&&Project.network.mode=="observe";
   void CycleControlSource(){if(Nt!=null){SetRunning(false);DisconnectNetwork();Notice="Bağımsız sürüş · klavye / kumanda hazır.";}else{Project.network.driveFromNt=true;Project.network.forwardGamepad=true;ConnectNetwork();networkPanel=true;Notice="WPILib kaynağı seçildi. Robot kodunu başlat veya açık sunucuya bağlan.";}}
   public void ConnectNetwork(){Nt?.Dispose();Nt=new Nt4Client();resolvedPoseTopic=null;nextPoseSearch=0;_ = Nt.Connect(Project.network.host,Project.network.port);}
   public void DisconnectNetwork(){ClearLiveMotion();Nt?.Dispose();Nt=null;resolvedPoseTopic=null;visibleTopics=new string[0];nextTopicRefresh=0;}

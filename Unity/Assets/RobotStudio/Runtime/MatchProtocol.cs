@@ -11,7 +11,7 @@ namespace AshinaStudio {
   public const int Version=1,DefaultPort=5820,MaxPlayers=6,MaxFrame=48*1024*1024;
   public static readonly JsonSerializerSettings Json=new JsonSerializerSettings{TypeNameHandling=TypeNameHandling.None,MaxDepth=100,FloatParseHandling=FloatParseHandling.Double};
   public static RobotProject Share(RobotProject source){
-   var p=ProjectIO.Parse(ProjectIO.Write(source));p.blocklyProject=null;p.network=new NetworkData();
+   var p=ProjectIO.Parse(ProjectIO.Write(source));p.blocklyProject=null;p.localAuto=null;p.network=new NetworkData();
    if(p.actions.Any(a=>string.IsNullOrWhiteSpace(a.id)||a.id.Length>128)||p.parts.Any(a=>a.id.Length>128)||p.inventory==null||p.inventory.Any(i=>!PieceCatalog.Names.ContainsKey(i.Key)||i.Value<0)||p.inventory.Values.Sum()>p.training.capacity)throw new Exception("Online robot kimliği veya eşya stoğu geçersiz.");
    foreach(var a in p.actions){a.topic="";a.speedTopic="";a.pitchTopic="";a.yawTopic="";}
    foreach(var part in p.parts)part.links.Clear();

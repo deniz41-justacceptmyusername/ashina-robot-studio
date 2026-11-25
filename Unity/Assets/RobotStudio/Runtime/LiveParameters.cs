@@ -9,7 +9,7 @@ namespace AshinaStudio {
   readonly Dictionary<string,Vector3> lastMuzzleLocal=new Dictionary<string,Vector3>(),muzzleRelativeVelocity=new Dictionary<string,Vector3>();
   readonly System.Random shotRandom=new System.Random(10576);
   Vector3 observedVelocity;float observedOmega;long observedAt;Vector3 previousObservedPosition;float previousObservedYaw;
-  bool LiveNumber(string topic,string field,out double number){number=0;return Nt?.Connected==true&&!string.IsNullOrWhiteSpace(topic)&&NtData.Scalar(Nt,Nt.Get(topic),field,out number);}
+  bool LiveNumber(string topic,string field,out double number){number=0;return !StandaloneAutoRunning&&Nt?.Connected==true&&!string.IsNullOrWhiteSpace(topic)&&NtData.Scalar(Nt,Nt.Get(topic),field,out number);}
   void ApplyLiveParameters(){
    foreach(var part in Project.parts)foreach(var link in part.links){
     string key=part.id+":"+link.property;double raw;

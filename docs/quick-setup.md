@@ -26,3 +26,5 @@ Live NT pitch and yaw control shots in **Ayarladığım yönde at**. Point and r
 ## Limits
 
 This is an approachable practice model, not a calibrated flywheel/contact/drag laboratory. A real robot's area-to-speed or distance-to-RPM table still needs real measurements. Camera image processing is geometric simulation. Generic mechanisms and bindings reduce setup steps; they cannot infer unpublished code values or fix arbitrary CAD coordinate systems automatically.
+
+Import a PathPlanner route and practice with no NT4 connection. [Standalone autonomous practice](standalone-auto.md).

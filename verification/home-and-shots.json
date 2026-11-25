@@ -1,6 +1,6 @@
 {
   "success": true,
-  "count": 47,
+  "count": 59,
   "passed": [
     "Normal startup stays on the home screen",
     "Home screen cannot silently enable the robot",
@@ -48,7 +48,19 @@
     "Inherited launch velocity includes rotation at an offset muzzle",
     "Positive WPILib yaw request turns in the FRC coordinate direction",
     "Fixed-angle target solver launches toward the official HUB",
-    "Target-assisted shot enters the real HUB through collision geometry"
+    "Target-assisted shot enters the real HUB through collision geometry",
+    "Standalone .path imports the spline, constraints and its path marker",
+    "PathPlanner .auto resolves sibling paths without NetworkTables",
+    "Imported .auto keeps wait, movement and named command order",
+    "Version 2 project preserves imported route and command mapping",
+    "An unresolved .path keeps the prior routine loaded",
+    "Red alliance rotates the imported field route and heading",
+    "An imported routine starts with no NT4 connection",
+    "The file's opening wait holds the initial pose",
+    "Offline auto reaches its final time",
+    "The physical drivetrain follows the curved path and its holonomic finish rotation",
+    "The named PathPlanner command triggers the mapped shot and consumes one game piece",
+    "Returning to editing cancels the standalone autonomous owner"
   ],
-  "nearestTargetMetres": 0.0286309384
+  "nearestTargetMetres": 0.03446992
 }

@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 
 namespace AshinaStudio {
- public sealed class FeatureChecks : MonoBehaviour {
+ public sealed partial class FeatureChecks : MonoBehaviour {
   public StudioApp App;public string Output;readonly List<string> passed=new List<string>();
   void Check(bool ok,string name){if(!ok)throw new Exception(name);passed.Add(name);Debug.Log("PASS FEATURE: "+name);}
   async Task Wait(Func<bool> test,string name){float start=Time.realtimeSinceStartup;while(!test()){if(Time.realtimeSinceStartup-start>8)throw new Exception("Timeout "+name);await Task.Delay(20);}Check(true,name);}
@@ -72,6 +72,7 @@ namespace AshinaStudio {
    App.SetRunning(false);await App.LoadField("2026");App.Pieces.Clear();p.initialPose=new[]{2.0,4,0};App.RequestRobotReset();p.training.unlimitedShots=true;
    var hub=App.Hubs.First(h=>h.Alliance=="blue");a.aimMode="point";a.pitch=65;a.target=Frc.Position(hub.Center+Vector3.up*hub.Height);a.spawn=new[]{.65,0,.4};a.spreadDegrees=0;
    int previousScore=App.BlueFuel;Check(App.Emit(a)!=null,"Fixed-angle target solver launches toward the official HUB");await Wait(()=>App.BlueFuel>previousScore,"Target-assisted shot enters the real HUB through collision geometry");
+   await CheckPathPlanner();
    App.ShowHome();File.WriteAllText(Path.Combine(Output,"result.json"),JsonConvert.SerializeObject(new{success=true,count=passed.Count,passed,nearestTargetMetres=nearest},Formatting.Indented));Application.Quit(0);
   }catch(Exception e){Debug.LogException(e);File.WriteAllText(Path.Combine(Output,"result.json"),JsonConvert.SerializeObject(new{success=false,count=passed.Count,passed,error=e.ToString()},Formatting.Indented));Application.Quit(2);}}
 
