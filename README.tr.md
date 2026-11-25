@@ -75,7 +75,7 @@ Kamera: sağ fare çevirme, tekerlek yakınlaşma, orta fare kaydırma. **F** ro
 
 ## Kaynak ve doğrulama
 
-Unity projesi `Unity/` altında. Sürüm **0.4.12**, yerelde **310 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
+Unity projesi `Unity/` altında. Sürüm **0.4.13**, yerelde **327 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
 
 Bu uygulama serbest sürüş antrenmanı içindir. Tam FMS/hakemlik, ayrıntılı motor/akü dinamiği veya gerçek kamera görüntü işleme sistemi değildir. Bütün fiziksel kumanda modelleri denenmiş sayılmaz.
 

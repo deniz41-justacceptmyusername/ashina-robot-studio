@@ -13,7 +13,7 @@
   <img alt="Unity 6.1" src="https://img.shields.io/badge/Unity-6.1-101b2b?style=flat-square&amp;logo=unity&amp;logoColor=white">
   <img alt="Windows x64" src="https://img.shields.io/badge/Windows-x64-1578c8?style=flat-square">
   <img alt="NetworkTables 4" src="https://img.shields.io/badge/NetworkTables-NT4-25b8bb?style=flat-square">
-  <img alt="Version 0.4.12" src="https://img.shields.io/badge/version-0.4.12-ff9d57?style=flat-square">
+  <img alt="Version 0.4.13" src="https://img.shields.io/badge/version-0.4.13-ff9d57?style=flat-square">
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-8799ba?style=flat-square"></a>
   <a href="https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/actions/workflows/verify.yml"><img alt="Repository checks" src="https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/actions/workflows/verify.yml/badge.svg"></a>
 </p>
@@ -44,7 +44,7 @@ A separate headless Windows host supports six remote players. Use **İnternet od
 
 ## Run in a minute
 
-1. Download **Ashina-Robot-Studio-0.4.12-Windows.zip** from [Releases](https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/releases/latest).
+1. Download **Ashina-Robot-Studio-0.4.13-Windows.zip** from [Releases](https://github.com/deniz41-justacceptmyusername/ashina-robot-studio/releases/latest).
 2. Extract the entire folder and double-click **RobotStudio.exe**.
 3. Create or open your robot from the home screen, then click **Sürüşe başla** and drive with **W A S D**, turn with **Q / E**, or use a supported gamepad.
 
@@ -135,7 +135,7 @@ Default training capacities are **50** for REBUILT and **1** for REEFSCAPE. They
 
 ## Built, exercised, documented
 
-Version **0.4.12** passed **310 checks**. The build completed with **0 errors and 0 warnings**. [Read the validation record](docs/validation.md).
+Version **0.4.13** passed **327 checks**. The build completed with **0 errors and 0 warnings**. [Read the validation record](docs/validation.md).
 
 Repository CI checks source layout, example integrity, documentation links, and public-package hygiene. It does not claim to run the licensed Unity Editor or a team's private robot fixture. Physical controller models have not all been tested. Vision is geometric rather than pixel image processing; drive and game-piece collisions are training approximations.
 

@@ -1,13 +1,13 @@
 {
-  "version": "0.4.12",
+  "version": "0.4.13",
   "unity": "6000.1.13f1",
   "platform": "Windows x64",
   "generalChecks": 131,
   "robotIntegrationChecks": 13,
   "physicsChecks": 18,
-  "featureChecks": 59,
+  "featureChecks": 76,
   "onlineChecks": 89,
-  "totalChecks": 310,
+  "totalChecks": 327,
   "buildErrors": 0,
   "buildWarnings": 0,
   "robotFixtureIncluded": false,
@@ -28,14 +28,16 @@
     "internetHostAssertions": 44,
     "internetClientAssertions": 26,
     "fullInternetRunForThisBuild": false,
-    "lastFullInternetTestVersion": "0.4.11"
+    "lastFullInternetTestVersion": "0.4.11",
+    "internetRepeatAttempted": false
   },
   "visualReview": [
     "intake move and size controls",
     "independent targets for both field halves",
-    "three-step shot setup"
+    "three-step shot setup",
+    "telemetry with a real WPILib numeric feed"
   ],
-  "nativeAssemblySha256": "dbf1be53c1c78814210b8ea34644e30dd0e60c2bcd92fecdcfc505923dd5e524",
+  "nativeAssemblySha256": "b4a98399f569b05b01029217694e3ed7c040935eadd167b5eb4d5c1fb02a0745",
   "portableEntry": "RobotStudio.exe",
   "presentation": {
     "emptyStands": true,

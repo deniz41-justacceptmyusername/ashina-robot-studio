@@ -1,4 +1,4 @@
-# Validation record · v0.4.12
+# Validation record · v0.4.13
 
 Built locally with Unity **6000.1.13f1**: **0 errors, 0 warnings**.
 
@@ -7,17 +7,17 @@ Built locally with Unity **6000.1.13f1**: **0 errors, 0 warnings**.
 | General native player | 131 | CAD, project/motion persistence, stock, fields, real NT4/Blockly |
 | Configured team robot | 13 | Java/YAGSL, Xbox input, intake, shooter, HUB, odometry and PhotonVision |
 | Chassis/cage physics | 18 | Packed FUEL at 40 kg, low and tall TRENCH clearance, ramps, airborne traction and cages |
-| Home and shots | 59 | Home/setup, region aiming, live parameters, standalone PathPlanner import, event mapping and physical following |
-| Online host | 43 | Six-player room, shared collisions/stock/HUB, timeout/disconnect, field dynamics and online shot rules |
+| Home and shots | 76 | PathPlanner, regional shots, typed NT4 telemetry, bounded graph history and dashboard persistence |
+| Online host | 43 | Six-player room, shared collisions, server-owned stock, HUB and phase checks |
 | Separate native client | 26 | 456 replicas, real WPILib DS/odometry/camera, autonomous selection and host loss |
 | Dedicated server | 20 | Six remote places, ready barrier, clock, control isolation and invalid data rejection |
-| **Total** | **310** | Local executed checks |
+| **Total** | **327** | Local executed checks |
 
 Receipts are in [verification](../verification/). The private configured robot fixture is excluded from the repository and download.
 
 ## Online evidence
 
-The full Internet-room receipt is from v0.4.11. On v0.4.12 a native client joined through Cloudflare and the host observed both shots. The client timed out waiting for the updated stock and shot count. The direct six-player suite passed on v0.4.12.
+The latest full Cloudflare receipt is from v0.4.11. A later v0.4.12 run joined and timed out during match-stock synchronization. The native direct and dedicated rooms passed for v0.4.13.
 
 The room test used **two separate native Unity processes** plus four lightweight TCP drivers: six robot identities in total. One native client used a real WPILib NT4 server, the supplied controller and swerve IO helpers, and a real WPILib odometry estimator. A TCP proxy added 40 ms in each direction (80 ms round trip). The full 456-piece field reached the client before enable. A second run used a separate native headless host and six TCP drivers. These were local processes; six physical computers and a real provider-to-provider WAN were not tested.
 

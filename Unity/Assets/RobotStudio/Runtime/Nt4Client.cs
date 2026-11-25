@@ -26,9 +26,10 @@ namespace AshinaStudio {
   static readonly System.Diagnostics.Stopwatch clock=System.Diagnostics.Stopwatch.StartNew();
   static long Now=>clock.ElapsedTicks*1000000/System.Diagnostics.Stopwatch.Frequency;
   ClientWebSocket socket; Task runner; volatile bool connected; bool disposed; int uid=100,generation;
-  long offset,lastReceive,lastClock; double bestRtt=double.MaxValue;
+  long offset,lastReceive,lastClock,lastTopicTicks; double bestRtt=double.MaxValue;
   public string Status="Kapalı"; public bool Connected=>connected&&!disposed;
   public bool Reconnecting {get;private set;} public int Generation=>generation;
+  public long LastTopicTicks=>Interlocked.Read(ref lastTopicTicks);
   public double RoundTripMs {get;private set;} public string Endpoint {get;private set;}
 
   public async Task Connect(string host,int port) {
@@ -51,7 +52,7 @@ namespace AshinaStudio {
        var builder=new UriBuilder("ws",host,port,"nt/AshinaUnityStudio");
        await ws.ConnectAsync(builder.Uri,connect.Token).ConfigureAwait(false);
       }
-      ids.Clear(); Values.Clear(); Topics.Clear(); offset=0;bestRtt=double.MaxValue; lastReceive=lastClock=Now;
+      ids.Clear(); Values.Clear(); Topics.Clear(); Interlocked.Exchange(ref lastTopicTicks,0);offset=0;bestRtt=double.MaxValue; lastReceive=lastClock=Now;
       lock(publicationGate)foreach(var p in publications.Values){p.Announced=false;p.Sent=-1;}
       var receive=Receive(ws,session.Token);
       // NT4.0 interoperates with the WPILib 2025 and 2026 desktop servers.
@@ -145,7 +146,11 @@ namespace AshinaStudio {
        if(packet==null||packet.Length!=4)throw new IOException("NT değer zarfı geçersiz.");
        int id=Convert.ToInt32(packet[0]);
        if(id==-1){double rtt=Now-Convert.ToInt64(packet[3]);if(rtt>=0&&rtt<bestRtt){bestRtt=rtt;RoundTripMs=rtt/1000;Interlocked.Exchange(ref offset,Convert.ToInt64(packet[1])+(long)(rtt/2)-Now);}}
-       else if(ids.TryGetValue(id,out var name)&&Topics.TryGetValue(name,out var topic))Values[name]=new NtValue{Value=packet[3],Received=DateTime.UtcNow.Ticks,Timestamp=Convert.ToInt64(packet[1]),Type=topic.Type};
+       else if(ids.TryGetValue(id,out var name)&&Topics.TryGetValue(name,out var topic)){
+        long receipt=DateTime.UtcNow.Ticks;
+        Values[name]=new NtValue{Value=packet[3],Received=receipt,Timestamp=Convert.ToInt64(packet[1]),Type=topic.Type};
+        if(!name.StartsWith("$",StringComparison.Ordinal))Interlocked.Exchange(ref lastTopicTicks,receipt);
+       }
       }
      }
     }
