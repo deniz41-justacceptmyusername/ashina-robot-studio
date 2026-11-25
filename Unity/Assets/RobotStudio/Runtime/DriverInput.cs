@@ -42,7 +42,7 @@ namespace AshinaStudio {
     var pad=DriverInput.Read(index);
     if(index==0) {
      driverPad=pad;
-     if(Project.network.keyboardGamepad&&Application.isFocused&&!Typing&&!networkPanel&&!telemetryVisible) {
+     if(Project.network.keyboardGamepad&&Application.isFocused&&!Typing&&!networkPanel&&!telemetryVisible&&!recordingsVisible) {
       pad=new DriverPad{Name="Klavye + "+pad.Name,Connected=true,Axes=(double[])pad.Axes.Clone(),Buttons=pad.Buttons,Pov=pad.Pov};
       pad.Axes[0]=Mathf.Clamp((float)pad.Axes[0]+(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0),-1,1);
       pad.Axes[1]=Mathf.Clamp((float)pad.Axes[1]+(Input.GetKey(KeyCode.S)?1:0)-(Input.GetKey(KeyCode.W)?1:0),-1,1);

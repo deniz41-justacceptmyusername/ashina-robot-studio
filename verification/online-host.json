@@ -1,6 +1,6 @@
 {
   "success": true,
-  "count": 43,
+  "count": 45,
   "passed": [
     "TCP listener accepts a split-frame transfer",
     "Partial model traffic updates liveness before a large frame completes",
@@ -17,6 +17,7 @@
     "Remote players become ready",
     "Seventh player is rejected",
     "Host cannot start before every player is ready",
+    "A shared match can be recorded from its authoritative host",
     "Host starts all ready robots with a shared countdown",
     "Autonomous enables the shared room",
     "Remote code fires only its two stored pieces",
@@ -39,6 +40,7 @@
     "Native client confirms replication, WPILib odometry and vision",
     "Returning to lobby resets phase, shared score and per-robot stock",
     "Disconnected robot leaves the roster and physics world",
+    "An online recording contains the shared roster and authoritative scoring events",
     "Native client handles host shutdown",
     "Separate native application passes client checks",
     "Leaving restores the saved offline robot configuration",

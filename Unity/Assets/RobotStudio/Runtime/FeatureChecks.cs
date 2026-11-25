@@ -74,6 +74,7 @@ namespace AshinaStudio {
    int previousScore=App.BlueFuel;Check(App.Emit(a)!=null,"Fixed-angle target solver launches toward the official HUB");await Wait(()=>App.BlueFuel>previousScore,"Target-assisted shot enters the real HUB through collision geometry");
    await CheckPathPlanner();
    await CheckTelemetry();
+   await CheckReplaySessions();
    App.ShowHome();File.WriteAllText(Path.Combine(Output,"result.json"),JsonConvert.SerializeObject(new{success=true,count=passed.Count,passed,nearestTargetMetres=nearest},Formatting.Indented));Application.Quit(0);
   }catch(Exception e){Debug.LogException(e);File.WriteAllText(Path.Combine(Output,"result.json"),JsonConvert.SerializeObject(new{success=false,count=passed.Count,passed,error=e.ToString()},Formatting.Indented));Application.Quit(2);}}
 

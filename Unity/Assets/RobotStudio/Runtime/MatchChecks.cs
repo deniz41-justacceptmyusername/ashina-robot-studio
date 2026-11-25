@@ -35,7 +35,7 @@ namespace AshinaStudio {
    File.WriteAllText(Path.Combine(Output,"room.json"),JsonConvert.SerializeObject(new{invitation=cloud?room.InternetInvitation:"127.0.0.1:"+room.Port+"/"+room.Token,port=room.Port,key=room.Token}));
    await Until(()=>room.Robots.Count==6,"Six players join the same authoritative field",40);await Until(()=>room.Robots.Values.Count(r=>r.Ready)==5,"Remote players become ready",30);
    using(var seventh=await MatchLink.Connect("127.0.0.1",room.Port)){seventh.Send(new{type="join",protocol=1,key=room.Token,name="Seventh",alliance="red",project=MatchProtocol.Share(p)});bool rejected=false;await Until(()=>{while(seventh.Take(out var packet))if((string)packet["type"]=="error")rejected=true;return rejected;},"Seventh player is rejected");}
-   Check(!room.StartMatch(),"Host cannot start before every player is ready");room.SetReady(true);room.AutoSeconds=cloud?5:2;room.TeleopSeconds=12;room.CountdownSeconds=cloud?1:.4;room.GapSeconds=cloud?1:.3;Check(room.StartMatch(),"Host starts all ready robots with a shared countdown");
+   Check(!room.StartMatch(),"Host cannot start before every player is ready");Check(App.StartSessionRecording(Path.Combine(Output,"rooms-recording"),"Shared training match",false),"A shared match can be recorded from its authoritative host");room.SetReady(true);room.AutoSeconds=cloud?5:2;room.TeleopSeconds=12;room.CountdownSeconds=cloud?1:.4;room.GapSeconds=cloud?1:.3;Check(room.StartMatch(),"Host starts all ready robots with a shared countdown");
    await Until(()=>room.Phase=="autonomous"&&App.Running,"Autonomous enables the shared room");await Until(()=>room.Robots.Values.Any(r=>r.Name=="Native WPILib client"&&r.Shots==2),"Remote code fires only its two stored pieces",7);
    var native=room.Robots.Values.First(r=>r.Name=="Native WPILib client");Check(native.Project.inventory["fuel"]==0,"Code-triggered emission consumes server-owned stock");
    await Until(()=>room.Phase=="transition"&&!App.Running,"Auto-to-teleop gap disables robots");await Until(()=>room.Phase=="teleop"&&App.Running,"Teleop follows the same server clock");
@@ -56,6 +56,9 @@ namespace AshinaStudio {
    await Until(()=>File.Exists(Path.Combine(Path.GetDirectoryName(Output),"client/probe-ready.json")),"Native client confirms replication, WPILib odometry and vision",15);
    room.ReturnLobby();await Task.Delay(180);Check(room.Phase=="lobby"&&!App.Running&&App.BlueFuel==0&&room.Robots.Values.All(r=>r.Shots==0),"Returning to lobby resets phase, shared score and per-robot stock");
    bots[3].Dispose();await Until(()=>room.Robots.Count<=5,"Disconnected robot leaves the roster and physics world");
+   var saved=await App.StopSessionRecording();var clip=await Task.Run(()=>ReplayIndex.Open(saved.Path));
+   var matchFrame=await Task.Run(()=>clip.ReadPair(Math.Min(2,clip.Frames.Count-1)));
+   Check(saved.Complete&&clip.Header.mode=="online"&&matchFrame.before.robots.Length>=5&&clip.Events.Any(e=>e.item.kind=="score"),"An online recording contains the shared roster and authoritative scoring events");
    room.Dispose();await Until(()=>File.Exists(Path.Combine(Path.GetDirectoryName(Output),"client/result.json")),"Native client handles host shutdown",15);var client=JObject.Parse(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Output),"client/result.json")));Check((bool)client["success"],"Separate native application passes client checks");
    await App.LeaveRoom();Check(!App.RoomActive&&App.Project.network.robotProject=="PRIVATE_LOCAL_PROJECT"&&App.Project.inventory["fuel"]==2,"Leaving restores the saved offline robot configuration");await CageReplication();
   }

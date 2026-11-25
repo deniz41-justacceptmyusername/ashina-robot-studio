@@ -10,7 +10,7 @@ namespace AshinaStudio {
   bool homeScreen=true;public bool HomeVisible=>homeScreen;
   void WorldVisible(bool visible){if(ViewCamera!=null)ViewCamera.enabled=visible;if(Robot!=null)Robot.gameObject.SetActive(visible);if(Field?.Root!=null)Field.Root.gameObject.SetActive(visible);foreach(var p in Pieces.Active)if(p!=null)p.gameObject.SetActive(visible);}
   public void EnterWorkspace(){if(Busy||Project==null)return;homeScreen=false;HideHomeStage();WorldVisible(true);Select(Selected);if(Project.network.autoConnect&&Nt==null)ConnectNetwork();GUI.FocusControl(null);}
-  public void ShowHome(){if(Busy)return;SetRunning(false);PublishDriverStation();homeScreen=true;networkPanel=help=false;gizmo?.Select(null,false);WorldVisible(false);InvalidateHomeStage();}
+  public void ShowHome(){if(Busy)return;if(recorder!=null)_=StopSessionRecording();recordingsVisible=false;SetRunning(false);PublishDriverStation();homeScreen=true;networkPanel=help=false;gizmo?.Select(null,false);WorldVisible(false);InvalidateHomeStage();}
   void RememberProject(string path){
    if(Environment.GetCommandLineArgs().Any(a=>a=="--self-test"||a.Contains("check")||a=="--capture"))return;
    try{var paths=JsonConvert.DeserializeObject<string[]>(PlayerPrefs.GetString("ashina.recentProjects","[]"))??new string[0];paths=new[]{Path.GetFullPath(path)}.Concat(paths).Where(p=>!IsTestProject(p)).Distinct(StringComparer.OrdinalIgnoreCase).Take(4).ToArray();PlayerPrefs.SetString("ashina.recentProjects",JsonConvert.SerializeObject(paths));PlayerPrefs.Save();}catch{ }

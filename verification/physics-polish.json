@@ -10,7 +10,7 @@
     "A 40 kg chassis stays on the carpet in a packed FUEL pile (rise 0,000 m, tilt 0,0°)",
     "Airborne chassis falls under gravity",
     "No ground traction or yaw steering in midair",
-    "Official REBUILT ramp tilts and lifts the chassis (tilt=12,4, high=0,094, x=9,64)",
+    "Official REBUILT ramp tilts and lifts the chassis (tilt=12,4, high=0,094, x=9,66)",
     "Robot traverses the real ramp collision geometry",
     "Suspension settles after leaving the ramp",
     "All four REBUILT TRENCH arms and supports have solid geometry at the official clearance",
@@ -21,9 +21,9 @@
     "Deep cage swings after a physical impulse",
     "Cage remains attached at its suspension point"
   ],
-  "rampMaximumTilt": 12.3868856,
-  "rampMaximumHeight": 0.0939079747,
+  "rampMaximumTilt": 12.3913736,
+  "rampMaximumHeight": 0.09388874,
   "ballMaximumRideHeight": 0,
-  "packedFuelRiseMetres": 2.98023224e-8,
+  "packedFuelRiseMetres": 3.27825546e-7,
   "packedFuelTiltDegrees": 0
 }

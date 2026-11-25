@@ -1,13 +1,13 @@
 {
-  "version": "0.4.13",
+  "version": "0.4.14",
   "unity": "6000.1.13f1",
   "platform": "Windows x64",
   "generalChecks": 131,
   "robotIntegrationChecks": 13,
   "physicsChecks": 18,
-  "featureChecks": 76,
-  "onlineChecks": 89,
-  "totalChecks": 327,
+  "featureChecks": 93,
+  "onlineChecks": 91,
+  "totalChecks": 346,
   "buildErrors": 0,
   "buildWarnings": 0,
   "robotFixtureIncluded": false,
@@ -37,7 +37,7 @@
     "three-step shot setup",
     "telemetry with a real WPILib numeric feed"
   ],
-  "nativeAssemblySha256": "b4a98399f569b05b01029217694e3ed7c040935eadd167b5eb4d5c1fb02a0745",
+  "nativeAssemblySha256": "177976a2fbfc5197056aa37f4c977871ddeb92aa9d17b4c04c8ead64542a51b4",
   "portableEntry": "RobotStudio.exe",
   "presentation": {
     "emptyStands": true,

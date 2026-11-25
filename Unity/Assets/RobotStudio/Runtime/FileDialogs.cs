@@ -51,6 +51,7 @@ namespace AshinaStudio
         public static Task<string> OpenAsync(bool model = false) => ShowAsync(false, model);
         public static Task<string> OpenRobotCodeAsync()=>ShowAsync(false,false,"WPILib projesi (build.gradle)\0build.gradle\0Tüm dosyalar\0*.*\0\0");
         public static Task<string> OpenPathPlannerAsync()=>ShowAsync(false,false,"PathPlanner (*.auto, *.path)\0*.auto;*.path\0\0");
+        public static Task<string> OpenReplayAsync()=>ShowAsync(false,false,"Ashina oturum kaydı\0*.ashina-replay;*.ashina-replay.partial\0\0");
         public static Task<string> SaveAsync() => ShowAsync(true, false);
 
         static Task<string> ShowAsync(bool save, bool model,string customFilter=null)

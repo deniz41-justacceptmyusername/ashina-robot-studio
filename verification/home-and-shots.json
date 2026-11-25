@@ -1,6 +1,6 @@
 {
   "success": true,
-  "count": 76,
+  "count": 93,
   "passed": [
     "Normal startup stays on the home screen",
     "Home screen cannot silently enable the robot",
@@ -77,7 +77,24 @@
     "Reconnect restores current samples without duplicating history watches",
     "Dashboard configuration persists renamed panel order, units and history window",
     "Repeatedly opening and closing the telemetry workspace preserves subscriptions and restores the 3D view",
-    "Removing a panel releases series that no other panel watches"
+    "Removing a panel releases series that no other panel watches",
+    "A real practice recording starts with local input recording configured",
+    "A physical shot takes place during recording",
+    "A short live session writes and finalizes an actual recording",
+    "The saved session retains field and robot metadata",
+    "The event index contains shot, inventory and piece lifecycle changes",
+    "A recorded frame includes robot velocity, mechanism transform and permitted controller input",
+    "Replay opens as a visual-only world without game physics",
+    "The replay timeline seeks to an indexed frame",
+    "The replay switches to its overhead camera",
+    "Replay pause keeps its position and half-speed playback advances",
+    "Restart and faster playback change the timeline rate",
+    "Closing playback leaves the live robot and inventory intact",
+    "A truncated last row keeps all earlier complete frames playable",
+    "A longer session keeps a bounded index and seeks without loading every frame",
+    "A recording with no robot asset can still open as a visual session",
+    "Empty recordings are recognized and cannot start playback",
+    "Malformed clips are rejected and multiple sessions are kept separately"
   ],
-  "nearestTargetMetres": 0.0247717332
+  "nearestTargetMetres": 0.03699008
 }

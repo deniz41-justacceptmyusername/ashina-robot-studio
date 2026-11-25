@@ -49,6 +49,25 @@ namespace AshinaStudio {
    }
    return piece;
   }
+  internal Transform CreateReplayPiece(string kind,Transform parent,int layer){
+   var root=new GameObject(PieceCatalog.Names[kind]).transform;
+   root.SetParent(parent,false);root.gameObject.layer=layer;
+   if(kind=="note"||kind=="coral"){
+    if(!meshes.TryGetValue(kind,out var mesh)){
+     mesh=kind=="note"?Ring(.1511f,.0267f,48,10,false):Tube(.0508f,.040f,.3016f,32);
+     meshes[kind]=mesh;
+    }
+    root.gameObject.AddComponent<MeshFilter>().sharedMesh=mesh;
+    root.gameObject.AddComponent<MeshRenderer>().sharedMaterial=Appearance(PieceCatalog.Names[kind],kind=="note"?new Color(1,.43f,.08f):new Color(.91f,.91f,.84f));
+   }else{
+    var sphere=GameObject.CreatePrimitive(PrimitiveType.Sphere);
+    var collider=sphere.GetComponent<Collider>();collider.enabled=false;Lifetime.Destroy(collider);
+    sphere.layer=layer;sphere.transform.SetParent(root,false);
+    sphere.transform.localScale=Vector3.one*PieceCatalog.Radius(kind)*2;
+    sphere.GetComponent<Renderer>().sharedMaterial=Appearance(kind,kind=="algae"?new Color(.25f,.78f,.66f):kind=="fuel"?new Color(.97f,.78f,.16f):new Color(1,.4f,.12f));
+   }
+   return root;
+  }
   Material Appearance(string kind,Color color){if(!materials.TryGetValue(kind,out var m)){m=ModelLoader.Material(color);m.enableInstancing=true;materials[kind]=m;}return m;}
   PhysicsMaterial Contact(string kind){if(!physics.TryGetValue(kind,out var m))physics[kind]=m=new PhysicsMaterial("Oyun eşyası "+kind){dynamicFriction=.5f,staticFriction=.6f,bounciness=kind=="coral"?.12f:.35f};return m;}
   public GamePiece Spawn(string kind,Vector3 position,Vector3 velocity,Quaternion rotation){if(Active.Count>=600){Lifetime.Destroy(Active[0].gameObject);Active.RemoveAt(0);}var go=new GameObject(PieceCatalog.Names[kind]);go.transform.SetPositionAndRotation(position,rotation);go.layer=10;var body=go.AddComponent<Rigidbody>();body.mass=kind=="coral"?.25f:kind=="note"?.235f:kind=="algae"?.45f:kind=="fuel"?.22f:.2f;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;body.interpolation=RigidbodyInterpolation.Interpolate;body.linearDamping=.06f;body.angularDamping=.35f;body.solverIterations=8;body.solverVelocityIterations=4;body.maxDepenetrationVelocity=3;var mat=Contact(kind);var piece=go.AddComponent<GamePiece>();piece.Kind=kind;piece.NetId=++nextNetId;piece.Body=body;piece.Radius=PieceCatalog.Radius(kind);piece.Previous=position;

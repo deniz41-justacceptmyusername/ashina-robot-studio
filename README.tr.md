@@ -6,6 +6,10 @@
 
 **Ashina Robot Studio**, FRC sürücü antrenmanı için Unity tabanlı bir Windows masaüstü uygulamasıdır. Kendi CAD parçalarını yükleyebilir, mekanizma hareketleri kaydedebilir ve gerçek WPILib simülasyonundan gelen verilerle çalışabilirsin.
 
+- **Saha** üzerinden PathPlanner dosyasını yükleyip bağımsız otonomu çalıştır. [Otonom rehberi](docs/standalone-auto.md)
+- **Telemetri** ekranında NetworkTables değerlerini, durumlarını ve grafiklerini izle. [Telemetri rehberi](docs/telemetry.md)
+- **Kayıtlar** ile antrenmanı veya ortak maçı kaydet. Olaylara zaman çizelgesinden git ve kamera açısını değiştir. [Kayıt rehberi ve dosya biçimi](docs/recording-and-replay.md)
+
 ![REBUILT sahası ve masaüstü uygulaması](docs/images/rebuilt-training.png)
 
 ## Ortak sahada altı robot
@@ -75,7 +79,7 @@ Kamera: sağ fare çevirme, tekerlek yakınlaşma, orta fare kaydırma. **F** ro
 
 ## Kaynak ve doğrulama
 
-Unity projesi `Unity/` altında. Sürüm **0.4.13**, yerelde **327 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
+Unity projesi `Unity/` altında. Sürüm **0.4.14**, yerelde **346 kontrol** geçti; derleme 0 hata/0 uyarıyla tamamlandı. [Doğrulama kapsamı](docs/validation.md) ve [derleme rehberi](docs/building.md).
 
 Bu uygulama serbest sürüş antrenmanı içindir. Tam FMS/hakemlik, ayrıntılı motor/akü dinamiği veya gerçek kamera görüntü işleme sistemi değildir. Bütün fiziksel kumanda modelleri denenmiş sayılmaz.
 
